@@ -1,0 +1,71 @@
+@import "../../assets/setup/mixins";
+@import "../../assets/setup/functions";
+
+.main-app {
+    min-height: 100vh;
+}
+
+.app-layout {
+    display: grid;
+    grid-template-columns: auto 1fr;
+
+    // @include for-narrow-layout {
+    //     grid-template-columns:
+    //         minmax(20px, 1fr) minmax(auto, $mobile-breakpoint) minmax(20px, 1fr);
+    // }
+
+    // @include for-normal-layout {
+    //     grid-template-columns:
+    //         minmax(20px, 1fr) minmax(auto, $narrow-breakpoint) minmax(20px, 1fr);
+    // }
+
+    // @include for-wide-layout {
+    //     grid-template-columns:
+    //         minmax(20px, 1fr) minmax(auto, $normal-breakpoint) minmax(20px, 1fr);
+    // }
+}
+
+.main-layout {
+    display: grid;
+    grid-template-columns: 25px 1fr 25px;
+
+    @include for-narrow-layout {
+        grid-template-columns: em(80px) 1fr em(80px);
+    }
+
+    > *:not(:nth-child(1)) {
+        grid-column: 2;
+
+        &.full {
+            grid-column: 1 /-1;
+        }
+    }
+
+    // @include for-narrow-layout {
+    //     grid-template-columns:
+    //         minmax(20px, 1fr) minmax(auto, $mobile-breakpoint) minmax(20px, 1fr);
+    // }
+
+    // @include for-normal-layout {
+    //     grid-template-columns:
+    //         minmax(20px, 1fr) minmax(auto, $narrow-breakpoint) minmax(20px, 1fr);
+    // }
+
+    // @include for-wide-layout {
+    //     grid-template-columns:
+    //         minmax(20px, 1fr) minmax(auto, $normal-breakpoint) minmax(20px, 1fr);
+    // }
+}
+
+.login-layout {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2em;
+}
+
+//.page-cmp-layout {
+//    display: grid;
+//    grid-template-rows: 1fr auto;
+//}
