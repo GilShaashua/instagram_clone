@@ -4,6 +4,12 @@
         flex-direction: column;
         gap: 1.5em;
 
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
         form {
             display: flex;
             flex-direction: column;
@@ -11,7 +17,7 @@
 
             input {
                 padding-inline: 0.6em;
-                height: 2em;
+                height: 3em;
                 border: none;
                 border-radius: 0.3em;
 
@@ -21,11 +27,13 @@
             }
 
             .btn-login-with-email-password {
-                height: 2em;
+                height: 2.5em;
                 cursor: pointer;
                 border: none;
                 border-radius: 0.3em;
                 font-size: 16px;
+                color: #222222;
+                margin-block-start: 0.5em;
 
                 &:hover {
                     background-color: rgb(224, 224, 224);
@@ -33,11 +41,12 @@
             }
 
             .btn-register-with-email-password {
-                height: 2em;
+                height: 3em;
                 cursor: pointer;
                 border: none;
                 border-radius: 0.3em;
                 font-size: 16px;
+                color: #222222;
 
                 &:hover {
                     background-color: rgb(224, 224, 224);
@@ -59,10 +68,12 @@
             align-items: center;
             gap: 0.5em;
             padding-inline: 0.5em;
-            height: 3em;
+            height: 3.5em;
             border-radius: 0.4em;
             border: none;
             cursor: pointer;
+            color: #222222;
+            margin-block-start: 1.5em;
 
             &:hover {
                 background-color: rgb(224, 224, 224);

@@ -25,27 +25,7 @@ export class AuthService {
             const res = await this.afs.signInWithPopup(
                 new GoogleAuthProvider(),
             );
-            this.db
-                .collection('users')
-                .doc(res.user!.uid)
-                .get()
-                .pipe(take(1))
-                .subscribe({
-                    next: (data) => {
-                        if (data.exists) {
-                            const userData: any = data.data();
-                        } else {
-                            this.db
-                                .collection('users')
-                                .doc(res.user!.uid)
-                                .set({ followedByUsers: [] });
-                        }
-                    },
-                    error: (err: any) => {
-                        console.error(err);
-                    },
-                });
-
+            this.createUserOnDB(res);
             sessionStorage.setItem('loggedInUser', JSON.stringify(res));
             this._loggedInUser$.next(res);
             return res;
@@ -64,26 +44,7 @@ export class AuthService {
                 userCred.email,
                 userCred.password,
             );
-            this.db
-                .collection('users')
-                .doc(res.user!.uid)
-                .get()
-                .pipe(take(1))
-                .subscribe({
-                    next: (data) => {
-                        if (data.exists) {
-                            const userData: any = data.data();
-                        } else {
-                            this.db
-                                .collection('users')
-                                .doc(res.user!.uid)
-                                .set({ followedByUsers: [] });
-                        }
-                    },
-                    error: (err: any) => {
-                        console.error(err);
-                    },
-                });
+            this.createUserOnDB(res);
             sessionStorage.setItem('loggedInUser', JSON.stringify(res));
             this._loggedInUser$.next(res);
             return res;
@@ -102,26 +63,7 @@ export class AuthService {
                 userCred.email,
                 userCred.password,
             );
-            this.db
-                .collection('users')
-                .doc(res.user!.uid)
-                .get()
-                .pipe(take(1))
-                .subscribe({
-                    next: (data) => {
-                        if (data.exists) {
-                            const userData: any = data.data();
-                        } else {
-                            this.db
-                                .collection('users')
-                                .doc(res.user!.uid)
-                                .set({ followedByUsers: [] });
-                        }
-                    },
-                    error: (err: any) => {
-                        console.error(err);
-                    },
-                });
+            this.createUserOnDB(res);
             sessionStorage.setItem('loggedInUser', JSON.stringify(res));
             this._loggedInUser$.next(res);
             return res;
@@ -140,5 +82,28 @@ export class AuthService {
             console.error(err.message);
             throw err.message;
         }
+    }
+
+    createUserOnDB(res: UserCredential) {
+        this.db
+            .collection('users')
+            .doc(res.user!.uid)
+            .get()
+            .pipe(take(1))
+            .subscribe({
+                next: (data) => {
+                    if (data.exists) {
+                        const userData: any = data.data();
+                    } else {
+                        this.db
+                            .collection('users')
+                            .doc(res.user!.uid)
+                            .set({ followedByUsers: [] });
+                    }
+                },
+                error: (err: any) => {
+                    console.error(err);
+                },
+            });
     }
 }
