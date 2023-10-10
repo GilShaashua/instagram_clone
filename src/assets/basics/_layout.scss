@@ -5,9 +5,24 @@
     min-height: 100vh;
 }
 
-.page-cmp-layout {
+.app-layout {
     display: grid;
-    grid-template-rows: 1fr auto;
+    grid-template-columns: auto 1fr;
+
+    // @include for-narrow-layout {
+    //     grid-template-columns:
+    //         minmax(20px, 1fr) minmax(auto, $mobile-breakpoint) minmax(20px, 1fr);
+    // }
+
+    // @include for-normal-layout {
+    //     grid-template-columns:
+    //         minmax(20px, 1fr) minmax(auto, $narrow-breakpoint) minmax(20px, 1fr);
+    // }
+
+    // @include for-wide-layout {
+    //     grid-template-columns:
+    //         minmax(20px, 1fr) minmax(auto, $normal-breakpoint) minmax(20px, 1fr);
+    // }
 }
 
 .main-layout {
@@ -42,28 +57,15 @@
     // }
 }
 
-.app-layout {
-    display: grid;
-    grid-template-columns: 75px 1fr;
-
-    // @include for-narrow-layout {
-    //     grid-template-columns:
-    //         minmax(20px, 1fr) minmax(auto, $mobile-breakpoint) minmax(20px, 1fr);
-    // }
-
-    // @include for-normal-layout {
-    //     grid-template-columns:
-    //         minmax(20px, 1fr) minmax(auto, $narrow-breakpoint) minmax(20px, 1fr);
-    // }
-
-    // @include for-wide-layout {
-    //     grid-template-columns:
-    //         minmax(20px, 1fr) minmax(auto, $normal-breakpoint) minmax(20px, 1fr);
-    // }
+.login-layout {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2em;
 }
 
-.card-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    grid-gap: 20px;
-}
+//.page-cmp-layout {
+//    display: grid;
+//    grid-template-rows: 1fr auto;
+//}
