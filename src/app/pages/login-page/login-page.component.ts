@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
-import { AuthService } from '../../services/auth.service';
-import { Router } from '@angular/router';
-import { take } from 'rxjs';
+import {Component} from '@angular/core';
+import {AuthService} from '../../services/auth.service';
+import {Router} from '@angular/router';
+import {take} from 'rxjs';
 
 @Component({
     selector: 'login-page',
@@ -9,16 +9,18 @@ import { take } from 'rxjs';
     styleUrls: ['./login-page.component.scss'],
 })
 export class LoginPageComponent {
+    userCred = {fullName: '', email: '', password: ''};
+    isLogInFormShown = true;
+    
     constructor(
-        private authService: AuthService,
-        private router: Router,
-    ) {}
-
-    userCred = { email: '', password: '' };
-    isLogInFormShown = false;
-
-    ngOnInit() {}
-
+            private authService: AuthService,
+            private router: Router,
+    ) {
+    }
+    
+    ngOnInit() {
+    }
+    
     async onLogInWithGoogle() {
         try {
             const user = await this.authService.logInWithGoogle();
@@ -36,7 +38,7 @@ export class LoginPageComponent {
             console.error(err);
         }
     }
-
+    
     async onLogInWithEmailAndPassword() {
         try {
             await this.authService.logInWithEmailAndPassword(this.userCred);
@@ -54,7 +56,7 @@ export class LoginPageComponent {
             console.error(err.message);
         }
     }
-
+    
     async onRegisterWithEmailAndPassword() {
         try {
             await this.authService.registerWithEmailAndPassword(this.userCred);

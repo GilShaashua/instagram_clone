@@ -17,6 +17,8 @@ import { environment } from './enviroments/enviroment';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { AngularFireMessagingModule } from '@angular/fire/compat/messaging';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+import { PostListComponent } from './cmps/post-list/post-list.component';
+import { PostCardComponent } from './cmps/post-card/post-card.component';
 
 @NgModule({
     declarations: [
@@ -29,6 +31,8 @@ import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
         AsideMenuComponent,
         AppFooterComponent,
         ProfileComponent,
+        PostListComponent,
+        PostCardComponent,
     ],
     imports: [
         BrowserModule,
