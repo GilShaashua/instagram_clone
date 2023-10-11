@@ -1,0 +1,22 @@
+:host {
+    grid-column: 1/-1;
+    display: grid;
+    grid-template-columns: 25px 1fr 25px;
+    position: sticky;
+    z-index: 99;
+    top: 0;
+    border-block-end: 1px solid rgba(255, 255, 255, 0.27);
+    background-color: #000000;
+    
+    
+    & > * {
+        grid-column: 2;
+    }
+    
+    .app-header-mobile {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 60px;
+    }
+}

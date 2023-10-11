@@ -26,7 +26,7 @@ export class AuthService {
             const auth = await this.afs.signInWithPopup(
                     new GoogleAuthProvider(),
             );
-            this.createOrUpdateUserOnDB(auth);
+            await this.createOrUpdateUserOnDB(auth);
             sessionStorage.setItem('loggedInUser', JSON.stringify(auth));
             this._loggedInUser$.next(auth);
             return auth;
@@ -46,7 +46,7 @@ export class AuthService {
                     userCred.email,
                     userCred.password,
             );
-            this.createOrUpdateUserOnDB(auth, userCred);
+            await this.createOrUpdateUserOnDB(auth, userCred);
             sessionStorage.setItem('loggedInUser', JSON.stringify(auth));
             this._loggedInUser$.next(auth);
             return auth;
@@ -66,7 +66,7 @@ export class AuthService {
                     userCred.email,
                     userCred.password,
             );
-            this.createOrUpdateUserOnDB(auth, userCred);
+            await this.createOrUpdateUserOnDB(auth, userCred);
             sessionStorage.setItem('loggedInUser', JSON.stringify(auth));
             this._loggedInUser$.next(auth);
             return auth;
@@ -87,51 +87,51 @@ export class AuthService {
         }
     }
     
-    createOrUpdateUserOnDB(auth: UserCredential, userCred: {
+    async createOrUpdateUserOnDB(auth: UserCredential, userCred: {
         fullName: string,
         email: string;
         password: string;
     } | null = null) {
         this.db.collection('users').doc(auth.user!.uid).get().pipe(take(1))
                 .subscribe({
-                    next: (data) => {
+                    next: async (data) => {
                         if (data.exists) {
                             const userData: any = data.data();
                             console.log('userData', userData);
                             if (!userData._id) {
-                                this.db
+                                await this.db
                                         .collection('users')
                                         .doc(auth.user!.uid)
                                         .update({_id: auth.user!.uid});
                             }
                             if (!userData.fullName) {
-                                this.db
+                                await this.db
                                         .collection('users')
                                         .doc(auth.user!.uid)
                                         // @ts-ignore
                                         .update({fullName: userCred?.fullName || auth.additionalUserInfo?.profile?.name});
                             }
                             if (!userData.imgUrl) {
-                                this.db
+                                await this.db
                                         .collection('users')
                                         .doc(auth.user!.uid)
                                         // @ts-ignore
                                         .update({imgUrl: auth.user!.photoURL || 'https://res.cloudinary.com/dpbcaizq9/image/upload/v1686066256/user_jsqpzw.png'});
                             }
                             if (!userData.followedByUsers) {
-                                this.db
+                                await this.db
                                         .collection('users')
                                         .doc(auth.user!.uid)
                                         .update({followedByUsers: []});
                             }
                             if (!userData.followingUsers) {
-                                this.db
+                                await this.db
                                         .collection('users')
                                         .doc(auth.user!.uid)
                                         .update({followingUsers: []});
                             }
                         } else {
-                            this.db
+                            await this.db
                                     .collection('users')
                                     .doc(auth.user!.uid)
                                     .set({

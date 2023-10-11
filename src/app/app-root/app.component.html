@@ -1,11 +1,13 @@
 <section
-    [class]="
+        [class]="
         routerUrl === '/login' ? 'main-app login-layout' : 'main-app app-layout'
     "
 >
     <router-outlet *ngIf="routerUrl === '/login'"></router-outlet>
+    <app-header-mobile></app-header-mobile>
     <aside-menu *ngIf="routerUrl !== '/login'"></aside-menu>
-    <main class="main-layout" *ngIf="routerUrl !== '/login'">
+    <main *ngIf="routerUrl !== '/login'" class="main-layout">
         <router-outlet></router-outlet>
     </main>
+    <menu-mobile></menu-mobile>
 </section>

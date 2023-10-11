@@ -1,0 +1,40 @@
+:host {
+    position: sticky;
+    bottom: 0;
+    z-index: 99;
+    grid-column: 1/-1;
+    height: 60px;
+    width: 100%;
+    background-color: #000000;
+    display: grid;
+    grid-template-columns: 25px 1fr 25px;
+    align-items: center;
+    border-block-start: 1px solid rgba(255, 255, 255, 0.24);
+    
+    & > * {
+        grid-column: 2;
+    }
+    
+    .menu-mobile {
+        .menu-mobile-inner-container {
+            ul {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                
+                li {
+                    cursor: pointer;
+                    width: 30px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    
+                    img {
+                        border-radius: 50%;
+                        
+                    }
+                }
+            }
+        }
+    }
+}

@@ -21,6 +21,8 @@ import {PostListComponent} from './cmps/post-list/post-list.component';
 import {PostCardComponent} from './cmps/post-card/post-card.component';
 import {TimeAgoPipe} from './pipes/time-ago.pipe';
 import {NgOptimizedImage} from "@angular/common";
+import {MenuMobileComponent} from './cmps/menu-mobile/menu-mobile.component';
+import {AppHeaderMobileComponent} from './cmps/app-header-mobile/app-header-mobile.component';
 
 @NgModule({
     declarations: [
@@ -36,6 +38,8 @@ import {NgOptimizedImage} from "@angular/common";
         PostListComponent,
         PostCardComponent,
         TimeAgoPipe,
+        MenuMobileComponent,
+        AppHeaderMobileComponent,
     ],
     imports: [
         BrowserModule,
