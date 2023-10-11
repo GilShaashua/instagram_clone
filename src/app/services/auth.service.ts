@@ -111,6 +111,13 @@ export class AuthService {
                                         // @ts-ignore
                                         .update({fullName: userCred?.fullName || auth.additionalUserInfo?.profile?.name});
                             }
+                            if (!userData.imgUrl) {
+                                this.db
+                                        .collection('users')
+                                        .doc(auth.user!.uid)
+                                        // @ts-ignore
+                                        .update({imgUrl: auth.user!.photoURL || 'https://res.cloudinary.com/dpbcaizq9/image/upload/v1686066256/user_jsqpzw.png'});
+                            }
                             if (!userData.followedByUsers) {
                                 this.db
                                         .collection('users')
@@ -131,6 +138,7 @@ export class AuthService {
                                         _id: auth.user!.uid,
                                         // @ts-ignore
                                         fullName: userCred?.fullName || auth.additionalUserInfo?.profile?.name,
+                                        imgUrl: auth.user!.photoURL || 'https://res.cloudinary.com/dpbcaizq9/image/upload/v1686066256/user_jsqpzw.png',
                                         followedByUsers: [],
                                         followingUsers: []
                                     });
@@ -140,5 +148,9 @@ export class AuthService {
                         console.error(err);
                     },
                 });
+    }
+    
+    getUserById(creatorId: string) {
+        return this.db.collection('users').doc(creatorId).get()
     }
 }

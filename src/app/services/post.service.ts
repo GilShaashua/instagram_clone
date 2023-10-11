@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, catchError, retry, tap, throwError} from "rxjs";
-import {Post} from "../models/post";
+import {PostModel} from "../models/post.model";
 import {AngularFirestore} from "@angular/fire/compat/firestore";
 import {HttpErrorResponse} from "@angular/common/http";
 
@@ -8,7 +8,7 @@ import {HttpErrorResponse} from "@angular/common/http";
     providedIn: 'root'
 })
 export class PostService {
-    private _posts$ = new BehaviorSubject<Post[]>([])
+    private _posts$ = new BehaviorSubject<PostModel[]>([])
     public posts$ = this._posts$.asObservable()
     
     constructor(private db: AngularFirestore) {

@@ -1,0 +1,91 @@
+:host {
+    .post-card {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: .7em;
+        
+        .post-header {
+            display: flex;
+            align-items: center;
+            gap: .5em;
+            color: whitesmoke;
+            
+            img {
+                border-radius: 50%;
+                width: 40px;
+                border: none;
+            }
+            
+            h5 {
+                display: flex;
+                align-items: center;
+                gap: .4em;
+                
+                span {
+                    color: #919191;
+                    font-weight: normal;
+                }
+            }
+        }
+        
+        img {
+            border: 1px solid rgba(245, 245, 245, 0.44);
+            border-radius: .2em;
+        }
+        
+        .post-card-inner-container {
+            padding-inline: 1.5em;
+            display: flex;
+            flex-direction: column;
+            gap: 1em;
+            
+            .actions {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                
+                .like-comment-share {
+                    display: flex;
+                    align-items: center;
+                    gap: 1.5em;
+                    
+                    svg {
+                        cursor: pointer;
+                    }
+                }
+                
+                .save {
+                    display: flex;
+                    
+                    svg {
+                        cursor: pointer;
+                    }
+                }
+            }
+        }
+        
+        .content {
+            display: flex;
+            align-items: center;
+            
+            p {
+                .creatorFullName {
+                    font-weight: bold;
+                    font-size: 13px;
+                    color: whitesmoke;
+                    cursor: pointer;
+                }
+                
+                .btn-more {
+                    border: none;
+                    background-color: transparent;
+                    color: #919191;
+                    font-size: 14px;
+                    cursor: pointer;
+                }
+            }
+        }
+        
+    }
+}

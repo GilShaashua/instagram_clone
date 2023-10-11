@@ -1,5 +1,5 @@
 import {Component, Input} from '@angular/core';
-import {Post} from "../../models/post";
+import {PostModel} from "../../models/post.model";
 
 @Component({
     selector: 'post-list',
@@ -7,5 +7,5 @@ import {Post} from "../../models/post";
     styleUrls: ['./post-list.component.scss']
 })
 export class PostListComponent {
-    @Input() posts!: Post[]
+    @Input() posts!: PostModel[]
 }
