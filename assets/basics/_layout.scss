@@ -70,7 +70,17 @@
     padding: 2em;
 }
 
-//.page-cmp-layout {
-//    display: grid;
-//    grid-template-rows: 1fr auto;
-//}
+.page-cmp-layout {
+    display: grid;
+    grid-template-columns: 25px 1fr 25px;
+    
+    & > * {
+        grid-column: 2;
+    }
+    
+    @include for-narrow-layout {
+        display: unset;
+        grid-template-columns: unset;
+        
+    }
+}
