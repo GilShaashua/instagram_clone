@@ -3,15 +3,21 @@
 
 .main-app {
     min-height: 100vh;
-    grid-template-rows: auto 1fr;
+    grid-template-rows: auto 1fr auto;
+    
+    @include for-narrow-layout {
+        grid-template-rows: unset;
+    }
 }
 
 .app-layout {
     display: grid;
     grid-template-columns: 25px 1fr 25px;
     
-    @include for-normal-layout {
+    @include for-narrow-layout {
         grid-template-columns: auto 1fr;
+        grid-template-rows: unset;
+        
     }
     
     // @include for-normal-layout {
@@ -26,7 +32,6 @@
 }
 
 .main-layout {
-    //display: grid;
     //grid-template-columns: 25px 1fr 25px;
     //
     //
@@ -39,8 +44,9 @@
     //}
     
     @include for-narrow-layout {
+        display: grid;
         grid-template-columns:
-             minmax(25px, 1fr) minmax(auto, $mobile-breakpoint) minmax(2px, 1fr);
+             minmax(25px, 1fr) minmax(auto, $mobile-breakpoint) minmax(25px, 1fr);
     }
     
     // @include for-normal-layout {
