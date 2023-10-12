@@ -1,4 +1,4 @@
-export interface Creator {
+export interface User {
     _id: string,
     fullName: string,
     imgUrl: string,

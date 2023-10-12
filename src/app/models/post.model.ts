@@ -1,8 +1,9 @@
-export interface PostModel {
+export interface Post {
     _id: string,
     creatorFullName: string,
     creatorId: string,
     createdAt: number,
     imgUrl: string,
-    content: string
+    content: string,
+    likedByUsers: string[]
 }

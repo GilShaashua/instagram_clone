@@ -1,15 +1,26 @@
+@import "src/assets/setup/mixins";
+@import "src/assets/setup/variables";
+
 :host {
+    
+    
     .post-card {
         display: flex;
         flex-direction: column;
         justify-content: center;
         gap: 1em;
         
+        
         .post-header {
             display: flex;
             align-items: center;
             gap: .5em;
             color: whitesmoke;
+            padding-inline: 1.5em;
+            
+            @include for-narrow-layout {
+                padding-inline: unset;
+            }
             
             img {
                 border-radius: 50%;
@@ -30,8 +41,11 @@
         }
         
         img {
-            border: 1px solid rgba(245, 245, 245, 0.44);
-            border-radius: .2em;
+            
+            @include for-narrow-layout {
+                border-radius: .2em;
+                border: 1px solid rgba(245, 245, 245, 0.44);
+            }
         }
         
         .post-card-inner-container {
@@ -39,6 +53,10 @@
             display: flex;
             flex-direction: column;
             gap: .8em;
+            
+            @include for-narrow-layout {
+                padding-inline: unset;
+            }
             
             .actions {
                 display: flex;
@@ -60,6 +78,33 @@
                     
                     svg {
                         cursor: pointer;
+                    }
+                }
+            }
+            
+            .liked-by-users {
+                display: flex;
+                align-items: center;
+                gap: .5em;
+                font-size: 14px;
+                
+                
+                img {
+                    width: 20px;
+                    border-radius: 50%;
+                    border: none;
+                }
+                
+                p {
+                    
+                    .username {
+                        cursor: pointer;
+                        font-weight: bolder;
+                    }
+                    
+                    .other-users {
+                        cursor: pointer;
+                        font-weight: bolder;
                     }
                 }
             }

@@ -32,6 +32,7 @@
 }
 
 .main-layout {
+    grid-column: 1/-1;
     //grid-template-columns: 25px 1fr 25px;
     //
     //
@@ -45,6 +46,7 @@
     
     @include for-narrow-layout {
         display: grid;
+        grid-column: 2;
         grid-template-columns:
              minmax(25px, 1fr) minmax(auto, $mobile-breakpoint) minmax(25px, 1fr);
     }

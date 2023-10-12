@@ -150,7 +150,7 @@ export class AuthService {
                 });
     }
     
-    getUserById(creatorId: string) {
-        return this.db.collection('users').doc(creatorId).get()
+    getUserById(userId: string) {
+        return this.db.collection('users').doc(userId).get()
     }
 }

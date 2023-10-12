@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {PostService} from "../../services/post.service";
 import {Observable} from "rxjs";
-import {PostModel} from "../../models/post.model";
+import {Post} from "../../models/post.model";
 
 @Component({
     selector: 'home-page-page',
@@ -9,7 +9,7 @@ import {PostModel} from "../../models/post.model";
     styleUrls: ['./home-page.component.scss']
 })
 export class HomePageComponent implements OnInit, OnDestroy {
-    posts$!: Observable<PostModel[]>
+    posts$!: Observable<Post[]>
     
     constructor(private postService: PostService) {
     }
