@@ -1,3 +1,6 @@
+@import "src/assets/setup/variables";
+@import "src/assets/setup/mixins";
+
 :host {
     position: sticky;
     bottom: 0;
@@ -13,6 +16,10 @@
     
     & > * {
         grid-column: 2;
+    }
+    
+    @include for-narrow-layout {
+        display: none;
     }
     
     .menu-mobile {
@@ -32,6 +39,55 @@
                     img {
                         border-radius: 50%;
                         
+                    }
+                    
+                    &.active {
+                        svg {
+                            path {
+                                &:nth-child(1) {
+                                    fill: #ffffff;
+                                }
+                                
+                                &:nth-child(2) {
+                                    fill: #000000;
+                                }
+                                
+                                
+                            }
+                            
+                            line {
+                                stroke: #000000;
+                            }
+                        }
+                    }
+                    
+                    &.profile.active {
+                        border: 2px solid rgba(255, 255, 255, 0.66);
+                        border-radius: 50%;
+                    }
+                    
+                    &.extra-menu {
+                        position: relative;
+                        
+                        .extra-menu-modal {
+                            position: absolute;
+                            bottom: 50px;
+                            right: 10px;
+                            z-index: 98;
+                            background-color: #5b5b5b;
+                            width: 200px;
+                            border-radius: .4em;
+                            padding-block: .5em;
+                            color: whitesmoke;
+                            font-size: 18px;
+                            font-weight: normal;
+                            
+                            li {
+                                width: 100%;
+                                flex-direction: column;
+                                gap: 1em;
+                            }
+                        }
                     }
                 }
             }

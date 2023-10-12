@@ -1,8 +1,15 @@
+@import "src/assets/setup/variables";
+@import "src/assets/setup/mixins";
+
 :host {
     position: relative;
     grid-column: 1;
     width: 75px;
     display: none;
+    
+    @include for-narrow-layout {
+        display: block;
+    }
     
     .aside-menu {
         height: 100vh;

@@ -9,7 +9,7 @@
 }
 
 @mixin for-narrow-layout {
-    @media (min-width: calc($mobile-breakpoint + 40px)) {
+    @media (min-width: calc($mobile-breakpoint + 100px)) {
         @content;
     }
 }
@@ -56,14 +56,14 @@
 @mixin aspect-ratio($width, $height) {
     position: relative;
     overflow: hidden;
-
+    
     &::before {
         display: block;
         content: "";
         width: 100%;
         padding-top: calc(($height / $width) * 100%);
     }
-
+    
     > * {
         position: absolute;
         top: 0;
@@ -71,14 +71,14 @@
         right: 0;
         bottom: 0;
     }
-
+    
     > img {
         height: 100%;
         object-fit: cover;
     }
 }
 
-// Mixin for removing hover efects on iphone screen
+// Mixin for removing hover effects on iphone screen
 @mixin hover-supported {
     @media not all and (pointer: coarse) {
         &:hover {
@@ -109,20 +109,20 @@
     border: none;
     border-radius: 0.5em;
     cursor: pointer;
-
+    
     transition: background-color 0.2s;
-
+    
     @if $type ==regular {
         background-color: $bg;
         color: $clr;
-
+        
         &:hover {
             background-color: $hover;
         }
     } @else if $type ==dark {
         background-color: $clr2;
         color: $clr3;
-
+        
         &:hover {
             background-color: $clr1;
             color: $clr3;
@@ -131,7 +131,7 @@
         background-color: $clr8;
         color: $clr2;
         font-family: Circular-Light, sans-serif;
-
+        
         &:hover {
             background-color: $clr1;
             color: $clr3;

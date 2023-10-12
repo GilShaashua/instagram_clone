@@ -1,3 +1,5 @@
+@import "src/assets/setup/mixins";
+
 :host {
     grid-column: 1/-1;
     display: grid;
@@ -11,6 +13,11 @@
     
     & > * {
         grid-column: 2;
+    }
+    
+    @include for-narrow-layout {
+        display: none;
+        
     }
     
     .app-header-mobile {
