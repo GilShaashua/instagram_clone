@@ -3,6 +3,7 @@ import {Post} from "../../models/post.model";
 import {AuthService} from "../../services/auth.service";
 import {take} from "rxjs";
 import {User} from "../../models/user.model";
+import {PostService} from "../../services/post.service";
 
 @Component({
     selector: 'post-card',
@@ -12,10 +13,13 @@ import {User} from "../../models/user.model";
 export class PostCardComponent implements OnInit {
     @Input() post!: Post
     creator!: User
-    isMoreClicked: boolean = false
+    isMoreClicked = false
     likedByUsers: User[] = []
+    isLikedByUsersModalShown = false
+    loggedInUser: any
+    isLikeClicked = false
     
-    constructor(private authService: AuthService) {
+    constructor(private authService: AuthService, private postService: PostService) {
     }
     
     ngOnInit() {
@@ -23,22 +27,46 @@ export class PostCardComponent implements OnInit {
             next: (creator: any) => {
                 if (creator.exists) {
                     this.creator = creator.data()
-                    console.log('this.creator', this.creator)
                 }
             }
         })
-        this.post.likedByUsers.forEach((likedByUser) => {
+        this.post.likedByUsers.forEach((likedByUser, idx) => {
             this.authService.getUserById(likedByUser).pipe(take(1)).subscribe({
                 next: (user) => {
                     if (user.exists) {
-                        console.log('user', user.data())
                         this.likedByUsers.push(user.data() as User)
                     }
                 }
             })
+            // if (idx === this.post.likedByUsers.length - 1) {
+            //
+            // }
         })
+        this.authService.loggedInUser$.pipe(take(1)).subscribe({
+            next: (loggedInUser) => {
+                this.loggedInUser = loggedInUser
+            }
+        })
+        setTimeout(() => {
+            this.isLikeClicked = !!this.likedByUsers.find(likedByUser => likedByUser._id === this.loggedInUser.user.uid)
+        }, 200)
     }
     
-    onGetUserById(userId: string) {
+    async onToggleLike() {
+        this.isLikeClicked = !this.isLikeClicked
+        await this.postService.toggleLike(this.isLikeClicked, this.post)
+        //   TODO: update the state 'this.likedByUsers'
+        this.authService.getUserById(this.creator._id).pipe(take(1)).subscribe({
+            next: (user: any) => {
+                if (user.exists) {
+                    if (this.isLikeClicked) {
+                        this.likedByUsers.push(user.data())
+                    } else {
+                        const userIdx = this.likedByUsers.findIndex(likedByUser => likedByUser._id === this.creator._id)
+                        this.likedByUsers.splice(userIdx, 1)
+                    }
+                }
+            }
+        })
     }
 }

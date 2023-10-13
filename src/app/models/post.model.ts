@@ -5,5 +5,6 @@ export interface Post {
     createdAt: number,
     imgUrl: string,
     content: string,
-    likedByUsers: string[]
+    likedByUsers: string[],
+    comments: any
 }
