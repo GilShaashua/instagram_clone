@@ -1,7 +1,7 @@
 export interface User {
-    _id: string,
-    fullName: string,
-    imgUrl: string,
-    followedByUsers: string[],
-    followingUsers: string[]
+    _id: string;
+    fullName: string;
+    imgUrl: string;
+    followedByUsers: User[];
+    followingUsers: User[];
 }

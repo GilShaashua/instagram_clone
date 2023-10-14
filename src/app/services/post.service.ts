@@ -1,66 +1,183 @@
-import {Injectable} from '@angular/core';
-import {BehaviorSubject, catchError, retry, take, tap, throwError} from "rxjs";
-import {Post} from "../models/post.model";
-import {AngularFirestore} from "@angular/fire/compat/firestore";
-import {HttpErrorResponse} from "@angular/common/http";
-import {AuthService} from "./auth.service";
+import { Injectable } from '@angular/core';
+import {
+    BehaviorSubject,
+    catchError,
+    combineLatest,
+    finalize,
+    map,
+    retry,
+    switchMap,
+    take,
+    tap,
+    throwError,
+} from 'rxjs';
+import { Post } from '../models/post.model';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { AuthService } from './auth.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import firebase from 'firebase/compat';
+import { User } from '../models/user.model';
+import UserCredential = firebase.auth.UserCredential;
+import { cloneDeep } from 'lodash';
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
 export class PostService {
-    private _posts$ = new BehaviorSubject<Post[]>([])
-    public posts$ = this._posts$.asObservable()
-    
-    constructor(private db: AngularFirestore, private authService: AuthService) {
-    }
-    
+    private _posts$ = new BehaviorSubject<Post[]>([]);
+    public posts$ = this._posts$.asObservable();
+
+    constructor(
+        private db: AngularFirestore,
+        private authService: AuthService,
+    ) {}
+
     getPosts() {
-        return this.db.collection('posts').valueChanges()
-                .pipe(tap((posts) => {
-                            // console.log('posts', posts)
-                            this._posts$.next(posts as Post[])
+        return this.db
+            .collection('posts')
+            .valueChanges()
+            .pipe(
+                switchMap((posts: any[]) => {
+                    let userIds = posts.reduce((acc, post) => {
+                        return acc.concat(post.likedByUsers || []);
+                    }, []);
+                    const uniqueUserIds = Array.from(new Set(userIds));
+
+                    // Fetch user data for each unique user ID and cast to the expected User type.
+                    return combineLatest(
+                        uniqueUserIds.map((userId: any) => {
+                            return this.authService.getUserById(userId);
+                        }),
+                    ).pipe(
+                        map((userObjects: any[]) => {
+                            return posts.map((post) => {
+                                console.log('hi');
+                                // Check if likedByUsers is empty, and act accordingly
+                                if (!post.likedByUsers) {
+                                    post.likedByUsers = [];
+                                } else {
+                                    post.likedByUsers = post.likedByUsers.map(
+                                        (userId: string) =>
+                                            userObjects.find(
+                                                (user) => user._id === userId,
+                                            ),
+                                    );
+                                }
+                                return post;
+                            });
+                        }),
+                        finalize(() => {
+                            // This code will execute regardless of whether likedByUsers is empty
+                            console.log('posts', posts);
+                            this._posts$.next([...posts]);
                         }),
                         retry(1),
-                        catchError((err: HttpErrorResponse) => {
-                            console.log('err:', err);
-                            return throwError(() => err);
-                        }))
+                        catchError(this._handleError),
+                    );
+                }),
+            );
     }
-    
+
     async toggleLike(isLikeClicked: boolean, post: Post) {
-        if (isLikeClicked) await this.addLike(post)
-        else await this.removeLike(post)
+        // console.log('isLikeClicked', isLikeClicked);
+        // console.log('post', post);
+        if (isLikeClicked) await this.addLike(post);
+        else await this.removeLike(post);
     }
-    
+
     async addLike(post: Post) {
-        let loggedInUserId: string | undefined
+        const deepCopyOfPost = cloneDeep(post);
         this.authService.loggedInUser$.pipe(take(1)).subscribe({
-            next: (loggedInUser) => {
-                loggedInUserId = loggedInUser?.user?.uid
-            }
-        })
-        post.likedByUsers.push(loggedInUserId as string)
-        await this.db.collection('posts').doc(post._id).update({
-            likedByUsers: post.likedByUsers
-        })
-        const posts = this._posts$.value
-        const postToEditIdx = posts.findIndex((_post) => _post._id === post._id)
-        posts.splice(postToEditIdx, 1, post)
-        this._posts$.next(posts)
+            next: (loggedInUser: UserCredential | null) => {
+                const loggedInUserId = loggedInUser!.user!.uid;
+                this.db
+                    .collection('users')
+                    .doc(loggedInUserId)
+                    .valueChanges()
+                    .pipe(take(1))
+                    .subscribe({
+                        next: async (_loggedInUser: User | unknown) => {
+                            const loggedInUser = _loggedInUser as User;
+                            const likedByUsersFront =
+                                deepCopyOfPost.likedByUsers.slice();
+                            likedByUsersFront.push(loggedInUser);
+                            deepCopyOfPost.likedByUsers =
+                                deepCopyOfPost.likedByUsers.map(
+                                    (likedByUser: any) => {
+                                        return likedByUser._id;
+                                    },
+                                );
+                            deepCopyOfPost.likedByUsers.push(
+                                loggedInUserId as unknown as User,
+                            );
+                            await this.db
+                                .collection('posts')
+                                .doc(post._id)
+                                .update({
+                                    likedByUsers: [
+                                        ...deepCopyOfPost.likedByUsers,
+                                    ],
+                                });
+                            const posts = this._posts$.value;
+                            const postToEditIdx = posts.findIndex(
+                                (_post) => _post._id === post._id,
+                            );
+                            const postToFront = {
+                                ...deepCopyOfPost,
+                                likedByUsers: [...likedByUsersFront] as User[],
+                            };
+                            posts.splice(postToEditIdx, 1, postToFront);
+                            this._posts$.next([...posts]);
+                        },
+                    });
+            },
+        });
     }
-    
+
     async removeLike(post: Post) {
-        let loggedInUserId: string | undefined
+        // TODO: fix bug when removing like,
+        // TODO: the key "likedByUsers" in db converted to array of user objects
+        //  instead of array of strings ids.
+        // TODO: its happening after clicking remove like btn
+
+        const deepCopyOfPost = cloneDeep(post);
+
         this.authService.loggedInUser$.pipe(take(1)).subscribe({
-            next: (loggedInUser) => {
-                loggedInUserId = loggedInUser?.user?.uid
-            }
-        })
-        const likedByUserIdx = post.likedByUsers.findIndex((likedByUser) => likedByUser === loggedInUserId)
-        post.likedByUsers.splice(likedByUserIdx, 1)
-        await this.db.collection('posts').doc(post._id).update({
-            likedByUsers: post.likedByUsers
-        })
+            next: async (loggedInUser: UserCredential | null) => {
+                const loggedInUserId = loggedInUser!.user!.uid;
+                const likedByUserIdx = deepCopyOfPost.likedByUsers.findIndex(
+                    (likedByUser) => likedByUser._id === loggedInUserId,
+                );
+
+                deepCopyOfPost.likedByUsers.splice(likedByUserIdx, 1);
+                deepCopyOfPost.likedByUsers = deepCopyOfPost.likedByUsers.map(
+                    (likedByUser) => likedByUser._id,
+                ) as unknown as User[];
+                await this.db
+                    .collection('posts')
+                    .doc(deepCopyOfPost._id)
+                    .update({
+                        likedByUsers: [...deepCopyOfPost.likedByUsers],
+                    });
+                const posts = this._posts$.value;
+                const postToEditIdx = posts.findIndex(
+                    (_post) => _post._id === post._id,
+                );
+
+                post.likedByUsers.splice(likedByUserIdx, 1);
+
+                const postToFront = {
+                    ...post,
+                    likedByUsers: [...post.likedByUsers],
+                };
+                posts.splice(postToEditIdx, 1, postToFront as unknown as Post);
+                this._posts$.next([...posts]);
+            },
+        });
+    }
+
+    private _handleError(err: HttpErrorResponse) {
+        console.log('err:', err);
+        return throwError(() => err);
     }
 }

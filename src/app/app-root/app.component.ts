@@ -15,18 +15,15 @@ export class AppComponent implements OnInit, OnDestroy {
     constructor(private router: Router, private postService: PostService) {
     }
     
-    ngOnInit() {
+    async ngOnInit() {
         this.routerUrlSubscription = this.router.events.subscribe((event) => {
             if (event instanceof NavigationEnd) {
                 this.routerUrl = this.router.url;
             }
         });
-        this.postService.getPosts().pipe(take(1)).subscribe({
-            next: (posts: any[]) => {
-                console.log('posts', posts)
-            },
+        (this.postService.getPosts()).pipe(take(1)).subscribe({
             error: (err: any) => {
-                console.error(err.message)
+                console.error(err)
             },
         })
     }

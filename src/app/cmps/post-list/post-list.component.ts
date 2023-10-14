@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {Post} from "../../models/post.model";
 
 @Component({
@@ -8,4 +8,5 @@ import {Post} from "../../models/post.model";
 })
 export class PostListComponent {
     @Input() posts!: Post[]
+    @Output() onToggleLike = new EventEmitter<{ post: Post, isLikeClicked: boolean }>();
 }

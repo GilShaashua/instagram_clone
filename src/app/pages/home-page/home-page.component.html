@@ -1,5 +1,5 @@
 <section *ngIf="posts$ | async as posts" class="home-page">
     
-    <post-list [posts]="posts"></post-list>
+    <post-list (onToggleLike)="onToggleLike($event)" [posts]="posts"></post-list>
 
 </section>

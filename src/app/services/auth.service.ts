@@ -151,6 +151,6 @@ export class AuthService {
     }
     
     getUserById(userId: string) {
-        return this.db.collection('users').doc(userId).get()
+        return this.db.collection('users').doc(userId).valueChanges()
     }
 }

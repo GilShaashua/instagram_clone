@@ -1,5 +1,6 @@
 <section class="post-list">
     <ul>
-        <post-card *ngFor="let post of posts" [post]="post"></post-card>
+        <post-card (onToggleLike)="onToggleLike.emit($event)" *ngFor="let post of posts"
+                   [post]="post"></post-card>
     </ul>
 </section>
