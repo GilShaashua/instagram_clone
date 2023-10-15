@@ -3,7 +3,7 @@ import { Post } from '../../models/post.model';
 import { AuthService } from '../../services/auth.service';
 import { take } from 'rxjs';
 import { User } from '../../models/user.model';
-import { cloneDeep } from 'lodash';
+import cloneDeep from 'lodash-es/cloneDeep';
 
 @Component({
     selector: 'post-card',
@@ -31,9 +31,7 @@ export class PostCardComponent implements OnInit {
             .pipe(take(1))
             .subscribe({
                 next: (creator: any) => {
-                    if (creator.exists) {
-                        this.creator = creator.data();
-                    }
+                    this.creator = creator;
                 },
             });
         this.authService.loggedInUser$.pipe(take(1)).subscribe({

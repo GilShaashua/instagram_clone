@@ -1,73 +1,68 @@
 @import "src/assets/setup/mixins";
-@import "src/assets/setup/variables";
 
 :host {
-    
-    
     .post-card {
         display: flex;
         flex-direction: column;
         justify-content: center;
         gap: 1em;
-        
-        
+
         .post-header {
             display: flex;
             align-items: center;
-            gap: .5em;
+            gap: 0.5em;
             color: whitesmoke;
             padding-inline: 1.5em;
-            
+
             @include for-narrow-layout {
                 padding-inline: unset;
             }
-            
+
             img {
                 border-radius: 50%;
                 width: 40px;
                 border: none;
             }
-            
+
             h5 {
                 display: flex;
                 align-items: center;
-                gap: .4em;
-                
+                gap: 0.4em;
+
                 span {
                     color: #919191;
                     font-weight: normal;
                 }
             }
         }
-        
+
         img {
-            
             @include for-narrow-layout {
-                border-radius: .2em;
+                border-radius: 0.2em;
                 border: 1px solid rgba(245, 245, 245, 0.44);
             }
         }
-        
+
         .post-card-inner-container {
             padding-inline: 1.5em;
             display: flex;
             flex-direction: column;
-            gap: .8em;
-            
+            gap: 0.8em;
+
             @include for-narrow-layout {
                 padding-inline: unset;
             }
-            
+
             .actions {
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
-                
+
                 .like-comment-share {
                     display: flex;
                     align-items: center;
                     gap: 1.5em;
-                    
+
                     .btn-like {
                         cursor: pointer;
                         background-color: transparent;
@@ -76,7 +71,7 @@
                         align-items: center;
                         justify-content: center;
                     }
-                    
+
                     .btn-comment {
                         cursor: pointer;
                         background-color: transparent;
@@ -85,7 +80,7 @@
                         align-items: center;
                         justify-content: center;
                     }
-                    
+
                     .btn-share {
                         cursor: pointer;
                         background-color: transparent;
@@ -95,7 +90,7 @@
                         justify-content: center;
                     }
                 }
-                
+
                 .save {
                     cursor: pointer;
                     background-color: transparent;
@@ -105,33 +100,31 @@
                     justify-content: center;
                 }
             }
-            
+
             .liked-by-users {
                 display: flex;
                 align-items: center;
-                gap: .5em;
+                gap: 0.5em;
                 font-size: 14px;
-                
-                
+
                 img {
                     width: 20px;
                     border-radius: 50%;
                     border: none;
                 }
-                
+
                 p {
-                    
                     .username {
                         cursor: pointer;
                         font-weight: bolder;
                     }
-                    
+
                     .other-users {
                         cursor: pointer;
                         font-weight: bolder;
                     }
                 }
-                
+
                 .liked-by-users-list {
                     position: fixed;
                     top: 50%;
@@ -144,55 +137,55 @@
                     display: flex;
                     flex-direction: column;
                     gap: 1em;
-                    
+
                     .header {
                         display: flex;
                         justify-content: center;
                         align-items: center;
                         border-block-end: 1px solid rgba(252, 252, 252, 0.11);
                         height: 3em;
-                        
+
                         .btn-close-liked-by-users-list {
                             position: absolute;
                             right: 1em;
-                            top: .9em;
+                            top: 0.9em;
                             cursor: pointer;
                             background-color: transparent;
                             border: none;
                         }
                     }
-                    
+
                     ul {
                         display: flex;
                         flex-direction: column;
                         gap: 1em;
                         padding-inline: 1em;
                         padding-block-end: 1em;
-                        
+
                         li {
                             display: flex;
                             align-items: center;
                             justify-content: space-between;
-                            
+
                             img {
                                 width: 45px;
                             }
-                            
+
                             h5 {
                                 cursor: pointer;
                             }
-                            
+
                             .btn-follow {
                                 cursor: pointer;
                                 border: none;
                                 background-color: rgb(0, 149, 246);
                                 color: whitesmoke;
-                                border-radius: .5em;
+                                border-radius: 0.5em;
                                 padding-inline: 1.5em;
                                 height: 2.5em;
                                 font-size: 14px;
                                 font-weight: bolder;
-                                
+
                                 &:hover {
                                     background-color: rgb(2, 132, 213);
                                 }
@@ -202,11 +195,11 @@
                 }
             }
         }
-        
+
         .content {
             display: flex;
             align-items: center;
-            
+
             p {
                 .creatorFullName {
                     font-weight: bold;
@@ -214,7 +207,7 @@
                     color: whitesmoke;
                     cursor: pointer;
                 }
-                
+
                 .btn-more {
                     border: none;
                     background-color: transparent;
@@ -224,6 +217,5 @@
                 }
             }
         }
-        
     }
 }

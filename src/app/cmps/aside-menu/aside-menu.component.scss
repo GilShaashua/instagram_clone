@@ -1,4 +1,3 @@
-@import "src/assets/setup/variables";
 @import "src/assets/setup/mixins";
 
 :host {
@@ -6,11 +5,11 @@
     grid-column: 1;
     width: 75px;
     display: none;
-    
+
     @include for-narrow-layout {
         display: block;
     }
-    
+
     .aside-menu {
         height: 100vh;
         position: sticky;
@@ -23,7 +22,7 @@
         border-inline-end: 1px solid rgba(245, 245, 245, 0.19);
         padding-block: 1.5em;
         width: 100%;
-        
+
         .aside-menu-inner-container {
             display: flex;
             flex-direction: column;
@@ -31,7 +30,7 @@
             align-items: center;
             gap: 3.5em;
             width: 100%;
-            
+
             .logo {
                 cursor: pointer;
                 display: flex;
@@ -39,15 +38,15 @@
                 align-items: center;
                 padding: 0.8em;
                 border-radius: 0.4em;
-                
+
                 &:hover {
                     background-color: rgba(229, 229, 229, 0.11);
                 }
             }
-            
+
             nav {
                 width: 100%;
-                
+
                 ul {
                     display: flex;
                     flex-direction: column;
@@ -55,7 +54,7 @@
                     align-items: center;
                     gap: 1em;
                     width: 100%;
-                    
+
                     li {
                         cursor: pointer;
                         padding: 0.8em;
@@ -64,34 +63,33 @@
                         justify-content: center;
                         align-items: center;
                         width: 70%;
-                        
+
                         img {
                             border-radius: 50%;
                         }
-                        
+
                         &.active {
                             svg {
                                 path {
                                     &:nth-child(1) {
                                         fill: rgb(245, 245, 245);
                                     }
-                                    
+
                                     &:nth-child(2) {
                                         fill: rgb(0, 0, 0);
                                     }
                                 }
-                                
+
                                 line {
                                     stroke: rgb(0, 0, 0);
                                 }
                             }
                         }
-                        
-                        
+
                         &.profile.active {
                             border: 1px solid rgba(245, 245, 245, 0.46);
                         }
-                        
+
                         &:hover {
                             background-color: rgba(229, 229, 229, 0.11);
                         }
@@ -99,7 +97,7 @@
                 }
             }
         }
-        
+
         .extra-menu {
             cursor: pointer;
             display: flex;
@@ -108,11 +106,11 @@
             padding: 0.8em;
             border-radius: 0.4em;
             position: relative;
-            
+
             &:hover {
                 background-color: rgba(229, 229, 229, 0.11);
             }
-            
+
             .extra-menu-modal {
                 background-color: #343434;
                 color: whitesmoke;
@@ -122,12 +120,12 @@
                 bottom: 0;
                 left: 55px;
                 width: 250px;
-                
+
                 ul {
                     li {
                         padding: 0.4em;
                         border-radius: 0.4em;
-                        
+
                         &:hover {
                             background-color: rgba(229, 229, 229, 0.11);
                         }

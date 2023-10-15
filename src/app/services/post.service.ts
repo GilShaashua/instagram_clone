@@ -18,7 +18,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import firebase from 'firebase/compat';
 import { User } from '../models/user.model';
 import UserCredential = firebase.auth.UserCredential;
-import { cloneDeep } from 'lodash';
+import cloneDeep from 'lodash-es/cloneDeep';
 
 @Injectable({
     providedIn: 'root',
@@ -51,7 +51,6 @@ export class PostService {
                     ).pipe(
                         map((userObjects: any[]) => {
                             return posts.map((post) => {
-                                console.log('hi');
                                 // Check if likedByUsers is empty, and act accordingly
                                 if (!post.likedByUsers) {
                                     post.likedByUsers = [];
