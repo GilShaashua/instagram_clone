@@ -1,7 +1,7 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {NavigationEnd, Router} from '@angular/router';
-import {PostService} from "../services/post.service";
-import {Subscription, take} from "rxjs";
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
+import { PostService } from '../services/post.service';
+import { Subscription, take } from 'rxjs';
 
 @Component({
     selector: 'app-root',
@@ -10,25 +10,34 @@ import {Subscription, take} from "rxjs";
 })
 export class AppComponent implements OnInit, OnDestroy {
     routerUrl = this.router.url;
-    routerUrlSubscription!: Subscription
-    
-    constructor(private router: Router, private postService: PostService) {
-    }
-    
+    routerUrlSubscription!: Subscription;
+    isComponentInitialized = false;
+
+    constructor(
+        private router: Router,
+        private postService: PostService,
+    ) {}
+
     async ngOnInit() {
         this.routerUrlSubscription = this.router.events.subscribe((event) => {
             if (event instanceof NavigationEnd) {
                 this.routerUrl = this.router.url;
             }
         });
-        (this.postService.getPosts()).pipe(take(1)).subscribe({
-            error: (err: any) => {
-                console.error(err)
-            },
-        })
+        this.postService
+            .getPosts()
+            .pipe(take(1))
+            .subscribe({
+                error: (err: any) => {
+                    console.error(err);
+                },
+                complete: () => {
+                    this.isComponentInitialized = true;
+                },
+            });
     }
-    
+
     ngOnDestroy() {
-        this.routerUrlSubscription.unsubscribe()
+        this.routerUrlSubscription.unsubscribe();
     }
 }

@@ -27,6 +27,7 @@ export class PostCardComponent implements OnInit {
     loggedInUser: any;
     isLikeClicked = false;
     isToggleLikeProcessing: boolean = false;
+    isComponentInitialized = false;
 
     constructor(private authService: AuthService) {}
 
@@ -49,6 +50,8 @@ export class PostCardComponent implements OnInit {
                 likedByUser._id === this.loggedInUser.user.uid,
         );
         if (isLikeClicked) this.isLikeClicked = true;
+
+        this.isComponentInitialized = true;
     }
 
     toggleLike() {

@@ -2,15 +2,18 @@
     li {
         display: flex;
         align-items: center;
-        justify-content: space-between;
+        gap: 2em;
 
         img {
-            width: 45px;
+            max-width: 45px;
             border-radius: 50%;
+            flex: 1;
         }
 
-        h5 {
+        h4 {
+            font-size: 12px;
             cursor: pointer;
+            flex: 2;
         }
 
         .btn-toggle-follow {
@@ -24,6 +27,7 @@
             font-size: 14px;
             font-weight: bolder;
             transition: all 0.2s ease-in-out;
+            flex: 2;
 
             &:hover {
                 background-color: rgb(2, 132, 213);

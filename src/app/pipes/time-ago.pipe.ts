@@ -1,12 +1,12 @@
-import {Pipe, PipeTransform} from '@angular/core';
+import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-    name: 'timeAgo'
+    name: 'timeAgo',
 })
 export class TimeAgoPipe implements PipeTransform {
     transform(timestamp: number): string {
-        const now = Math.floor(Date.now() / 1000); // Current Unix timestamp in seconds
-        const diff = now - timestamp; // Calculate the time difference in seconds
+        const now = Math.floor(Date.now() / 1000);
+        const diff = now - timestamp / 1000;
         if (diff < 60) {
             return 'just now';
         } else if (diff < 3600) {

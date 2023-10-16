@@ -1,6 +1,6 @@
-<li>
+<li *ngIf="isComponentInitialized">
     <img [src]="user.imgUrl" alt="user" />
-    <h5>{{ user.fullName }}</h5>
+    <h4>{{ user.fullName }}</h4>
     <button
         [ngClass]="{ 'btn-toggle-follow': true, following: isFollowClicked }"
         (click)="toggleFollow()"

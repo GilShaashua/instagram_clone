@@ -4,6 +4,7 @@ import {
     catchError,
     combineLatest,
     finalize,
+    firstValueFrom,
     map,
     retry,
     switchMap,
@@ -64,10 +65,50 @@ export class PostService {
                                 return post;
                             });
                         }),
-                        finalize(() => {
-                            // This code will execute regardless of whether likedByUsers is empty
-                            console.log('posts', posts);
-                            this._posts$.next([...posts]);
+                        finalize(async () => {
+                            console.log('posts before filter', posts);
+                            // this.authService.loggedInUser$.pipe(take(1)).subscribe({
+                            //     next:(loggedInUser)=>{
+                            //         const filteredPostsByFollowingUsers = posts.filter(
+                            //                 (post) => {
+                            //
+                            //                 },
+                            //         );
+                            //
+                            //         this._posts$.next([...posts]);
+                            //     }
+                            // })
+
+                            const loggedInUser$ =
+                                this.authService.loggedInUser$;
+                            const loggedInUser =
+                                await firstValueFrom(loggedInUser$);
+                            const loggedInUserFromDB$ = this.db
+                                .collection('users')
+                                .doc(loggedInUser?.user?.uid)
+                                .valueChanges();
+                            const loggedInUserFromDB: User | unknown =
+                                await firstValueFrom(loggedInUserFromDB$);
+
+                            const filteredPostsByFollowingUsers = posts.filter(
+                                (post) => {
+                                    return (
+                                        loggedInUserFromDB as User
+                                    ).followingUsers.find(
+                                        (followingUser: string | User) =>
+                                            followingUser ===
+                                            (post as Post).creatorId,
+                                    );
+                                },
+                            );
+                            console.log(
+                                'filteredPostsByFollowingUsers',
+                                filteredPostsByFollowingUsers,
+                            );
+
+                            this._posts$.next([
+                                ...filteredPostsByFollowingUsers,
+                            ]);
                         }),
                         retry(1),
                         catchError(this._handleError),

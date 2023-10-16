@@ -1,8 +1,8 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {AuthService} from '../../services/auth.service';
-import {Subscription} from 'rxjs';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AuthService } from '../../services/auth.service';
+import { Subscription } from 'rxjs';
 import firebase from 'firebase/compat';
-import {Router} from '@angular/router';
+import { Router } from '@angular/router';
 import UserCredential = firebase.auth.UserCredential;
 
 @Component({
@@ -14,13 +14,12 @@ export class AsideMenuComponent implements OnInit, OnDestroy {
     user!: UserCredential | null;
     userSubscription!: Subscription;
     isExtraMenuOpen = false;
-    
+
     constructor(
-            private authService: AuthService,
-            private router: Router,
-    ) {
-    }
-    
+        private authService: AuthService,
+        private router: Router,
+    ) {}
+
     ngOnInit() {
         this.userSubscription = this.authService.loggedInUser$.subscribe({
             next: (loggedInUser) => {
@@ -32,7 +31,7 @@ export class AsideMenuComponent implements OnInit, OnDestroy {
             },
         });
     }
-    
+
     async onLogOut() {
         try {
             await this.authService.logOut();
@@ -40,8 +39,8 @@ export class AsideMenuComponent implements OnInit, OnDestroy {
             console.error(err.message);
         }
     }
-    
+
     ngOnDestroy() {
-        this.userSubscription.unsubscribe();
+        this.userSubscription?.unsubscribe();
     }
 }

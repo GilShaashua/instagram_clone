@@ -1,4 +1,4 @@
-<li class="post-card">
+<li class="post-card" *ngIf="isComponentInitialized">
     <post-header [post]="post" [creator]="creator"></post-header>
 
     <img [src]="post.imgUrl" alt="post" />

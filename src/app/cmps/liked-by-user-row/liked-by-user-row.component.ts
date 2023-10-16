@@ -2,14 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Post } from '../../models/post.model';
 import { User } from '../../models/user.model';
 import { AuthService } from '../../services/auth.service';
-import {
-    firstValueFrom,
-    forkJoin,
-    lastValueFrom,
-    Observable,
-    switchMap,
-    take,
-} from 'rxjs';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
     selector: 'liked-by-user-row',
@@ -26,6 +19,7 @@ export class LikedByUserRowComponent implements OnInit {
         isFollowClicked: boolean;
     }>();
     isFollowClicked: boolean = false;
+    isComponentInitialized = false;
 
     async ngOnInit() {
         const userFromDB$ = this.authService.getUserById(this.user._id);
@@ -38,6 +32,8 @@ export class LikedByUserRowComponent implements OnInit {
             (followedByUser: User | string) =>
                 followedByUser === loggedInUser?.user?.uid,
         );
+
+        this.isComponentInitialized = true;
     }
 
     toggleFollow() {

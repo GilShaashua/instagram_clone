@@ -7,13 +7,6 @@
         justify-content: center;
         gap: 1em;
 
-        img {
-            @include for-narrow-layout {
-                border-radius: 0.2em;
-                border: 1px solid rgba(245, 245, 245, 0.44);
-            }
-        }
-
         .post-card-inner-container {
             padding-inline: 1.5em;
             display: flex;
