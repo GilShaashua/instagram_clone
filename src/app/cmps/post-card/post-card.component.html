@@ -158,7 +158,7 @@
             ></liked-by-users-list>
         </div>
 
-        <div class="content">
+        <div class="content" *ngIf="creator">
             <p *ngIf="!isMoreClicked">
                 <span class="creatorFullName">{{ creator.fullName }}</span>
                 {{ post.content | slice: 0 : 120 }}
