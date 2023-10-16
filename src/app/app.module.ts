@@ -23,6 +23,9 @@ import {TimeAgoPipe} from './pipes/time-ago.pipe';
 import {NgOptimizedImage} from "@angular/common";
 import {MenuMobileComponent} from './cmps/menu-mobile/menu-mobile.component';
 import {AppHeaderMobileComponent} from './cmps/app-header-mobile/app-header-mobile.component';
+import { PostHeaderComponent } from './cmps/post-header/post-header.component';
+import { LikedByUsersListComponent } from './cmps/liked-by-users-list/liked-by-users-list.component';
+import { LikedByUserRowComponent } from './cmps/liked-by-user-row/liked-by-user-row.component';
 
 @NgModule({
     declarations: [
@@ -40,6 +43,9 @@ import {AppHeaderMobileComponent} from './cmps/app-header-mobile/app-header-mobi
         TimeAgoPipe,
         MenuMobileComponent,
         AppHeaderMobileComponent,
+        PostHeaderComponent,
+        LikedByUsersListComponent,
+        LikedByUserRowComponent,
     ],
     imports: [
         BrowserModule,

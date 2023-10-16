@@ -1,0 +1,50 @@
+<article class="liked-by-users-list">
+    <div class="header">
+        <h3>Likes</h3>
+        <button
+            (click)="toggleLikedByUsersModal()"
+            class="btn-close-liked-by-users-list"
+        >
+            <svg
+                aria-label="Close"
+                class="x1lliihq x1n2onr6"
+                color="rgb(245, 245, 245)"
+                fill="rgb(245, 245, 245)"
+                height="18"
+                role="img"
+                viewBox="0 0 24 24"
+                width="18"
+            >
+                <title>Close</title>
+                <polyline
+                    fill="none"
+                    points="20.643 3.357 12 12 3.353 20.647"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="3"
+                ></polyline>
+                <line
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="3"
+                    x1="20.649"
+                    x2="3.354"
+                    y1="20.649"
+                    y2="3.354"
+                ></line>
+            </svg>
+        </button>
+    </div>
+
+    <ul>
+        <liked-by-user-row
+            [post]="post"
+            *ngFor="let user of post.likedByUsers"
+            [user]="user"
+            (onToggleFollow)="onToggleFollow.emit($event)"
+        ></liked-by-user-row>
+    </ul>
+</article>

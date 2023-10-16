@@ -1,0 +1,55 @@
+@import "src/assets/setup/mixins";
+
+:host {
+    .post-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.5em;
+        color: whitesmoke;
+        padding-inline: 1.5em;
+
+        @include for-narrow-layout {
+            padding-inline: unset;
+        }
+
+        .creator {
+            display: flex;
+            align-items: center;
+            gap: 0.6em;
+
+            img {
+                border-radius: 50%;
+                width: 40px;
+                border: none;
+            }
+
+            h5 {
+                display: flex;
+                align-items: center;
+                gap: 0.4em;
+
+                span {
+                    color: #919191;
+                    font-weight: normal;
+                }
+            }
+        }
+
+        .btn-more-options {
+            background-color: transparent;
+            border: none;
+            display: flex;
+            align-items: center;
+
+            &:hover {
+                cursor: pointer;
+                svg {
+                    circle {
+                        fill: #868686;
+                    }
+                }
+            }
+        }
+    }
+}

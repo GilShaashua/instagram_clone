@@ -26,90 +26,89 @@
     }
 }
 
-
 /* Media  Mixins */
-@mixin aspect-ratio($width, $height) {
-    position: relative;
-    overflow: hidden;
-    
-    &::before {
-        display: block;
-        content: "";
-        width: 100%;
-        padding-top: calc(($height / $width) * 100%);
-    }
-    
-    > * {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-    }
-    
-    > img {
-        height: 100%;
-        object-fit: cover;
-    }
-}
+//@mixin aspect-ratio($width, $height) {
+//    position: relative;
+//    overflow: hidden;
+//
+//    &::before {
+//        display: block;
+//        content: "";
+//        width: 100%;
+//        padding-top: calc(($height / $width) * 100%);
+//    }
+//
+//    > * {
+//        position: absolute;
+//        top: 0;
+//        left: 0;
+//        right: 0;
+//        bottom: 0;
+//    }
+//
+//    > img {
+//        height: 100%;
+//        object-fit: cover;
+//    }
+//}
 
 // Mixin for removing hover effects on iphone screen
-@mixin hover-supported {
-    @media not all and (pointer: coarse) {
-        &:hover {
-            @content;
-        }
-    }
-}
+//@mixin hover-supported {
+//    @media not all and (pointer: coarse) {
+//        &:hover {
+//            @content;
+//        }
+//    }
+//}
 
 // Buttons
 
-@mixin btn(
-    $type: regular,
-    $bg: $clr1,
-    $clr: $clr8,
-    $padding: em(12px) em(16px),
-    $hover: darken($bg, 18%)
-) {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    text-decoration: none;
-    // text-transform: uppercase;
-    padding: $padding;
-    line-height: 1.25;
-    font-size: em(16px);
-    // font-variation-settings: "wght" 430;
-    font-family: Circular-Regular, sans-serif;
-    border: none;
-    border-radius: 0.5em;
-    cursor: pointer;
-    
-    transition: background-color 0.2s;
-    
-    @if $type ==regular {
-        background-color: $bg;
-        color: $clr;
-        
-        &:hover {
-            background-color: $hover;
-        }
-    } @else if $type ==dark {
-        background-color: $clr2;
-        color: $clr3;
-        
-        &:hover {
-            background-color: $clr1;
-            color: $clr3;
-        }
-    } @else if $type ==light {
-        background-color: $clr8;
-        color: $clr2;
-        font-family: Circular-Light, sans-serif;
-        
-        &:hover {
-            background-color: $clr1;
-            color: $clr3;
-        }
-    }
-}
+//@mixin btn(
+//    $type: regular,
+//    $bg: $clr1,
+//    $clr: $clr8,
+//    $padding: em(12px) em(16px),
+//    $hover: darken($bg, 18%)
+//) {
+//    display: inline-flex;
+//    align-items: center;
+//    justify-content: center;
+//    text-decoration: none;
+//    // text-transform: uppercase;
+//    padding: $padding;
+//    line-height: 1.25;
+//    font-size: em(16px);
+//    // font-variation-settings: "wght" 430;
+//    font-family: Circular-Regular, sans-serif;
+//    border: none;
+//    border-radius: 0.5em;
+//    cursor: pointer;
+//
+//    transition: background-color 0.2s;
+//
+//    @if $type ==regular {
+//        background-color: $bg;
+//        color: $clr;
+//
+//        &:hover {
+//            background-color: $hover;
+//        }
+//    } @else if $type ==dark {
+//        background-color: $clr2;
+//        color: $clr3;
+//
+//        &:hover {
+//            background-color: $clr1;
+//            color: $clr3;
+//        }
+//    } @else if $type ==light {
+//        background-color: $clr8;
+//        color: $clr2;
+//        font-family: Circular-Light, sans-serif;
+//
+//        &:hover {
+//            background-color: $clr1;
+//            color: $clr3;
+//        }
+//    }
+//}

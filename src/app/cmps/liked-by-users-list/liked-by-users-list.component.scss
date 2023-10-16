@@ -1,0 +1,40 @@
+:host {
+    .liked-by-users-list {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1;
+        background-color: rgb(38, 38, 38);
+        border-radius: 1em;
+        width: 20em;
+        display: flex;
+        flex-direction: column;
+        gap: 1em;
+
+        .header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-block-end: 1px solid rgba(252, 252, 252, 0.11);
+            height: 3em;
+
+            .btn-close-liked-by-users-list {
+                position: absolute;
+                right: 1em;
+                top: 0.9em;
+                cursor: pointer;
+                background-color: transparent;
+                border: none;
+            }
+        }
+
+        ul {
+            display: flex;
+            flex-direction: column;
+            gap: 1em;
+            padding-inline: 1em;
+            padding-block-end: 1em;
+        }
+    }
+}

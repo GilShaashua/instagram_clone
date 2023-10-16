@@ -1,0 +1,10 @@
+<li>
+    <img [src]="user.imgUrl" alt="user" />
+    <h5>{{ user.fullName }}</h5>
+    <button
+        [ngClass]="{ 'btn-toggle-follow': true, following: isFollowClicked }"
+        (click)="toggleFollow()"
+    >
+        {{ isFollowClicked ? "Following" : "Follow" }}
+    </button>
+</li>

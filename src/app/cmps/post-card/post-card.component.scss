@@ -7,35 +7,6 @@
         justify-content: center;
         gap: 1em;
 
-        .post-header {
-            display: flex;
-            align-items: center;
-            gap: 0.5em;
-            color: whitesmoke;
-            padding-inline: 1.5em;
-
-            @include for-narrow-layout {
-                padding-inline: unset;
-            }
-
-            img {
-                border-radius: 50%;
-                width: 40px;
-                border: none;
-            }
-
-            h5 {
-                display: flex;
-                align-items: center;
-                gap: 0.4em;
-
-                span {
-                    color: #919191;
-                    font-weight: normal;
-                }
-            }
-        }
-
         img {
             @include for-narrow-layout {
                 border-radius: 0.2em;
@@ -124,88 +95,17 @@
                         font-weight: bolder;
                     }
                 }
-
-                .liked-by-users-list {
-                    position: fixed;
-                    top: 50%;
-                    left: 50%;
-                    transform: translate(-50%, -50%);
-                    z-index: 1;
-                    background-color: rgb(38, 38, 38);
-                    border-radius: 1em;
-                    width: 20em;
-                    display: flex;
-                    flex-direction: column;
-                    gap: 1em;
-
-                    .header {
-                        display: flex;
-                        justify-content: center;
-                        align-items: center;
-                        border-block-end: 1px solid rgba(252, 252, 252, 0.11);
-                        height: 3em;
-
-                        .btn-close-liked-by-users-list {
-                            position: absolute;
-                            right: 1em;
-                            top: 0.9em;
-                            cursor: pointer;
-                            background-color: transparent;
-                            border: none;
-                        }
-                    }
-
-                    ul {
-                        display: flex;
-                        flex-direction: column;
-                        gap: 1em;
-                        padding-inline: 1em;
-                        padding-block-end: 1em;
-
-                        li {
-                            display: flex;
-                            align-items: center;
-                            justify-content: space-between;
-
-                            img {
-                                width: 45px;
-                            }
-
-                            h5 {
-                                cursor: pointer;
-                            }
-
-                            .btn-follow {
-                                cursor: pointer;
-                                border: none;
-                                background-color: rgb(0, 149, 246);
-                                color: whitesmoke;
-                                border-radius: 0.5em;
-                                padding-inline: 1.5em;
-                                height: 2.5em;
-                                font-size: 14px;
-                                font-weight: bolder;
-
-                                &:hover {
-                                    background-color: rgb(2, 132, 213);
-                                }
-                            }
-                        }
-                    }
-                }
             }
         }
 
         .content {
-            display: flex;
-            align-items: center;
-
             p {
                 .creatorFullName {
                     font-weight: bold;
                     font-size: 13px;
                     color: whitesmoke;
                     cursor: pointer;
+                    margin-inline-end: 0.4em;
                 }
 
                 .btn-more {

@@ -8,7 +8,6 @@ import {
     retry,
     switchMap,
     take,
-    tap,
     throwError,
 } from 'rxjs';
 import { Post } from '../models/post.model';
@@ -17,8 +16,8 @@ import { AuthService } from './auth.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import firebase from 'firebase/compat';
 import { User } from '../models/user.model';
-import UserCredential = firebase.auth.UserCredential;
 import cloneDeep from 'lodash-es/cloneDeep';
+import UserCredential = firebase.auth.UserCredential;
 
 @Injectable({
     providedIn: 'root',
@@ -78,8 +77,6 @@ export class PostService {
     }
 
     async toggleLike(isLikeClicked: boolean, post: Post) {
-        // console.log('isLikeClicked', isLikeClicked);
-        // console.log('post', post);
         if (isLikeClicked) await this.addLike(post);
         else await this.removeLike(post);
     }

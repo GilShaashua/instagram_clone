@@ -1,7 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { PostService } from '../../services/post.service';
-import { Observable } from 'rxjs';
+import { Observable, take } from 'rxjs';
 import { Post } from '../../models/post.model';
+import { User } from '../../models/user.model';
+import { AuthService } from '../../services/auth.service';
+import { UserService } from '../../services/user.service';
 
 @Component({
     selector: 'home-page-page',
@@ -11,7 +14,11 @@ import { Post } from '../../models/post.model';
 export class HomePageComponent implements OnInit, OnDestroy {
     posts$!: Observable<Post[]>;
 
-    constructor(private postService: PostService) {}
+    constructor(
+        private postService: PostService,
+        private authService: AuthService,
+        private userService: UserService,
+    ) {}
 
     ngOnInit() {
         this.posts$ = this.postService.posts$;
@@ -19,6 +26,24 @@ export class HomePageComponent implements OnInit, OnDestroy {
 
     async onToggleLike(payload: { post: Post; isLikeClicked: boolean }) {
         await this.postService.toggleLike(payload.isLikeClicked, payload.post);
+    }
+
+    onToggleFollow(payload: {
+        post: Post;
+        user: User;
+        isFollowClicked: boolean;
+    }) {
+        this.authService
+            .getUserById(payload.user._id)
+            .pipe(take(1))
+            .subscribe(async (user: any) => {
+                payload.user = user;
+                await this.userService.toggleFollow(
+                    payload.isFollowClicked,
+                    payload.user,
+                    payload.post,
+                );
+            });
     }
 
     ngOnDestroy() {}
