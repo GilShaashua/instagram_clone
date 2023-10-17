@@ -17,6 +17,7 @@ export const authGuard = () => {
         });
     if (loggedInUser) return true;
     else {
+        console.error('LoggedInUser doesnt exists - no access to that page!');
         inject(Router).navigateByUrl('/login');
         return false;
     }

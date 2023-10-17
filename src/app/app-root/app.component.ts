@@ -19,6 +19,7 @@ export class AppComponent implements OnInit, OnDestroy {
     ) {}
 
     async ngOnInit() {
+        // console.log('APP-ROOT Mounted!');
         this.routerUrlSubscription = this.router.events.subscribe((event) => {
             if (event instanceof NavigationEnd) {
                 this.routerUrl = this.router.url;

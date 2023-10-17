@@ -66,23 +66,13 @@ export class PostService {
                             });
                         }),
                         finalize(async () => {
-                            console.log('posts before filter', posts);
-                            // this.authService.loggedInUser$.pipe(take(1)).subscribe({
-                            //     next:(loggedInUser)=>{
-                            //         const filteredPostsByFollowingUsers = posts.filter(
-                            //                 (post) => {
-                            //
-                            //                 },
-                            //         );
-                            //
-                            //         this._posts$.next([...posts]);
-                            //     }
-                            // })
-
                             const loggedInUser$ =
                                 this.authService.loggedInUser$;
                             const loggedInUser =
                                 await firstValueFrom(loggedInUser$);
+
+                            if (!loggedInUser) return;
+
                             const loggedInUserFromDB$ = this.db
                                 .collection('users')
                                 .doc(loggedInUser?.user?.uid)
@@ -100,10 +90,6 @@ export class PostService {
                                             (post as Post).creatorId,
                                     );
                                 },
-                            );
-                            console.log(
-                                'filteredPostsByFollowingUsers',
-                                filteredPostsByFollowingUsers,
                             );
 
                             this._posts$.next([
@@ -212,6 +198,8 @@ export class PostService {
             },
         });
     }
+
+    async uploadMedia() {}
 
     private _handleError(err: HttpErrorResponse) {
         console.log('err:', err);

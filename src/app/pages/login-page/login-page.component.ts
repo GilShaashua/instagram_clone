@@ -1,26 +1,28 @@
-import {Component} from '@angular/core';
-import {AuthService} from '../../services/auth.service';
-import {Router} from '@angular/router';
-import {take} from 'rxjs';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
+import { take } from 'rxjs';
+import { PostService } from '../../services/post.service';
 
 @Component({
     selector: 'login-page',
     templateUrl: './login-page.component.html',
     styleUrls: ['./login-page.component.scss'],
 })
-export class LoginPageComponent {
-    userCred = {fullName: '', email: '', password: ''};
+export class LoginPageComponent implements OnInit, OnDestroy {
+    userCred = { fullName: '', email: '', password: '' };
     isLogInFormShown = true;
-    
+
     constructor(
-            private authService: AuthService,
-            private router: Router,
-    ) {
-    }
-    
+        private authService: AuthService,
+        private postService: PostService,
+        private router: Router,
+    ) {}
+
     ngOnInit() {
+        // console.log('Login Page Mounted!');
     }
-    
+
     async onLogInWithGoogle() {
         try {
             const user = await this.authService.logInWithGoogle();
@@ -38,7 +40,7 @@ export class LoginPageComponent {
             console.error(err);
         }
     }
-    
+
     async onLogInWithEmailAndPassword() {
         try {
             await this.authService.logInWithEmailAndPassword(this.userCred);
@@ -56,7 +58,7 @@ export class LoginPageComponent {
             console.error(err.message);
         }
     }
-    
+
     async onRegisterWithEmailAndPassword() {
         try {
             await this.authService.registerWithEmailAndPassword(this.userCred);
@@ -73,5 +75,16 @@ export class LoginPageComponent {
         } catch (err: any) {
             console.error(err.message);
         }
+    }
+
+    ngOnDestroy() {
+        this.postService
+            .getPosts()
+            .pipe(take(1))
+            .subscribe({
+                error: (err: any) => {
+                    console.error(err);
+                },
+            });
     }
 }

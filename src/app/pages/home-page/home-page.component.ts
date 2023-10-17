@@ -21,6 +21,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit() {
+        // console.log('Home-Page Mounted!');
         this.posts$ = this.postService.posts$;
     }
 
@@ -43,6 +44,10 @@ export class HomePageComponent implements OnInit, OnDestroy {
                     payload.user,
                     payload.post,
                 );
+
+                // const posts$ = this.postService.getPosts().pipe(take(1));
+                // const posts = await lastValueFrom(posts$);
+                // console.log('posts refreshed after toggleFollow', posts);
             });
     }
 
