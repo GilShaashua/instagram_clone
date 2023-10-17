@@ -63,6 +63,9 @@ Apache-2.0
 @firebase/component
 Apache-2.0
 
+@firebase/database
+Apache-2.0
+
 @firebase/firestore
 Apache-2.0
 
@@ -82,6 +85,9 @@ Apache-2.0
 Apache-2.0
 
 @firebase/remote-config
+Apache-2.0
+
+@firebase/storage
 Apache-2.0
 
 @firebase/util
@@ -104,6 +110,8 @@ firebase/compat/auth
 
 firebase/compat/firestore
 
+firebase/database
+
 firebase/firestore
 
 firebase/functions
@@ -111,6 +119,8 @@ firebase/functions
 firebase/messaging
 
 firebase/remote-config
+
+firebase/storage
 
 idb
 ISC
