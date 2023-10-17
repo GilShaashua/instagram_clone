@@ -21,12 +21,14 @@ import { AppHeaderMobileComponent } from './cmps/app-header-mobile/app-header-mo
 import { PostHeaderComponent } from './cmps/post-header/post-header.component';
 import { LikedByUsersListComponent } from './cmps/liked-by-users-list/liked-by-users-list.component';
 import { LikedByUserRowComponent } from './cmps/liked-by-user-row/liked-by-user-row.component';
+import { FIREBASE_OPTIONS } from '@angular/fire/compat';
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
-import { getMessaging, provideMessaging } from '@angular/fire/messaging';
-import { getFunctions, provideFunctions } from '@angular/fire/functions';
-import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
-import { FIREBASE_OPTIONS } from '@angular/fire/compat';
+import { provideDatabase,getDatabase } from '@angular/fire/database';
+import { provideFunctions,getFunctions } from '@angular/fire/functions';
+import { provideMessaging,getMessaging } from '@angular/fire/messaging';
+import { provideStorage,getStorage } from '@angular/fire/storage';
 
 @NgModule({
     declarations: [
@@ -59,9 +61,11 @@ import { FIREBASE_OPTIONS } from '@angular/fire/compat';
 
         provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
         provideAuth(() => getAuth()),
-        provideMessaging(() => getMessaging()),
         provideFirestore(() => getFirestore()),
+        provideDatabase(() => getDatabase()),
         provideFunctions(() => getFunctions()),
+        provideMessaging(() => getMessaging()),
+        provideStorage(() => getStorage()),
     ],
     providers: [
         { provide: FIREBASE_OPTIONS, useValue: environment.firebaseConfig },

@@ -1,20 +1,13 @@
 import { Router } from '@angular/router';
 import { inject } from '@angular/core';
 import { AuthService } from '../services/auth.service';
-import { take } from 'rxjs';
 import firebase from 'firebase/compat';
 import UserCredential = firebase.auth.UserCredential;
 
 export const authGuard = () => {
-    let loggedInUser: UserCredential | null = null;
+    let loggedInUser: UserCredential | null =
+        inject(AuthService).getLoggedInUser();
 
-    inject(AuthService)
-        .loggedInUser$.pipe(take(1))
-        .subscribe({
-            next: (_loggedInUser) => {
-                loggedInUser = _loggedInUser;
-            },
-        });
     if (loggedInUser) return true;
     else {
         console.error('LoggedInUser doesnt exists - no access to that page!');

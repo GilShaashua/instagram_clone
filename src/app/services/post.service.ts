@@ -24,13 +24,13 @@ import UserCredential = firebase.auth.UserCredential;
     providedIn: 'root',
 })
 export class PostService {
-    private _posts$ = new BehaviorSubject<Post[]>([]);
-    public posts$ = this._posts$.asObservable();
-
     constructor(
         private db: AngularFirestore,
         private authService: AuthService,
     ) {}
+
+    private _posts$ = new BehaviorSubject<Post[]>([]);
+    public posts$ = this._posts$.asObservable();
 
     getPosts() {
         return this.db

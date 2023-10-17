@@ -23,8 +23,8 @@
       "ES2022",
       "dom"
     ],
-    "skipLibCheck": true
-    //add this line!!!!!!!
+    "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

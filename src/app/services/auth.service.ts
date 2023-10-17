@@ -16,13 +16,16 @@ export class AuthService {
     public loggedInUser$ = this._loggedInUser$.asObservable();
 
     constructor(
-        private afs: AngularFireAuth,
+        private afAuth: AngularFireAuth,
         private db: AngularFirestore,
     ) {}
 
+    getLoggedInUser() {
+        return this._loggedInUser$.value;
+    }
     async logInWithGoogle() {
         try {
-            const auth = await this.afs.signInWithPopup(
+            const auth = await this.afAuth.signInWithPopup(
                 new GoogleAuthProvider(),
             );
             await this.createOrUpdateUserOnDB(auth);
@@ -41,7 +44,7 @@ export class AuthService {
         password: string;
     }) {
         try {
-            const auth = await this.afs.signInWithEmailAndPassword(
+            const auth = await this.afAuth.signInWithEmailAndPassword(
                 userCred.email,
                 userCred.password,
             );
@@ -61,7 +64,7 @@ export class AuthService {
         password: string;
     }) {
         try {
-            const auth = await this.afs.createUserWithEmailAndPassword(
+            const auth = await this.afAuth.createUserWithEmailAndPassword(
                 userCred.email,
                 userCred.password,
             );
@@ -77,7 +80,7 @@ export class AuthService {
 
     async logOut() {
         try {
-            await this.afs.signOut();
+            await this.afAuth.signOut();
             sessionStorage.removeItem('loggedInUser');
             this._loggedInUser$.next(null);
         } catch (err: any) {
