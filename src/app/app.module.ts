@@ -12,7 +12,6 @@ import { AppFooterComponent } from './cmps/app-footer/app-footer.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ProfileComponent } from './pages/profile/profile.component';
-import { environment } from './enviroments/enviroment';
 import { PostListComponent } from './cmps/post-list/post-list.component';
 import { PostCardComponent } from './cmps/post-card/post-card.component';
 import { TimeAgoPipe } from './pipes/time-ago.pipe';
@@ -25,10 +24,14 @@ import { FIREBASE_OPTIONS } from '@angular/fire/compat';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
-import { provideDatabase,getDatabase } from '@angular/fire/database';
-import { provideFunctions,getFunctions } from '@angular/fire/functions';
-import { provideMessaging,getMessaging } from '@angular/fire/messaging';
-import { provideStorage,getStorage } from '@angular/fire/storage';
+import { getDatabase, provideDatabase } from '@angular/fire/database';
+import { getMessaging, provideMessaging } from '@angular/fire/messaging';
+import { getStorage, provideStorage } from '@angular/fire/storage';
+import { environment } from '../environments/environment';
+import * as firebase from 'firebase/app';
+import { KababCasePipe } from './pipes/kabab-case.pipe';
+
+firebase.initializeApp(environment.firebase);
 
 @NgModule({
     declarations: [
@@ -49,6 +52,7 @@ import { provideStorage,getStorage } from '@angular/fire/storage';
         PostHeaderComponent,
         LikedByUsersListComponent,
         LikedByUserRowComponent,
+        KababCasePipe,
     ],
     imports: [
         BrowserModule,
@@ -56,20 +60,15 @@ import { provideStorage,getStorage } from '@angular/fire/storage';
         HttpClientModule,
         FormsModule,
         ReactiveFormsModule,
-
         //////////////////////////////////////////////////////////////////////////////
-
-        provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
+        provideFirebaseApp(() => initializeApp(environment.firebase)),
         provideAuth(() => getAuth()),
         provideFirestore(() => getFirestore()),
-        provideDatabase(() => getDatabase()),
-        provideFunctions(() => getFunctions()),
-        provideMessaging(() => getMessaging()),
         provideStorage(() => getStorage()),
+        provideDatabase(() => getDatabase()),
+        provideMessaging(() => getMessaging()),
     ],
-    providers: [
-        { provide: FIREBASE_OPTIONS, useValue: environment.firebaseConfig },
-    ],
+    providers: [{ provide: FIREBASE_OPTIONS, useValue: environment.firebase }],
     bootstrap: [AppComponent],
 })
 export class AppModule {}

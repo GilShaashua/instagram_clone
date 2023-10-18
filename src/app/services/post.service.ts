@@ -18,6 +18,12 @@ import { HttpErrorResponse } from '@angular/common/http';
 import firebase from 'firebase/compat';
 import { User } from '../models/user.model';
 import cloneDeep from 'lodash-es/cloneDeep';
+import {
+    Storage,
+    ref,
+    uploadBytesResumable,
+    getDownloadURL,
+} from '@angular/fire/storage';
 import UserCredential = firebase.auth.UserCredential;
 
 @Injectable({
@@ -27,6 +33,7 @@ export class PostService {
     constructor(
         private db: AngularFirestore,
         private authService: AuthService,
+        private storage: Storage,
     ) {}
 
     private _posts$ = new BehaviorSubject<Post[]>([]);
@@ -158,11 +165,6 @@ export class PostService {
     }
 
     async removeLike(post: Post) {
-        // TODO: fix bug when removing like,
-        // TODO: the key "likedByUsers" in db converted to array of user objects
-        //  instead of array of strings ids.
-        // TODO: its happening after clicking remove like btn
-
         const deepCopyOfPost = cloneDeep(post);
 
         this.authService.loggedInUser$.pipe(take(1)).subscribe({
@@ -199,7 +201,41 @@ export class PostService {
         });
     }
 
-    async uploadMedia() {}
+    async uploadMedia(media: any) {
+        return new Promise<string>(async (resolve, reject) => {
+            try {
+                const storageRef = ref(
+                    this.storage,
+                    `postsMedia/${media.name}`,
+                );
+                const uploadMedia = uploadBytesResumable(storageRef, media);
+
+                uploadMedia.on(
+                    'state_changed',
+                    (snapshot) => {
+                        const progress =
+                            snapshot.bytesTransferred / snapshot.totalBytes;
+                        console.log(`Upload media is ${progress * 100}% done`);
+                    },
+                    (error) => {
+                        console.error(error);
+                        reject(error); // Reject the promise on error
+                    },
+                    async () => {
+                        const mediaUrl = await getDownloadURL(
+                            uploadMedia.snapshot.ref,
+                        );
+                        resolve(mediaUrl); // Resolve the promise with the media URL
+                    },
+                );
+            } catch (error) {
+                reject(error); // Reject the promise in case of any other errors
+                throw error;
+            }
+        });
+    }
+
+    createPost(mediaUrl: string) {}
 
     private _handleError(err: HttpErrorResponse) {
         console.log('err:', err);

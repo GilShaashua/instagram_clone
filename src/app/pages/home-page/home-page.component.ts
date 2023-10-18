@@ -22,7 +22,17 @@ export class HomePageComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         // console.log('Home-Page Mounted!');
-        this.posts$ = this.postService.posts$;
+        this.postService
+            .getPosts()
+            .pipe(take(1))
+            .subscribe({
+                next: (posts: Post[]) => {
+                    this.posts$ = this.postService.posts$;
+                },
+                error: (err: any) => {
+                    console.error(err);
+                },
+            });
     }
 
     async onToggleLike(payload: { post: Post; isLikeClicked: boolean }) {

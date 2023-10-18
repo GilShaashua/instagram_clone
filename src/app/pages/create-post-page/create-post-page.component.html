@@ -36,7 +36,37 @@
         />
     </div>
     <div class="filter-media" *ngIf="isFilterMediaShown">
-        Filter Media here ...
+        <article class="media-preview">
+            <img
+                src="{{ mediaUrl }}"
+                alt="media preview"
+                #elMediaPreview
+                [ngClass]="{
+                    normal: classes['normal'],
+                    paris: classes['paris'],
+                    'los-angeles': classes['los-angeles'],
+                    oslo: classes['oslo'],
+                    'abu-dhabi': classes['abu-dhabi'],
+                    tokyo: classes['tokyo']
+                }"
+            />
+        </article>
+        <div class="filter-list">
+            <article
+                class="filter-preview"
+                *ngFor="let filter of filterPreviewNames; index as idx"
+                [ngClass]="{ active: idx === 0 }"
+                (click)="onSelectFilterPreview(elFilterPreview, idx)"
+                #elFilterPreview
+            >
+                <span>{{ filter }}</span>
+                <img
+                    [class]="filter | kababCase"
+                    [src]="mediaUrl"
+                    alt="{{ filter }} - filter preview"
+                />
+            </article>
+        </div>
     </div>
     <div class="form-media" *ngIf="isFormMediaShown">Form Media here ...</div>
 </section>
