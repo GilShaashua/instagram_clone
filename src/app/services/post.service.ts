@@ -41,7 +41,9 @@ export class PostService {
     public posts$ = this._posts$.asObservable();
 
     getPosts() {
-        const postsRef = this.db.collection<Post>('posts');
+        const postsRef = this.db.collection<Post>('posts', (ref) =>
+            ref.orderBy('createdAt', 'desc'),
+        );
 
         return postsRef.valueChanges().pipe(
             take(1),
@@ -186,9 +188,10 @@ export class PostService {
     async uploadMedia(media: any) {
         return new Promise<string>(async (resolve, reject) => {
             try {
+                const randId = this._makeId();
                 const storageRef = ref(
                     this.storage,
-                    `postsMedia/${media.name}`,
+                    `postsMedia/${media.name}${randId}`,
                 );
                 const uploadMedia = uploadBytesResumable(storageRef, media);
 
@@ -229,6 +232,18 @@ export class PostService {
             .collection('posts')
             .doc(docData.id)
             .update({ _id: docData.id });
+    }
+
+    private _makeId(length = 5) {
+        let text = '';
+        let possible =
+            'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        for (let i = 0; i < length; i++) {
+            text += possible.charAt(
+                Math.floor(Math.random() * possible.length),
+            );
+        }
+        return text;
     }
 
     private _handleError(err: HttpErrorResponse) {
