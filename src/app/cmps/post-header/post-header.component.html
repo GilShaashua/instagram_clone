@@ -1,4 +1,4 @@
-<div *ngIf="creator" class="post-header">
+<div *ngIf="creator && isComponentInitialized" class="post-header">
     <div class="creator">
         <img [src]="creator.imgUrl" alt="creator" />
         <h5>

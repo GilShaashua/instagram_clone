@@ -1,5 +1,9 @@
 <li class="post-card" *ngIf="isComponentInitialized">
-    <post-header [post]="post" [creator]="creator"></post-header>
+    <post-header
+        [post]="post"
+        [creator]="creator"
+        [isComponentInitialized]="isComponentInitialized"
+    ></post-header>
 
     <img [src]="post.imgUrl" alt="post" />
 
@@ -134,6 +138,7 @@
                 <span class="username">{{
                     post.likedByUsers[0].fullName
                 }}</span>
+
                 <span *ngIf="post.likedByUsers.length > 1">
                     and
                     <span
@@ -162,7 +167,7 @@
             <p *ngIf="!isMoreClicked">
                 <span class="creatorFullName">{{ creator.fullName }}</span>
                 {{ post.content | slice: 0 : 120 }}
-                {{ post.content.length >= 120 && "..." }}
+                {{ post.content.length >= 120 ? "..." : "" }}
 
                 <button
                     (click)="isMoreClicked = !isMoreClicked"

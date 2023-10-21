@@ -11,25 +11,28 @@ import cloneDeep from 'lodash-es/cloneDeep';
     styleUrls: ['./post-card.component.scss'],
 })
 export class PostCardComponent implements OnInit {
+    constructor(private authService: AuthService) {}
+
     @Input() post!: Post;
+
     @Output() onToggleLike = new EventEmitter<{
         post: Post;
         isLikeClicked: boolean;
     }>();
+
     @Output() onToggleFollow = new EventEmitter<{
         post: Post;
         user: User;
         isFollowClicked: boolean;
     }>();
+
     creator!: User;
     isMoreClicked = false;
     isLikedByUsersModalShown = false;
-    loggedInUser: any;
+    loggedInUser = this.authService.getLoggedInUser();
     isLikeClicked = false;
     isToggleLikeProcessing: boolean = false;
     isComponentInitialized = false;
-
-    constructor(private authService: AuthService) {}
 
     ngOnInit() {
         this.authService
@@ -40,14 +43,10 @@ export class PostCardComponent implements OnInit {
                     this.creator = creator;
                 },
             });
-        this.authService.loggedInUser$.pipe(take(1)).subscribe({
-            next: (loggedInUser) => {
-                this.loggedInUser = loggedInUser;
-            },
-        });
+
         const isLikeClicked = this.post.likedByUsers.find(
             (likedByUser: User) =>
-                likedByUser._id === this.loggedInUser.user.uid,
+                likedByUser._id === this.loggedInUser?.user?.uid,
         );
         if (isLikeClicked) this.isLikeClicked = true;
 

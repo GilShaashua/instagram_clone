@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { PostService } from '../../services/post.service';
 import { Observable, take } from 'rxjs';
 import { Post } from '../../models/post.model';
@@ -12,25 +12,26 @@ import { UserService } from '../../services/user.service';
     styleUrls: ['./home-page.component.scss'],
 })
 export class HomePageComponent implements OnInit, OnDestroy {
-    posts$!: Observable<Post[]>;
-
     constructor(
         private postService: PostService,
         private authService: AuthService,
         private userService: UserService,
     ) {}
 
+    posts$!: Observable<Post[]>;
+    isComponentInitialized = false;
+
     ngOnInit() {
-        // console.log('Home-Page Mounted!');
         this.postService
             .getPosts()
             .pipe(take(1))
             .subscribe({
-                next: (posts: Post[]) => {
-                    this.posts$ = this.postService.posts$;
-                },
                 error: (err: any) => {
                     console.error(err);
+                },
+                complete: () => {
+                    this.posts$ = this.postService.posts$;
+                    this.isComponentInitialized = true;
                 },
             });
     }

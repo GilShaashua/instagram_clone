@@ -9,4 +9,5 @@ export interface Post {
     content: string;
     likedByUsers: User[];
     comments: any;
+    filterSelected: string;
 }

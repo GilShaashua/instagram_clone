@@ -10,4 +10,5 @@ import { Post } from '../../models/post.model';
 export class PostHeaderComponent {
     @Input() creator!: User;
     @Input() post!: Post;
+    @Input() isComponentInitialized!: boolean;
 }

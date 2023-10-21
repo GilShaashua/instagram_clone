@@ -1,5 +1,6 @@
-<section *ngIf="posts$ | async as posts" class="home-page">
+<section *ngIf="posts$ | async as posts" class="home-page" >
     <post-list
+      *ngIf="isComponentInitialized"
         (onToggleLike)="onToggleLike($event)"
         (onToggleFollow)="onToggleFollow($event)"
         [posts]="posts"

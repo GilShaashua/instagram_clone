@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { PostService } from '../../services/post.service';
+import { Post } from '../../models/post.model';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'create-post-page',
@@ -10,27 +12,34 @@ import { PostService } from '../../services/post.service';
     },
 })
 export class CreatePostPageComponent {
-    constructor(private postService: PostService) {}
+    constructor(
+        private postService: PostService,
+        private router: Router,
+    ) {}
 
     isSelectMediaShown: boolean = true;
     isFilterMediaShown: boolean = false;
     isFormMediaShown: boolean = false;
-    mediaUrl!: string;
+
     filterPreviewNames = [
-        'Normal',
-        'Paris',
-        'Los Angeles',
-        'Oslo',
-        'Abu Dhabi',
-        'Tokyo',
+        { name: 'Normal', value: 'normal' },
+        { name: 'Paris', value: 'paris' },
+        { name: 'Los Angeles', value: 'los-angeles' },
+        { name: 'Oslo', value: 'oslo' },
+        { name: 'Abu Dhabi', value: 'abu-dhabi' },
+        { name: 'Tokyo', value: 'tokyo' },
     ];
-    classes: { [key: string]: boolean } = {
-        normal: true,
-        paris: false,
-        'los-angeles': false,
-        oslo: false,
-        'abu-dhabi': false,
-        tokyo: false,
+
+    post: Post = {
+        _id: '',
+        creatorFullName: '',
+        creatorId: '',
+        createdAt: 0,
+        imgUrl: '',
+        content: '',
+        likedByUsers: [],
+        comments: [],
+        filterSelected: 'normal',
     };
 
     async onMediaSelected(ev: any) {
@@ -38,9 +47,8 @@ export class CreatePostPageComponent {
             const mediaUrl = await this.postService.uploadMedia(
                 ev.target.files[0],
             );
-            // this.postService.createPost(mediaUrl);
             console.log('Media URL:', mediaUrl);
-            this.mediaUrl = mediaUrl;
+            this.post.imgUrl = mediaUrl;
             this.isSelectMediaShown = false;
             this.isFilterMediaShown = true;
         } catch (error) {
@@ -48,25 +56,20 @@ export class CreatePostPageComponent {
         }
     }
 
-    onSelectFilterPreview(
-        elFilterPreview: HTMLElement,
-        filterPreviewIdx: number,
-    ) {
-        elFilterPreview.classList.add('active');
+    onSelectFilterPreview(filterName: string) {
+        this.post.filterSelected = filterName;
+    }
 
-        const elFilterPreviews = document.querySelectorAll('.filter-preview');
-        elFilterPreviews.forEach((elFilterPreview, elFilterPreviewIdx) => {
-            if (elFilterPreviewIdx !== filterPreviewIdx) {
-                elFilterPreview.classList.remove('active');
-            }
-        });
+    onSelectNext() {
+        this.isFilterMediaShown = false;
+        this.isFormMediaShown = true;
+    }
 
-        const className = elFilterPreview
-            .querySelector('span')
-            ?.innerText.toLowerCase()
-            .replace(/\s+/g, '-');
-        for (const classKey in this.classes) {
-            this.classes[classKey] = classKey === className;
-        }
+    async onCreatePost() {
+        console.log('create-post');
+        console.log('post', this.post);
+        await this.postService.createPost(this.post);
+
+        await this.router.navigateByUrl('/');
     }
 }

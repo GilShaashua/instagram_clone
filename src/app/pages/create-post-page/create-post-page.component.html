@@ -36,37 +36,113 @@
         />
     </div>
     <div class="filter-media" *ngIf="isFilterMediaShown">
+        <div class="actions">
+            <button class="btn-back" title="Back">
+                <svg
+                    aria-label="Back"
+                    class="x1lliihq x1n2onr6 x5n08af"
+                    fill="currentColor"
+                    height="24"
+                    role="img"
+                    viewBox="0 0 24 24"
+                    width="24"
+                >
+                    <line
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        x1="2.909"
+                        x2="22.001"
+                        y1="12.004"
+                        y2="12.004"
+                    ></line>
+                    <polyline
+                        fill="none"
+                        points="9.276 4.726 2.001 12.004 9.276 19.274"
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                    ></polyline>
+                </svg>
+            </button>
+            <button class="btn-next" title="Next" (click)="onSelectNext()">
+                Next
+            </button>
+        </div>
+
         <article class="media-preview">
             <img
-                src="{{ mediaUrl }}"
+                src="{{ post.imgUrl }}"
                 alt="media preview"
-                #elMediaPreview
-                [ngClass]="{
-                    normal: classes['normal'],
-                    paris: classes['paris'],
-                    'los-angeles': classes['los-angeles'],
-                    oslo: classes['oslo'],
-                    'abu-dhabi': classes['abu-dhabi'],
-                    tokyo: classes['tokyo']
-                }"
+                [class]="post.filterSelected"
             />
         </article>
+
         <div class="filter-list">
             <article
                 class="filter-preview"
                 *ngFor="let filter of filterPreviewNames; index as idx"
-                [ngClass]="{ active: idx === 0 }"
-                (click)="onSelectFilterPreview(elFilterPreview, idx)"
-                #elFilterPreview
+                [ngClass]="{ active: filter.value === post.filterSelected }"
+                (click)="onSelectFilterPreview(filter.value)"
             >
-                <span>{{ filter }}</span>
+                <span>{{ filter.name }}</span>
                 <img
-                    [class]="filter | kababCase"
-                    [src]="mediaUrl"
+                    [class]="filter.value"
+                    [src]="post.imgUrl"
                     alt="{{ filter }} - filter preview"
                 />
             </article>
         </div>
     </div>
-    <div class="form-media" *ngIf="isFormMediaShown">Form Media here ...</div>
+    <div class="form-media" *ngIf="isFormMediaShown">
+        <div class="actions">
+            <button class="btn-back" title="Back">
+                <svg
+                    aria-label="Back"
+                    class="x1lliihq x1n2onr6 x5n08af"
+                    fill="currentColor"
+                    height="24"
+                    role="img"
+                    viewBox="0 0 24 24"
+                    width="24"
+                >
+                    <line
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        x1="2.909"
+                        x2="22.001"
+                        y1="12.004"
+                        y2="12.004"
+                    ></line>
+                    <polyline
+                        fill="none"
+                        points="9.276 4.726 2.001 12.004 9.276 19.274"
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                    ></polyline>
+                </svg>
+            </button>
+            <button class="btn-share" title="Share" (click)="onCreatePost()">
+                Next
+            </button>
+        </div>
+        <form>
+            <div class="content">
+                <img [src]="post.imgUrl" alt="post image" />
+                <textarea
+                    [(ngModel)]="post.content"
+                    name="content"
+                    placeholder="Write your caption..."
+                ></textarea>
+            </div>
+        </form>
+    </div>
 </section>
