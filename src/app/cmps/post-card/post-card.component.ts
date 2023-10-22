@@ -31,7 +31,6 @@ export class PostCardComponent implements OnInit {
     isLikedByUsersModalShown = false;
     loggedInUser = this.authService.getLoggedInUser();
     isLikeClicked = false;
-    isToggleLikeProcessing: boolean = false;
     isComponentInitialized = false;
     isImgLoaded = false;
 
@@ -42,32 +41,22 @@ export class PostCardComponent implements OnInit {
             .subscribe({
                 next: (creator: any) => {
                     this.creator = creator;
+                    const isLikeClicked = this.post.likedByUsers.find(
+                        (likedByUser: User) =>
+                            likedByUser._id === this.loggedInUser?.user?.uid,
+                    );
+                    if (isLikeClicked) this.isLikeClicked = true;
+
+                    this.isComponentInitialized = true;
                 },
             });
-
-        const isLikeClicked = this.post.likedByUsers.find(
-            (likedByUser: User) =>
-                likedByUser._id === this.loggedInUser?.user?.uid,
-        );
-        if (isLikeClicked) this.isLikeClicked = true;
-
-        this.isComponentInitialized = true;
     }
 
     onImageLoad() {
-        console.log('loading');
         this.isImgLoaded = true;
     }
 
     toggleLike() {
-        if (this.isToggleLikeProcessing) return;
-
-        this.isToggleLikeProcessing = true;
-
-        setTimeout(() => {
-            this.isToggleLikeProcessing = false;
-        }, 2000);
-
         this.isLikeClicked = !this.isLikeClicked;
 
         this.onToggleLike.emit({

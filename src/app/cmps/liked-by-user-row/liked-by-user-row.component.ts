@@ -20,13 +20,14 @@ export class LikedByUserRowComponent implements OnInit {
     }>();
     isFollowClicked: boolean = false;
     isComponentInitialized = false;
+    loggedInUser!: any;
 
     async ngOnInit() {
         const userFromDB$ = this.authService.getUserById(this.user._id);
         const userFromDB = await firstValueFrom(userFromDB$);
 
-        const loggedInUser$ = this.authService.loggedInUser$;
-        const loggedInUser = await firstValueFrom(loggedInUser$);
+        const loggedInUser = this.authService.getLoggedInUser();
+        this.loggedInUser = loggedInUser;
 
         this.isFollowClicked = !!(userFromDB as User).followedByUsers.find(
             (followedByUser: User | string) =>

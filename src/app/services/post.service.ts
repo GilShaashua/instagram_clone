@@ -3,7 +3,6 @@ import {
     BehaviorSubject,
     catchError,
     combineLatest,
-    finalize,
     firstValueFrom,
     map,
     retry,
@@ -16,16 +15,14 @@ import { Post } from '../models/post.model';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AuthService } from './auth.service';
 import { HttpErrorResponse } from '@angular/common/http';
-import firebase from 'firebase/compat';
 import { User } from '../models/user.model';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {
-    Storage,
-    ref,
-    uploadBytesResumable,
     getDownloadURL,
+    ref,
+    Storage,
+    uploadBytesResumable,
 } from '@angular/fire/storage';
-import UserCredential = firebase.auth.UserCredential;
 
 @Injectable({
     providedIn: 'root',
@@ -94,10 +91,22 @@ export class PostService {
                     await firstValueFrom(loggedInUserFromDB$);
 
                 const filteredPostsByFollowingUsers = posts.filter((post) => {
-                    return (loggedInUserFromDB as User).followingUsers.find(
+                    const followingUserPost = (
+                        loggedInUserFromDB as User
+                    ).followingUsers.find(
                         (followingUser: string | User) =>
                             followingUser === (post as Post).creatorId,
                     );
+                    const loggedInUserPost =
+                        post.creatorId === loggedInUser!.user!.uid;
+
+                    if (loggedInUserPost) {
+                        return loggedInUserPost;
+                    } else if (followingUserPost) {
+                        return followingUserPost;
+                    } else {
+                        return false;
+                    }
                 });
 
                 this._posts$.next([...filteredPostsByFollowingUsers]);
@@ -106,83 +115,104 @@ export class PostService {
     }
 
     async toggleLike(isLikeClicked: boolean, post: Post) {
-        if (isLikeClicked) await this.addLike(post);
-        else await this.removeLike(post);
+        if (isLikeClicked) return await this.addLike(post);
+        else return await this.removeLike(post);
     }
 
     async addLike(post: Post) {
-        const deepCopyOfPost = cloneDeep(post);
-        const loggedInUser = this.authService.getLoggedInUser();
-        const loggedInUserId = loggedInUser!.user!.uid;
-        this.db
-            .collection('users')
-            .doc(loggedInUserId)
-            .valueChanges()
-            .pipe(take(1))
-            .subscribe({
-                next: async (_loggedInUser: User | unknown) => {
-                    const loggedInUser = _loggedInUser as User;
-                    const likedByUsersFront =
-                        deepCopyOfPost.likedByUsers.slice();
-                    likedByUsersFront.push(loggedInUser);
-                    deepCopyOfPost.likedByUsers =
-                        deepCopyOfPost.likedByUsers.map((likedByUser: any) => {
-                            return likedByUser._id;
-                        });
-                    deepCopyOfPost.likedByUsers.push(
-                        loggedInUserId as unknown as User,
-                    );
-                    await this.db
-                        .collection('posts')
-                        .doc(post._id)
-                        .update({
-                            likedByUsers: [...deepCopyOfPost.likedByUsers],
-                        });
-                    const posts = this._posts$.value;
-                    const postToEditIdx = posts.findIndex(
-                        (_post) => _post._id === post._id,
-                    );
-                    const postToFront = {
-                        ...deepCopyOfPost,
-                        likedByUsers: [...likedByUsersFront] as User[],
-                    };
-                    posts.splice(postToEditIdx, 1, postToFront);
-                    this._posts$.next([...posts]);
-                },
-            });
+        return new Promise<string>(async (resolve, reject) => {
+            try {
+                const deepCopyOfPost = cloneDeep(post);
+                const loggedInUser = this.authService.getLoggedInUser();
+                const loggedInUserId = loggedInUser!.user!.uid;
+                this.db
+                    .collection('users')
+                    .doc(loggedInUserId)
+                    .valueChanges()
+                    .pipe(take(1))
+                    .subscribe({
+                        next: async (_loggedInUser: User | unknown) => {
+                            const loggedInUser = _loggedInUser as User;
+                            const likedByUsersFront =
+                                deepCopyOfPost.likedByUsers.slice();
+                            likedByUsersFront.push(loggedInUser);
+                            deepCopyOfPost.likedByUsers =
+                                deepCopyOfPost.likedByUsers.map(
+                                    (likedByUser: any) => {
+                                        return likedByUser._id;
+                                    },
+                                );
+                            deepCopyOfPost.likedByUsers.push(
+                                loggedInUserId as unknown as User,
+                            );
+                            await this.db
+                                .collection('posts')
+                                .doc(post._id)
+                                .update({
+                                    likedByUsers: [
+                                        ...deepCopyOfPost.likedByUsers,
+                                    ],
+                                });
+
+                            const posts = this._posts$.value;
+                            const postToEditIdx = posts.findIndex(
+                                (_post) => _post._id === post._id,
+                            );
+                            const postToFront = {
+                                ...deepCopyOfPost,
+                                likedByUsers: [...likedByUsersFront] as User[],
+                            };
+                            posts.splice(postToEditIdx, 1, postToFront);
+                            this._posts$.next([...posts]);
+                            resolve('Add like done');
+                        },
+                    });
+            } catch (err: any) {
+                reject('Add like failed:');
+                throw err;
+            }
+        });
     }
 
     async removeLike(post: Post) {
-        const deepCopyOfPost = cloneDeep(post);
-        const loggedInUser = this.authService.getLoggedInUser();
-        const loggedInUserId = loggedInUser!.user!.uid;
-        const likedByUserIdx = deepCopyOfPost.likedByUsers.findIndex(
-            (likedByUser) => likedByUser._id === loggedInUserId,
-        );
+        return new Promise<string>(async (resolve, reject) => {
+            try {
+                const deepCopyOfPost = cloneDeep(post);
+                const loggedInUser = this.authService.getLoggedInUser();
+                const loggedInUserId = loggedInUser!.user!.uid;
+                const likedByUserIdx = deepCopyOfPost.likedByUsers.findIndex(
+                    (likedByUser) => likedByUser._id === loggedInUserId,
+                );
 
-        deepCopyOfPost.likedByUsers.splice(likedByUserIdx, 1);
-        deepCopyOfPost.likedByUsers = deepCopyOfPost.likedByUsers.map(
-            (likedByUser) => likedByUser._id,
-        ) as unknown as User[];
-        await this.db
-            .collection('posts')
-            .doc(deepCopyOfPost._id)
-            .update({
-                likedByUsers: [...deepCopyOfPost.likedByUsers],
-            });
-        const posts = this._posts$.value;
-        const postToEditIdx = posts.findIndex(
-            (_post) => _post._id === post._id,
-        );
+                deepCopyOfPost.likedByUsers.splice(likedByUserIdx, 1);
+                deepCopyOfPost.likedByUsers = deepCopyOfPost.likedByUsers.map(
+                    (likedByUser) => likedByUser._id,
+                ) as unknown as User[];
+                await this.db
+                    .collection('posts')
+                    .doc(deepCopyOfPost._id)
+                    .update({
+                        likedByUsers: [...deepCopyOfPost.likedByUsers],
+                    });
+                const posts = this._posts$.value;
+                const postToEditIdx = posts.findIndex(
+                    (_post) => _post._id === post._id,
+                );
 
-        post.likedByUsers.splice(likedByUserIdx, 1);
+                post.likedByUsers.splice(likedByUserIdx, 1);
 
-        const postToFront = {
-            ...post,
-            likedByUsers: [...post.likedByUsers],
-        };
-        posts.splice(postToEditIdx, 1, postToFront as unknown as Post);
-        this._posts$.next([...posts]);
+                const postToFront = {
+                    ...post,
+                    likedByUsers: [...post.likedByUsers],
+                };
+                posts.splice(postToEditIdx, 1, postToFront as unknown as Post);
+                this._posts$.next([...posts]);
+                resolve('Remove like done');
+            } catch (err: any) {
+                resolve('Remove like failed!');
+                throw err;
+            }
+        });
     }
 
     async uploadMedia(media: any) {

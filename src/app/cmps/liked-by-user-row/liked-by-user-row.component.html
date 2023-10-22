@@ -2,6 +2,7 @@
     <img [src]="user.imgUrl" alt="user" />
     <h4>{{ user.fullName }}</h4>
     <button
+        *ngIf="user._id !== loggedInUser.user.uid"
         [ngClass]="{ 'btn-toggle-follow': true, following: isFollowClicked }"
         (click)="toggleFollow()"
     >

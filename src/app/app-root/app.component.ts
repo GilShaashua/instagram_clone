@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { PostService } from '../services/post.service';
-import { Subscription, take } from 'rxjs';
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-root',
@@ -11,7 +11,7 @@ import { Subscription, take } from 'rxjs';
 export class AppComponent implements OnInit, OnDestroy {
     routerUrl = this.router.url;
     routerUrlSubscription!: Subscription;
-    isComponentInitialized = false;
+    // isComponentInitialized = false;
 
     constructor(
         private router: Router,
@@ -25,17 +25,17 @@ export class AppComponent implements OnInit, OnDestroy {
                 this.routerUrl = this.router.url;
             }
         });
-        this.postService
-            .getPosts()
-            .pipe(take(1))
-            .subscribe({
-                error: (err: any) => {
-                    console.error(err);
-                },
-                complete: () => {
-                    this.isComponentInitialized = true;
-                },
-            });
+        // this.postService
+        //     .getPosts()
+        //     .pipe(take(1))
+        //     .subscribe({
+        //         error: (err: any) => {
+        //             console.error(err);
+        //         },
+        //         complete: () => {
+        //             this.isComponentInitialized = true;
+        //         },
+        //     });
     }
 
     ngOnDestroy() {

@@ -60,11 +60,6 @@ export class CreatePostPageComponent {
         this.post.filterSelected = filterName;
     }
 
-    onSelectNext() {
-        this.isFilterMediaShown = false;
-        this.isFormMediaShown = true;
-    }
-
     async onCreatePost() {
         console.log('create-post');
         console.log('post', this.post);

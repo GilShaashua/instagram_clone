@@ -20,9 +20,6 @@ export class AuthService {
         private db: AngularFirestore,
     ) {}
 
-    getLoggedInUser() {
-        return this._loggedInUser$.value;
-    }
     async logInWithGoogle() {
         try {
             const auth = await this.afAuth.signInWithPopup(
@@ -173,5 +170,9 @@ export class AuthService {
 
     getUserById(userId: string) {
         return this.db.collection('users').doc(userId).valueChanges();
+    }
+
+    getLoggedInUser() {
+        return this._loggedInUser$.value;
     }
 }

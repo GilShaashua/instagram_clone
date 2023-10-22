@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { PostService } from '../../services/post.service';
 import { Observable, take } from 'rxjs';
 import { Post } from '../../models/post.model';
@@ -7,7 +7,7 @@ import { AuthService } from '../../services/auth.service';
 import { UserService } from '../../services/user.service';
 
 @Component({
-    selector: 'home-page-page',
+    selector: 'home-page',
     templateUrl: './home-page.component.html',
     styleUrls: ['./home-page.component.scss'],
 })
@@ -20,6 +20,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
 
     posts$!: Observable<Post[]>;
     isComponentInitialized = false;
+    isToggleLikeProcessing = false;
 
     ngOnInit() {
         this.postService
@@ -37,7 +38,16 @@ export class HomePageComponent implements OnInit, OnDestroy {
     }
 
     async onToggleLike(payload: { post: Post; isLikeClicked: boolean }) {
-        await this.postService.toggleLike(payload.isLikeClicked, payload.post);
+        if (this.isToggleLikeProcessing) return;
+
+        this.isToggleLikeProcessing = true;
+
+        const test = await this.postService.toggleLike(
+            payload.isLikeClicked,
+            payload.post,
+        );
+
+        this.isToggleLikeProcessing = false;
     }
 
     onToggleFollow(payload: {

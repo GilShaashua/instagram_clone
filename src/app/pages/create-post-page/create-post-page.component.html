@@ -37,7 +37,11 @@
     </div>
     <div class="filter-media" *ngIf="isFilterMediaShown">
         <div class="actions">
-            <button class="btn-back" title="Back">
+            <button
+                class="btn-back"
+                title="Back"
+                (click)="isFilterMediaShown = false; isSelectMediaShown = true"
+            >
                 <svg
                     aria-label="Back"
                     class="x1lliihq x1n2onr6 x5n08af"
@@ -68,7 +72,11 @@
                     ></polyline>
                 </svg>
             </button>
-            <button class="btn-next" title="Next" (click)="onSelectNext()">
+            <button
+                class="btn-next"
+                title="Next"
+                (click)="isFilterMediaShown = false; isFormMediaShown = true"
+            >
                 Next
             </button>
         </div>
@@ -99,7 +107,11 @@
     </div>
     <div class="form-media" *ngIf="isFormMediaShown">
         <div class="actions">
-            <button class="btn-back" title="Back">
+            <button
+                class="btn-back"
+                title="Back"
+                (click)="isFormMediaShown = false; isFilterMediaShown = true"
+            >
                 <svg
                     aria-label="Back"
                     class="x1lliihq x1n2onr6 x5n08af"
@@ -136,7 +148,11 @@
         </div>
         <form>
             <div class="content">
-                <img [src]="post.imgUrl" alt="post image" />
+                <img
+                    [class]="post.filterSelected"
+                    [src]="post.imgUrl"
+                    alt="post image"
+                />
                 <textarea
                     [(ngModel)]="post.content"
                     name="content"
