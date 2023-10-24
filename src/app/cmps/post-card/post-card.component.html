@@ -10,6 +10,7 @@
         [post]="post"
         [creator]="creator"
         [isComponentInitialized]="isComponentInitialized"
+        (onToggleFollow)="onToggleFollow.emit($event)"
     ></post-header>
 
     <img [src]="post.imgUrl" [class]="post.filterSelected" alt="post" />

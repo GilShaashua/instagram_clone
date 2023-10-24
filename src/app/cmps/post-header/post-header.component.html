@@ -7,7 +7,11 @@
         </h5>
     </div>
 
-    <button class="btn-more-options" title="More options">
+    <button
+        class="btn-more-options"
+        title="More options"
+        (click)="isMoreOptionsModalShown = !isMoreOptionsModalShown"
+    >
         <svg
             aria-label="More options"
             class="x1lliihq x1n2onr6"
@@ -22,5 +26,16 @@
             <circle cx="6" cy="12" r="1.5"></circle>
             <circle cx="18" cy="12" r="1.5"></circle>
         </svg>
+
+        <div class="more-options-modal" *ngIf="isMoreOptionsModalShown">
+            <ul>
+                <li
+                    (click)="toggleFollow()"
+                    *ngIf="creator._id !== loggedInUser!.user!.uid"
+                >
+                    {{ isFollowClicked ? "Following" : "Follow" }}
+                </li>
+            </ul>
+        </div>
     </button>
 </div>

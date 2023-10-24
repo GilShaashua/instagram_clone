@@ -4,7 +4,7 @@
 .main-app {
     min-height: 100vh;
     grid-template-rows: auto 1fr auto;
-    
+
     @include for-narrow-layout {
         grid-template-rows: unset;
     }
@@ -13,18 +13,17 @@
 .app-layout {
     display: grid;
     grid-template-columns: 25px 1fr 25px;
-    
+
     @include for-narrow-layout {
         grid-template-columns: auto 1fr;
         grid-template-rows: unset;
-        
     }
-    
+
     // @include for-normal-layout {
     //     grid-template-columns:
     //         minmax(20px, 1fr) minmax(auto, $narrow-breakpoint) minmax(20px, 1fr);
     // }
-    
+
     // @include for-wide-layout {
     //     grid-template-columns:
     //         minmax(20px, 1fr) minmax(auto, $normal-breakpoint) minmax(20px, 1fr);
@@ -43,19 +42,21 @@
     //        grid-column: 1 /-1;
     //    }
     //}
-    
+
     @include for-narrow-layout {
         display: grid;
         grid-column: 2;
-        grid-template-columns:
-             minmax(25px, 1fr) minmax(auto, $mobile-breakpoint) minmax(25px, 1fr);
+        grid-template-columns: minmax(25px, 1fr) minmax(
+                auto,
+                $mobile-breakpoint
+            ) minmax(25px, 1fr);
     }
-    
+
     // @include for-normal-layout {
     //     grid-template-columns:
     //         minmax(20px, 1fr) minmax(auto, $narrow-breakpoint) minmax(20px, 1fr);
     // }
-    
+
     // @include for-wide-layout {
     //     grid-template-columns:
     //         minmax(20px, 1fr) minmax(auto, $normal-breakpoint) minmax(20px, 1fr);
@@ -73,14 +74,14 @@
 .page-cmp-layout {
     display: grid;
     grid-template-columns: 25px 1fr 25px;
-    
+    height: 100%;
+
     & > * {
         grid-column: 2;
     }
-    
+
     @include for-narrow-layout {
         display: unset;
         grid-template-columns: unset;
-        
     }
 }
