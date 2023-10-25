@@ -1,3 +1,4 @@
-<section class="notifications-page">
+<section class="notifications-page" *ngIf="notifications">
     <notification-list [notifications]="notifications"></notification-list>
+    <p *ngIf="!notifications.length">You dont have notifications yet!</p>
 </section>

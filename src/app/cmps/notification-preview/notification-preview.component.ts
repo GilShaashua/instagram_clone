@@ -23,7 +23,6 @@ export class NotificationPreviewComponent implements OnInit {
             .subscribe({
                 next: (user: User) => {
                     this.sender = user;
-                    console.log(this.sender);
                 },
             });
     }

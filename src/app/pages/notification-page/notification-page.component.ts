@@ -29,7 +29,6 @@ export class NotificationPageComponent implements OnInit {
             .subscribe({
                 next: (notifications) => {
                     this.notifications = notifications;
-                    console.log(' this.notifications', this.notifications);
                 },
             });
     }
