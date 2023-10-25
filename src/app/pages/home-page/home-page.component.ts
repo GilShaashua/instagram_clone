@@ -5,6 +5,7 @@ import { Post } from '../../models/post.model';
 import { User } from '../../models/user.model';
 import { AuthService } from '../../services/auth.service';
 import { UserService } from '../../services/user.service';
+import { NotificationService } from '../../services/notification.service';
 
 @Component({
     selector: 'home-page',
@@ -16,6 +17,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
         private postService: PostService,
         private authService: AuthService,
         private userService: UserService,
+        private notificationService: NotificationService,
     ) {}
 
     posts$!: Observable<Post[]>;
@@ -70,6 +72,21 @@ export class HomePageComponent implements OnInit, OnDestroy {
                 // const posts = await lastValueFrom(posts$);
                 // console.log('posts refreshed after toggleFollow', posts);
             });
+    }
+
+    async onAddNotification(post: Post) {
+        const notification = {
+            sender: this.authService.getLoggedInUser()!.user!.uid,
+            recipient: post.creatorId,
+            message: '',
+            createdAt: 0,
+            madeAt: post,
+            read: false,
+        };
+        await this.notificationService.addNotification(
+            notification,
+            'likeAction',
+        );
     }
 
     ngOnDestroy() {}

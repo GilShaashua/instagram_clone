@@ -1,0 +1,39 @@
+:host {
+    .notification-preview {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 3em;
+        gap: 1em;
+        font-size: 15px;
+
+        .inner-container {
+            display: flex;
+            align-items: center;
+            gap: 0.8em;
+
+            .img-sender {
+                width: 40px;
+                border-radius: 50%;
+            }
+
+            p {
+                .full-name {
+                    font-size: 13px;
+                    font-weight: bolder;
+                }
+            }
+
+            .created-at {
+                font-size: 13.5px;
+                color: rgb(168, 168, 168);
+            }
+        }
+
+        .img-made-at {
+            aspect-ratio: 1/1;
+            object-fit: cover;
+            width: 3em;
+        }
+    }
+}

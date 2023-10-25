@@ -3,6 +3,7 @@
         <post-card
             (onToggleLike)="onToggleLike.emit($event)"
             (onToggleFollow)="onToggleFollow.emit($event)"
+            (onAddNotification)="onAddNotification.emit($event)"
             *ngFor="let post of posts"
             [post]="post"
         ></post-card>

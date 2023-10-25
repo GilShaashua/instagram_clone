@@ -1,0 +1,15 @@
+<li class="notification-preview" *ngIf="sender">
+    <div class="inner-container">
+        <img class="img-sender" src="{{ sender.imgUrl }}" alt="sender" />
+        <p>
+            <span class="full-name">{{ sender.fullName }}</span>
+            {{ notification.message }}
+        </p>
+        <span class="created-at"> {{ notification.createdAt | timeAgo }}</span>
+    </div>
+    <img
+        class="img-made-at"
+        src="{{ notification.madeAt.imgUrl }}"
+        alt="content"
+    />
+</li>

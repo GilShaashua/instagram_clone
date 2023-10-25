@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { GoogleAuthProvider } from '@angular/fire/auth';
-import { BehaviorSubject, take } from 'rxjs';
+import { BehaviorSubject, Observable, take } from 'rxjs';
 import firebase from 'firebase/compat';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { User } from '../models/user.model';
 import UserCredential = firebase.auth.UserCredential;
 
 @Injectable({
@@ -104,6 +105,13 @@ export class AuthService {
                     if (data.exists) {
                         const userData: any = data.data();
 
+                        if (!userData.notifications) {
+                            await this.db
+                                .collection('users')
+                                .doc(auth.user!.uid)
+                                .update({ notifications: [] });
+                        }
+
                         if (!userData._id) {
                             await this.db
                                 .collection('users')
@@ -159,6 +167,7 @@ export class AuthService {
                                     'https://res.cloudinary.com/dpbcaizq9/image/upload/v1686066256/user_jsqpzw.png',
                                 followedByUsers: [],
                                 followingUsers: [],
+                                notifications: [],
                             });
                     }
                 },
@@ -169,7 +178,10 @@ export class AuthService {
     }
 
     getUserById(userId: string) {
-        return this.db.collection('users').doc(userId).valueChanges();
+        return this.db
+            .collection('users')
+            .doc(userId)
+            .valueChanges() as Observable<User>;
     }
 
     getLoggedInUser() {

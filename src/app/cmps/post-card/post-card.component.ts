@@ -26,6 +26,8 @@ export class PostCardComponent implements OnInit {
         isFollowClicked: boolean;
     }>();
 
+    @Output() onAddNotification = new EventEmitter<Post>();
+
     creator!: User;
     isMoreClicked = false;
     isLikedByUsersModalShown = false;
@@ -63,6 +65,8 @@ export class PostCardComponent implements OnInit {
             post: cloneDeep(this.post),
             isLikeClicked: this.isLikeClicked,
         });
+
+        this.isLikeClicked && this.onAddNotification.emit(this.post);
     }
 
     toggleLikedByUsersModal(isLikedByUsersModalShown: boolean) {

@@ -30,6 +30,8 @@ import { getStorage, provideStorage } from '@angular/fire/storage';
 import { environment } from '../environments/environment';
 import * as firebase from 'firebase/app';
 import { KababCasePipe } from './pipes/kabab-case.pipe';
+import { NotificationListComponent } from './cmps/notification-list/notification-list.component';
+import { NotificationPreviewComponent } from './cmps/notification-preview/notification-preview.component';
 
 firebase.initializeApp(environment.firebase);
 
@@ -53,6 +55,8 @@ firebase.initializeApp(environment.firebase);
         LikedByUsersListComponent,
         LikedByUserRowComponent,
         KababCasePipe,
+        NotificationListComponent,
+        NotificationPreviewComponent,
     ],
     imports: [
         BrowserModule,

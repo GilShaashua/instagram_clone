@@ -18,4 +18,5 @@ export class PostListComponent {
         user: User;
         isFollowClicked: boolean;
     }>();
+    @Output() onAddNotification = new EventEmitter<Post>();
 }

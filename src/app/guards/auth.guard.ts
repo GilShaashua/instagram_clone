@@ -5,7 +5,7 @@ import firebase from 'firebase/compat';
 import UserCredential = firebase.auth.UserCredential;
 
 export const authGuard = () => {
-    let loggedInUser: UserCredential | null =
+    const loggedInUser: UserCredential | null =
         inject(AuthService).getLoggedInUser();
 
     if (loggedInUser) return true;

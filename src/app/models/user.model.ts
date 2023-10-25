@@ -4,4 +4,5 @@ export interface User {
     imgUrl: string;
     followedByUsers: User[];
     followingUsers: User[];
+    notifications: any;
 }
