@@ -10,7 +10,7 @@ export class NotificationService {
     constructor(private db: AngularFirestore) {}
 
     async addNotification(notification: Notification, action: string) {
-        notification.message = 'liked your post';
+        if (action === 'likeAction') notification.message = 'liked your post';
         notification.createdAt = Date.now();
         const ref = await this.db.collection('notifications').add(notification);
         await this.db
@@ -21,9 +21,10 @@ export class NotificationService {
 
     getNotificationsForUser(userId: string) {
         return this.db
-            .collection('notifications', (ref) =>
-                ref.where('recipient', '==', userId),
-            )
+            .collection('notifications', (ref) => {
+                ref.where('recipient', '==', userId);
+                return ref.orderBy('createdAt');
+            })
             .valueChanges() as Observable<Notification[]>;
     }
 
