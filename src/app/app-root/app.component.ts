@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, isDevMode, OnDestroy, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { PostService } from '../services/post.service';
 import { Subscription } from 'rxjs';
@@ -11,7 +11,6 @@ import { Subscription } from 'rxjs';
 export class AppComponent implements OnInit, OnDestroy {
     routerUrl = this.router.url;
     routerUrlSubscription!: Subscription;
-    // isComponentInitialized = false;
 
     constructor(
         private router: Router,
@@ -19,7 +18,12 @@ export class AppComponent implements OnInit, OnDestroy {
     ) {}
 
     async ngOnInit() {
-        // console.log('APP-ROOT Mounted!');
+        if (isDevMode()) {
+            console.log('Development!');
+        } else {
+            console.log('Production!');
+        }
+
         this.routerUrlSubscription = this.router.events.subscribe((event) => {
             if (event instanceof NavigationEnd) {
                 this.routerUrl = this.router.url;

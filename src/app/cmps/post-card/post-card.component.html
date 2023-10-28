@@ -1,11 +1,4 @@
-<ng-container *ngIf="!isImgLoaded"
-    ><img
-        [src]="post.imgUrl"
-        [class]="post.filterSelected"
-        alt="post"
-        (load)="onImageLoad()"
-/></ng-container>
-<li class="post-card" *ngIf="isComponentInitialized && isImgLoaded">
+<li class="post-card" *ngIf="isComponentInitialized">
     <post-header
         [post]="post"
         [creator]="creator"

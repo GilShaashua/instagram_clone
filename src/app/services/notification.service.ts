@@ -21,10 +21,11 @@ export class NotificationService {
 
     getNotificationsForUser(userId: string) {
         return this.db
-            .collection('notifications', (ref) => {
-                ref.where('recipient', '==', userId);
-                return ref.orderBy('createdAt');
-            })
+            .collection('notifications', (ref) =>
+                ref
+                    .where('recipient', '==', userId)
+                    .orderBy('createdAt', 'desc'),
+            )
             .valueChanges() as Observable<Notification[]>;
     }
 

@@ -34,7 +34,6 @@ export class PostCardComponent implements OnInit {
     loggedInUser = this.authService.getLoggedInUser();
     isLikeClicked = false;
     isComponentInitialized = false;
-    isImgLoaded = false;
 
     ngOnInit() {
         this.authService
@@ -52,10 +51,6 @@ export class PostCardComponent implements OnInit {
                     this.isComponentInitialized = true;
                 },
             });
-    }
-
-    onImageLoad() {
-        this.isImgLoaded = true;
     }
 
     toggleLike() {

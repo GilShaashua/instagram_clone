@@ -21,7 +21,7 @@ export class CreatePostPageComponent {
     isFilterMediaShown: boolean = false;
     isFormMediaShown: boolean = false;
 
-    filterPreviewNames = [
+    filterPreviews = [
         { name: 'Normal', value: 'normal' },
         { name: 'Paris', value: 'paris' },
         { name: 'Los Angeles', value: 'los-angeles' },
@@ -44,11 +44,13 @@ export class CreatePostPageComponent {
 
     async onMediaSelected(ev: any) {
         try {
-            const mediaUrl = await this.postService.uploadMedia(
-                ev.target.files[0],
-            );
-            console.log('Media URL:', mediaUrl);
-            this.post.imgUrl = mediaUrl;
+            const mediaUrl = await this.postService.uploadMedia();
+            // console.log('Media URL:', mediaUrl);
+            if (mediaUrl) {
+                this.post.imgUrl = mediaUrl;
+            } else {
+                console.error(null);
+            }
             this.isSelectMediaShown = false;
             this.isFilterMediaShown = true;
         } catch (error) {
@@ -61,8 +63,6 @@ export class CreatePostPageComponent {
     }
 
     async onCreatePost() {
-        console.log('create-post');
-        console.log('post', this.post);
         await this.postService.createPost(this.post);
 
         await this.router.navigateByUrl('/');

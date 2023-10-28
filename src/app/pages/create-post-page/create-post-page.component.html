@@ -1,8 +1,8 @@
 <section class="create-post-page">
     <div class="select-media" *ngIf="isSelectMediaShown">
-        <label for="media-input" class="custom-media-input">
-            Upload photos and videos here
-            <div id="upload-media-element">
+        <button (click)="onMediaSelected($event)">
+            <span> Upload photos and videos here </span>
+            <div>
                 <svg
                     aria-label="Icon to represent media such as images or videos"
                     class="x1lliihq x1n2onr6"
@@ -27,13 +27,7 @@
                     ></path>
                 </svg>
             </div>
-        </label>
-        <input
-            type="file"
-            accept="image/*"
-            id="media-input"
-            (change)="onMediaSelected($event)"
-        />
+        </button>
     </div>
     <div class="filter-media" *ngIf="isFilterMediaShown">
         <div class="actions">
@@ -92,7 +86,7 @@
         <div class="filter-list">
             <article
                 class="filter-preview"
-                *ngFor="let filter of filterPreviewNames; index as idx"
+                *ngFor="let filter of filterPreviews; index as idx"
                 [ngClass]="{ active: filter.value === post.filterSelected }"
                 (click)="onSelectFilterPreview(filter.value)"
             >

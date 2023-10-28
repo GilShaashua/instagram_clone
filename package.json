@@ -21,6 +21,7 @@
     "@angular/router": "^16.1.0",
     "firebase": "^10.4.0",
     "lodash-es": "^4.17.21",
+    "ngx-image-compress": "^15.1.6",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.13.0"

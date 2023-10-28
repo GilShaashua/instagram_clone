@@ -32,7 +32,6 @@ import * as firebase from 'firebase/app';
 import { KababCasePipe } from './pipes/kabab-case.pipe';
 import { NotificationListComponent } from './cmps/notification-list/notification-list.component';
 import { NotificationPreviewComponent } from './cmps/notification-preview/notification-preview.component';
-import { NgOptimizedImage } from '@angular/common';
 
 firebase.initializeApp(environment.firebase);
 
@@ -72,7 +71,6 @@ firebase.initializeApp(environment.firebase);
         provideStorage(() => getStorage()),
         provideDatabase(() => getDatabase()),
         provideMessaging(() => getMessaging()),
-        NgOptimizedImage,
     ],
     providers: [{ provide: FIREBASE_OPTIONS, useValue: environment.firebase }],
     bootstrap: [AppComponent],

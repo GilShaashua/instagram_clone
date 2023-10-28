@@ -17,12 +17,8 @@ import { AuthService } from './auth.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { User } from '../models/user.model';
 import cloneDeep from 'lodash-es/cloneDeep';
-import {
-    getDownloadURL,
-    ref,
-    Storage,
-    uploadBytesResumable,
-} from '@angular/fire/storage';
+import { Storage } from '@angular/fire/storage';
+import { NgxImageCompressService } from 'ngx-image-compress';
 
 @Injectable({
     providedIn: 'root',
@@ -32,6 +28,7 @@ export class PostService {
         private db: AngularFirestore,
         private authService: AuthService,
         private storage: Storage,
+        private imageCompress: NgxImageCompressService,
     ) {}
 
     private _posts$ = new BehaviorSubject<Post[]>([]);
@@ -215,39 +212,77 @@ export class PostService {
         });
     }
 
-    async uploadMedia(media: any) {
-        return new Promise<string>(async (resolve, reject) => {
-            try {
-                const randId = this._makeId();
-                const storageRef = ref(
-                    this.storage,
-                    `postsMedia/${media.name}${randId}`,
-                );
-                const uploadMedia = uploadBytesResumable(storageRef, media);
+    async uploadMedia() {
+        // return new Promise<string>(async (resolve, reject) => {
+        //     try {
+        //         const randId = this._makeId();
+        //         const storageRef = ref(
+        //             this.storage,
+        //             `postsMedia/${media.name}${randId}`,
+        //         );
+        //         const uploadMedia = uploadBytesResumable(storageRef, media);
+        //
+        //         uploadMedia.on(
+        //             'state_changed',
+        //             (snapshot) => {
+        //                 const progress =
+        //                     snapshot.bytesTransferred / snapshot.totalBytes;
+        //                 console.log(`Upload media is ${progress * 100}% done`);
+        //             },
+        //             (error) => {
+        //                 console.error(error);
+        //                 reject(error);
+        //             },
+        //             async () => {
+        //                 const mediaUrl = await getDownloadURL(
+        //                     uploadMedia.snapshot.ref,
+        //                 );
+        //
+        //                 resolve(mediaUrl);
+        //             },
+        //         );
+        //     } catch (error) {
+        //         reject(error);
+        //         throw error;
+        //     }
+        // });
 
-                uploadMedia.on(
-                    'state_changed',
-                    (snapshot) => {
-                        const progress =
-                            snapshot.bytesTransferred / snapshot.totalBytes;
-                        console.log(`Upload media is ${progress * 100}% done`);
-                    },
-                    (error) => {
-                        console.error(error);
-                        reject(error); // Reject the promise on error
-                    },
-                    async () => {
-                        const mediaUrl = await getDownloadURL(
-                            uploadMedia.snapshot.ref,
-                        );
-                        resolve(mediaUrl); // Resolve the promise with the media URL
-                    },
-                );
-            } catch (error) {
-                reject(error); // Reject the promise in case of any other errors
-                throw error;
-            }
-        });
+        try {
+            const { image, orientation } =
+                await this.imageCompress.uploadFile();
+            console.log('orientation', orientation);
+            console.log(
+                'Size in bytes of the uploaded image was:',
+                this.imageCompress.byteCount(image),
+            );
+
+            const compressedImage = await this.imageCompress.compressFile(
+                image,
+                orientation,
+                50,
+                50,
+            );
+
+            console.log(
+                'Size in bytes after compression is now:',
+                this.imageCompress.byteCount(compressedImage),
+            );
+
+            return compressedImage;
+        } catch (err: any) {
+            console.error(err);
+            return null;
+        }
+
+        // try {
+        //     const MAX_MEGABYTE = 10;
+        //     return await this.imageCompress.uploadAndGetImageWithMaxSize(
+        //         MAX_MEGABYTE,
+        //     );
+        // } catch (err: any) {
+        //     console.error(err);
+        //     return null;
+        // }
     }
 
     async createPost(post: Post) {
