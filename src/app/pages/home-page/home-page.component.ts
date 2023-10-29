@@ -89,5 +89,9 @@ export class HomePageComponent implements OnInit, OnDestroy {
         );
     }
 
+    onAddComment({ comment, post }: any) {
+        this.postService.addComment(comment, post);
+    }
+
     ngOnDestroy() {}
 }

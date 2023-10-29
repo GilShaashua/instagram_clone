@@ -5,6 +5,7 @@ import {
     combineLatest,
     firstValueFrom,
     map,
+    Observable,
     retry,
     switchMap,
     take,
@@ -17,8 +18,8 @@ import { AuthService } from './auth.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { User } from '../models/user.model';
 import cloneDeep from 'lodash-es/cloneDeep';
-import { Storage } from '@angular/fire/storage';
 import { NgxImageCompressService } from 'ngx-image-compress';
+import { Comment } from '../models/comment.model.';
 
 @Injectable({
     providedIn: 'root',
@@ -27,7 +28,6 @@ export class PostService {
     constructor(
         private db: AngularFirestore,
         private authService: AuthService,
-        private storage: Storage,
         private imageCompress: NgxImageCompressService,
     ) {}
 
@@ -273,16 +273,6 @@ export class PostService {
             console.error(err);
             return null;
         }
-
-        // try {
-        //     const MAX_MEGABYTE = 10;
-        //     return await this.imageCompress.uploadAndGetImageWithMaxSize(
-        //         MAX_MEGABYTE,
-        //     );
-        // } catch (err: any) {
-        //     console.error(err);
-        //     return null;
-        // }
     }
 
     async createPost(post: Post) {
@@ -297,6 +287,23 @@ export class PostService {
             .collection('posts')
             .doc(docData.id)
             .update({ _id: docData.id });
+    }
+
+    getCommentsByPostId(postId: string) {
+        const postsRef = this.db.collection('comments', (ref) =>
+            ref.where('postId', '==', postId).orderBy('createdAt', 'desc'),
+        );
+        return postsRef.valueChanges() as Observable<Comment[]>;
+    }
+
+    async addComment(comment: Comment, post: Post) {
+        comment.createdAt = Date.now();
+
+        const commentRef = await this.db.collection('comments').add(comment);
+        await this.db
+            .collection('comments')
+            .doc(commentRef.id)
+            .update({ _id: commentRef.id, parentId: commentRef.id });
     }
 
     private _makeId(length = 5) {

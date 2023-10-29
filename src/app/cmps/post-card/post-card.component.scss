@@ -6,6 +6,7 @@
         flex-direction: column;
         justify-content: center;
         gap: 1em;
+        position: relative;
 
         img {
             &.paris {
@@ -134,6 +135,122 @@
                     color: #919191;
                     font-size: 14px;
                     cursor: pointer;
+                }
+            }
+        }
+
+        .comment-modal {
+            padding-inline: 1.5em;
+            padding-block: 5em;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 30;
+            width: 100%;
+            height: 100vh;
+            background-color: #000000;
+            border-block-start: 1px solid rgba(245, 245, 245, 0.42);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 1em;
+
+            .btn-close {
+                position: absolute;
+                right: 2em;
+                background-color: #000000;
+                cursor: pointer;
+                border: none;
+                padding: 0.4em;
+            }
+
+            .comments {
+                overflow: auto;
+            }
+
+            .comment-list {
+                ul {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 2em;
+
+                    .comment {
+                        display: flex;
+                        align-items: flex-start;
+                        gap: 0.6em;
+
+                        img {
+                            width: 30px;
+                            border-radius: 50%;
+                        }
+
+                        .content {
+                            display: flex;
+                            flex-direction: column;
+                            gap: 0.5em;
+
+                            .inner-container {
+                                display: flex;
+                                align-items: center;
+                                gap: 0.4em;
+
+                                .fullname {
+                                    font-size: 12px;
+                                    font-weight: bolder;
+                                }
+
+                                .created-at {
+                                    color: #919191;
+                                    font-size: 13px;
+                                }
+                            }
+
+                            button {
+                                background-color: #000000;
+                                border: none;
+                                color: whitesmoke;
+                                width: fit-content;
+                                padding-inline-end: 0.8em;
+                            }
+                        }
+                    }
+                }
+            }
+
+            form {
+                display: flex;
+                align-items: center;
+                gap: 1em;
+                height: 2em;
+
+                img {
+                    height: 100%;
+                    width: unset;
+                    border-radius: 50%;
+                }
+
+                input {
+                    flex: 3;
+                    height: 100%;
+                    border: none;
+                    color: whitesmoke;
+                    background-color: #000000;
+
+                    &::placeholder {
+                        color: whitesmoke;
+                        font-family: Arial, sans-serif;
+                    }
+                }
+
+                button {
+                    flex: 1;
+                    height: 100%;
+                    border: none;
+                    cursor: pointer;
+                    background-color: transparent;
+                    color: rgb(0, 149, 246);
+                    font-size: 17px;
+                    font-weight: bolder;
                 }
             }
         }
