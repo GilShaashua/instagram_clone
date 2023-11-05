@@ -44,10 +44,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
 
         this.isToggleLikeProcessing = true;
 
-        const test = await this.postService.toggleLike(
-            payload.isLikeClicked,
-            payload.post,
-        );
+        await this.postService.toggleLike(payload.isLikeClicked, payload.post);
 
         this.isToggleLikeProcessing = false;
     }

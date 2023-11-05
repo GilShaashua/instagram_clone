@@ -33,6 +33,7 @@ import { KababCasePipe } from './pipes/kabab-case.pipe';
 import { NotificationListComponent } from './cmps/notification-list/notification-list.component';
 import { NotificationPreviewComponent } from './cmps/notification-preview/notification-preview.component';
 import { CommentsModalComponent } from './cmps/comments-modal/comments-modal.component';
+import { MoreOptionsModalComponent } from './cmps/more-options-modal/more-options-modal.component';
 
 firebase.initializeApp(environment.firebase);
 
@@ -59,6 +60,7 @@ firebase.initializeApp(environment.firebase);
         NotificationListComponent,
         NotificationPreviewComponent,
         CommentsModalComponent,
+        MoreOptionsModalComponent,
     ],
     imports: [
         BrowserModule,

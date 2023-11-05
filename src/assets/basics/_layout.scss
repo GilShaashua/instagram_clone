@@ -46,10 +46,9 @@
     @include for-narrow-layout {
         display: grid;
         grid-column: 2;
-        grid-template-columns: minmax(25px, 1fr) minmax(
-                auto,
-                $mobile-breakpoint
-            ) minmax(25px, 1fr);
+        grid-template-columns:
+            minmax(25px, 1fr) minmax(auto, $mobile-breakpoint)
+            minmax(25px, 1fr);
     }
 
     // @include for-normal-layout {

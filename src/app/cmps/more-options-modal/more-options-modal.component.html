@@ -1,0 +1,10 @@
+<div class="more-options-modal" *ngIf="loggedInUser">
+    <ul>
+        <li
+            (click)="toggleFollow()"
+            *ngIf="creator._id !== loggedInUser!.user!.uid"
+        >
+            {{ isFollowClicked ? "Following" : "Follow" }}
+        </li>
+    </ul>
+</div>

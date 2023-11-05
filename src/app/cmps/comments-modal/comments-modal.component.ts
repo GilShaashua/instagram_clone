@@ -5,6 +5,7 @@ import {
     OnDestroy,
     OnInit,
     Output,
+    Renderer2,
 } from '@angular/core';
 import { firstValueFrom, Subscription, switchMap } from 'rxjs';
 import { Comment } from '../../models/comment.model.';
@@ -23,6 +24,7 @@ export class CommentsModalComponent implements OnInit, OnDestroy {
     constructor(
         private postService: PostService,
         private authService: AuthService,
+        private renderer: Renderer2,
     ) {}
 
     @Input() post!: Post;
@@ -43,6 +45,7 @@ export class CommentsModalComponent implements OnInit, OnDestroy {
     commentsSubscription!: Subscription;
 
     ngOnInit() {
+        this.renderer.addClass(document.body, 'body-unscrollable');
         this.comment.postId = this.post._id;
         this.comment.createdByUserId = this.loggedInUser!.user!.uid;
         this.commentsSubscription = this.postService
@@ -79,5 +82,6 @@ export class CommentsModalComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         this.commentsSubscription?.unsubscribe();
+        this.renderer.removeClass(document.body, 'body-unscrollable');
     }
 }

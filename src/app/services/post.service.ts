@@ -48,7 +48,7 @@ export class PostService {
                 const uniqueUserIds = Array.from(new Set(userIds));
 
                 if (!uniqueUserIds.length) {
-                    return [posts];
+                    return [...posts];
                 }
 
                 return combineLatest(
@@ -83,7 +83,9 @@ export class PostService {
                 const loggedInUserFromDB$ = this.db
                     .collection('users')
                     .doc(loggedInUser?.user?.uid)
-                    .valueChanges();
+                    .valueChanges()
+                    .pipe(take(1));
+
                 const loggedInUserFromDB: User | unknown =
                     await firstValueFrom(loggedInUserFromDB$);
 
@@ -161,6 +163,7 @@ export class PostService {
                             };
                             posts.splice(postToEditIdx, 1, postToFront);
                             this._posts$.next([...posts]);
+
                             resolve('Add like done');
                         },
                     });

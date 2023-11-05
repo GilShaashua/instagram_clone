@@ -27,15 +27,11 @@
             <circle cx="18" cy="12" r="1.5"></circle>
         </svg>
 
-        <div class="more-options-modal" *ngIf="isMoreOptionsModalShown">
-            <ul>
-                <li
-                    (click)="toggleFollow()"
-                    *ngIf="creator._id !== loggedInUser!.user!.uid"
-                >
-                    {{ isFollowClicked ? "Following" : "Follow" }}
-                </li>
-            </ul>
-        </div>
+        <more-options-modal
+            *ngIf="isMoreOptionsModalShown"
+            [post]="post"
+            [creator]="creator"
+            (onToggleFollow)="onToggleFollow.emit($event)"
+        ></more-options-modal>
     </button>
 </div>

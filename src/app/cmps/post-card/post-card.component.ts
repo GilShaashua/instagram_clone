@@ -99,6 +99,5 @@ export class PostCardComponent implements OnInit {
 
     onToggleCommentModal() {
         this.isCommentModalShown = !this.isCommentModalShown;
-        document.body.classList.toggle('body-unscrollable');
     }
 }
