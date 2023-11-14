@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { take } from 'rxjs';
@@ -9,7 +9,7 @@ import { PostService } from '../../services/post.service';
     templateUrl: './login-page.component.html',
     styleUrls: ['./login-page.component.scss'],
 })
-export class LoginPageComponent implements OnInit, OnDestroy {
+export class LoginPageComponent {
     userCred = { fullName: '', email: '', password: '' };
     isLogInFormShown = true;
 
@@ -18,10 +18,6 @@ export class LoginPageComponent implements OnInit, OnDestroy {
         private postService: PostService,
         private router: Router,
     ) {}
-
-    ngOnInit() {
-        // console.log('Login Page Mounted!');
-    }
 
     async onLogInWithGoogle() {
         try {
@@ -75,16 +71,5 @@ export class LoginPageComponent implements OnInit, OnDestroy {
         } catch (err: any) {
             console.error(err.message);
         }
-    }
-
-    ngOnDestroy() {
-        this.postService
-            .getPosts()
-            .pipe(take(1))
-            .subscribe({
-                error: (err: any) => {
-                    console.error(err);
-                },
-            });
     }
 }

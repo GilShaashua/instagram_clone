@@ -105,13 +105,6 @@ export class AuthService {
                     if (data.exists) {
                         const userData: any = data.data();
 
-                        if (!userData.notifications) {
-                            await this.db
-                                .collection('users')
-                                .doc(auth.user!.uid)
-                                .update({ notifications: [] });
-                        }
-
                         if (!userData._id) {
                             await this.db
                                 .collection('users')
@@ -126,8 +119,7 @@ export class AuthService {
                                 .update({
                                     fullName:
                                         userCred?.fullName ||
-                                        // @ts-ignore
-                                        auth.additionalUserInfo?.profile?.name,
+                                        auth.user?.displayName,
                                 });
                         }
                         if (!userData.imgUrl) {
@@ -160,14 +152,12 @@ export class AuthService {
                                 _id: auth.user!.uid,
                                 fullName:
                                     userCred?.fullName ||
-                                    // @ts-ignore
-                                    auth.additionalUserInfo?.profile?.name,
+                                    auth.user?.displayName,
                                 imgUrl:
                                     auth.user!.photoURL ||
                                     'https://res.cloudinary.com/dpbcaizq9/image/upload/v1686066256/user_jsqpzw.png',
                                 followedByUsers: [],
                                 followingUsers: [],
-                                notifications: [],
                             });
                     }
                 },

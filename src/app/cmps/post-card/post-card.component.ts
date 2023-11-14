@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Post } from '../../models/post.model';
 import { AuthService } from '../../services/auth.service';
-import { firstValueFrom, switchMap, take } from 'rxjs';
+import { firstValueFrom, take } from 'rxjs';
 import { User } from '../../models/user.model';
 import cloneDeep from 'lodash-es/cloneDeep';
 import { PostService } from '../../services/post.service';
@@ -39,7 +39,30 @@ export class PostCardComponent implements OnInit {
     isCommentModalShown = false;
     commentsLength = 0;
 
-    ngOnInit() {
+    async ngOnInit() {
+        if (this.post.likedByUsers.length) {
+            const usersPrms = this.post.likedByUsers.map(
+                async (likedByUser) => {
+                    const user$ = this.authService
+                        .getUserById(likedByUser as unknown as string)
+                        .pipe(take(1));
+
+                    return await firstValueFrom(user$);
+                },
+            );
+
+            this.post.likedByUsers = await Promise.all(usersPrms);
+        }
+
+        this.postService
+            .getCommentsByPostId(this.post._id)
+            .pipe(take(1))
+            .subscribe({
+                next: (comments) => {
+                    this.commentsLength = comments.length;
+                },
+            });
+
         this.authService
             .getUserById(this.post.creatorId)
             .pipe(take(1))
@@ -51,32 +74,6 @@ export class PostCardComponent implements OnInit {
                             likedByUser._id === this.loggedInUser?.user?.uid,
                     );
                     if (isLikeClicked) this.isLikeClicked = true;
-                },
-            });
-
-        this.postService
-            .getCommentsByPostId(this.post._id)
-            .pipe(
-                take(1),
-                switchMap(async (comments) => {
-                    const getUserPromises = comments.map(async (comment) => {
-                        const createdByUser$ = this.authService.getUserById(
-                            comment.createdByUserId as string,
-                        );
-                        const createdByUser =
-                            await firstValueFrom(createdByUser$);
-
-                        comment.createdByUserId = createdByUser;
-
-                        return comment;
-                    });
-
-                    return await Promise.all(getUserPromises);
-                }),
-            )
-            .subscribe({
-                next: (comments) => {
-                    this.commentsLength = comments.length;
                     this.isComponentInitialized = true;
                 },
             });

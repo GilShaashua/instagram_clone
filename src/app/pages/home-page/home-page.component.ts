@@ -24,19 +24,17 @@ export class HomePageComponent implements OnInit, OnDestroy {
     isComponentInitialized = false;
     isToggleLikeProcessing = false;
 
-    ngOnInit() {
-        this.postService
-            .getPosts()
-            .pipe(take(1))
-            .subscribe({
-                error: (err: any) => {
-                    console.error(err);
-                },
-                complete: () => {
-                    this.posts$ = this.postService.posts$;
-                    this.isComponentInitialized = true;
-                },
-            });
+    async ngOnInit() {
+        const posts = await this.postService.getPosts();
+        posts!.pipe(take(1)).subscribe({
+            error: (err: any) => {
+                console.error(err);
+            },
+            complete: () => {
+                this.posts$ = this.postService.posts$;
+                this.isComponentInitialized = true;
+            },
+        });
     }
 
     async onToggleLike(payload: { post: Post; isLikeClicked: boolean }) {
