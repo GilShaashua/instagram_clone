@@ -34,6 +34,7 @@ import { NotificationListComponent } from './cmps/notification-list/notification
 import { NotificationPreviewComponent } from './cmps/notification-preview/notification-preview.component';
 import { CommentsModalComponent } from './cmps/comments-modal/comments-modal.component';
 import { MoreOptionsModalComponent } from './cmps/more-options-modal/more-options-modal.component';
+import { SearchModalComponent } from './cmps/search-modal/search-modal.component';
 
 firebase.initializeApp(environment.firebase);
 
@@ -61,6 +62,7 @@ firebase.initializeApp(environment.firebase);
         NotificationPreviewComponent,
         CommentsModalComponent,
         MoreOptionsModalComponent,
+        SearchModalComponent,
     ],
     imports: [
         BrowserModule,

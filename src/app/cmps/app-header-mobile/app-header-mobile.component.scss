@@ -9,27 +9,63 @@
     top: 0;
     border-block-end: 1px solid rgba(255, 255, 255, 0.27);
     background-color: #000000;
-    
-    
+
     & > * {
         grid-column: 2;
     }
-    
+
     @include for-narrow-layout {
         display: none;
-        
     }
-    
+
     .app-header-mobile {
         display: flex;
         justify-content: space-between;
         align-items: center;
         height: 60px;
-        
+        gap: 1em;
+
         .logo {
             display: flex;
             align-items: center;
             cursor: pointer;
+        }
+
+        .search-container {
+            display: flex;
+            align-items: center;
+            gap: 0.8em;
+            background-color: rgb(38, 38, 38);
+            height: 2.5em;
+            padding-inline: 1em;
+            border-radius: 0.5em;
+
+            svg {
+                transform: scale(120%);
+
+                path {
+                    color: #919191;
+                }
+
+                line {
+                    color: #919191;
+                }
+            }
+
+            #search {
+                background-color: transparent;
+                border: none;
+                height: 100%;
+                color: whitesmoke;
+                font-size: 16px;
+                width: 100%;
+
+                &::placeholder {
+                    font-size: 16px;
+                    font-style: italic;
+                    color: #919191;
+                }
+            }
         }
     }
 }

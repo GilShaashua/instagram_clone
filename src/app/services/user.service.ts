@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { User } from '../models/user.model';
 import { Post } from '../models/post.model';
-import { lastValueFrom, take } from 'rxjs';
+import { firstValueFrom, lastValueFrom, Observable, of, take } from 'rxjs';
 import cloneDeep from 'lodash-es/cloneDeep';
 import { AuthService } from './auth.service';
 import firebase from 'firebase/compat';
@@ -94,5 +94,22 @@ export class UserService {
             .update({
                 followingUsers: (loggedInUserFromDB as User).followingUsers,
             });
+    }
+
+    async getUsers(filterBy: { account: string }) {
+        if (filterBy.account) {
+            const users$ = this.db.collection('users').valueChanges();
+
+            let users = await firstValueFrom(users$);
+
+            const regExp = new RegExp(filterBy.account, 'i');
+            users = users.filter((user: any) => regExp.test(user.fullName));
+
+            return of(users);
+        } else {
+            return this.db.collection('users').valueChanges() as Observable<
+                User[]
+            >;
+        }
     }
 }

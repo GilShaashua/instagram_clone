@@ -1,0 +1,16 @@
+:host {
+    position: fixed;
+    top: 61px;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000000;
+    overflow: auto;
+    display: grid;
+    grid-template-columns: 25px 1fr 25px;
+
+    .search-modal {
+        grid-column: 2;
+        padding-block: 1.5em;
+    }
+}
