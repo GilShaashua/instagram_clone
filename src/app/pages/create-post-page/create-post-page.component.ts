@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { PostService } from '../../services/post.service';
 import { Post } from '../../models/post.model';
 import { Router } from '@angular/router';
+import { UserService } from '../../services/user.service';
 
 @Component({
     selector: 'create-post-page',
@@ -15,7 +16,10 @@ export class CreatePostPageComponent {
     constructor(
         private postService: PostService,
         private router: Router,
-    ) {}
+        private userService: UserService,
+    ) {
+        this.userService.setIsSearchModalShown(false);
+    }
 
     isSelectMediaShown: boolean = true;
     isFilterMediaShown: boolean = false;

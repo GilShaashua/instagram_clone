@@ -1,0 +1,21 @@
+<li *ngIf="isComponentInitialized">
+    <div class="user-content">
+        <img [src]="user.imgUrl" alt="user" />
+        <div class="content">
+            <span>{{ user.fullName }}</span>
+        </div>
+    </div>
+
+    <button
+        class="btn-toggle-follow"
+        [ngClass]="{
+            'btn-toggle-follow-following': isFollowClicked,
+            disabled: isToggleFollowProcessing
+        }"
+        (click)="onToggleFollow()"
+        *ngIf="loggedInUser._id !== user._id"
+        [disabled]="isToggleFollowProcessing"
+    >
+        {{ isFollowClicked ? "Following" : "Follow" }}
+    </button>
+</li>

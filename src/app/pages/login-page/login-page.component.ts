@@ -3,6 +3,7 @@ import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { take } from 'rxjs';
 import { PostService } from '../../services/post.service';
+import { UserService } from '../../services/user.service';
 
 @Component({
     selector: 'login-page',
@@ -17,7 +18,10 @@ export class LoginPageComponent {
         private authService: AuthService,
         private postService: PostService,
         private router: Router,
-    ) {}
+        private userService: UserService,
+    ) {
+        this.userService.setIsSearchModalShown(false);
+    }
 
     async onLogInWithGoogle() {
         try {

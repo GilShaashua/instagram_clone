@@ -3,7 +3,12 @@
     <h4>{{ user.fullName }}</h4>
     <button
         *ngIf="user._id !== loggedInUser.user.uid"
-        [ngClass]="{ 'btn-toggle-follow': true, following: isFollowClicked }"
+        [ngClass]="{
+            'btn-toggle-follow': true,
+            following: isFollowClicked,
+            disabled: isToggleFollowProcessing
+        }"
+        [disabled]="isToggleFollowProcessing"
         (click)="toggleFollow()"
     >
         {{ isFollowClicked ? "Following" : "Follow" }}

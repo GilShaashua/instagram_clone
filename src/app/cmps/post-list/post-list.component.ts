@@ -14,7 +14,6 @@ export class PostListComponent {
         isLikeClicked: boolean;
     }>();
     @Output() onToggleFollow = new EventEmitter<{
-        post: Post;
         user: User;
         isFollowClicked: boolean;
     }>();

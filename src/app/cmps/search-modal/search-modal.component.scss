@@ -12,5 +12,28 @@
     .search-modal {
         grid-column: 2;
         padding-block: 1.5em;
+
+        ul {
+            display: flex;
+            flex-direction: column;
+            gap: 1.3em;
+            position: relative;
+            padding-block-end: 8em;
+            padding-block-start: 2em;
+        }
+
+        .btn-close {
+            position: fixed;
+            top: 88px;
+            right: 29px;
+            border: none;
+            width: fit-content;
+            background-color: transparent;
+            display: flex;
+            align-items: center;
+            padding-inline-start: 0.8em;
+            padding-block-end: 0.8em;
+            align-self: end;
+        }
     }
 }

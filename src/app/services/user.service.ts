@@ -1,7 +1,13 @@
 import { Injectable } from '@angular/core';
 import { User } from '../models/user.model';
-import { Post } from '../models/post.model';
-import { firstValueFrom, lastValueFrom, Observable, of, take } from 'rxjs';
+import {
+    BehaviorSubject,
+    firstValueFrom,
+    lastValueFrom,
+    Observable,
+    of,
+    take,
+} from 'rxjs';
 import cloneDeep from 'lodash-es/cloneDeep';
 import { AuthService } from './auth.service';
 import firebase from 'firebase/compat';
@@ -17,12 +23,24 @@ export class UserService {
         private db: AngularFirestore,
     ) {}
 
-    async toggleFollow(isFollowClicked: boolean, user: User, post: Post) {
-        if (isFollowClicked) await this.addFollow(user, post);
-        else await this.removeFollow(user, post);
+    private _isSearchModalShown$ = new BehaviorSubject(false);
+    public isSearchModalShown$ = this._isSearchModalShown$.asObservable();
+
+    async toggleFollow(isFollowClicked: boolean, user: User) {
+        if (isFollowClicked) {
+            return new Promise<string>(async (resolve) => {
+                await this.addFollow(user);
+                resolve('Add follow completed successfully!');
+            });
+        } else {
+            return new Promise<string>(async (resolve) => {
+                await this.removeFollow(user);
+                resolve('Remove follow completed successfully!');
+            });
+        }
     }
 
-    async addFollow(user: User, post: Post) {
+    async addFollow(user: User) {
         this.authService.loggedInUser$.pipe(take(1)).subscribe({
             next: async (loggedInUser: UserCredential | null) => {
                 await this.db
@@ -57,7 +75,7 @@ export class UserService {
             });
     }
 
-    async removeFollow(user: User, post: Post) {
+    async removeFollow(user: User) {
         const loggedInUser$ = this.authService.loggedInUser$.pipe(take(1));
         const loggedInUser = await lastValueFrom(loggedInUser$);
         const loggedInUserFromDB$ = this.db
@@ -111,5 +129,9 @@ export class UserService {
                 User[]
             >;
         }
+    }
+
+    setIsSearchModalShown(value: boolean) {
+        this._isSearchModalShown$.next(value);
     }
 }

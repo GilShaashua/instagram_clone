@@ -56,13 +56,16 @@
             name="search"
             id="search"
             placeholder="Search"
-            (input)="onSearch()"
-            (click)="isSearchModalShown = !isSearchModalShown"
+            (input)="getUsers()"
+            (click)="onToggleSearchModal(true)"
         />
 
         <search-modal
             *ngIf="isSearchModalShown"
             [users]="users$ | async"
+            (closeModal)="onToggleSearchModal($event)"
+            (getUsers)="getUsers()"
+            (toggleFollow)="onToggleFollow($event)"
         ></search-modal>
     </div>
 </header>

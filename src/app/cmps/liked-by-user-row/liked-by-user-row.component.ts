@@ -14,13 +14,13 @@ export class LikedByUserRowComponent implements OnInit {
     @Input() post!: Post;
     @Input() user!: User;
     @Output() onToggleFollow = new EventEmitter<{
-        post: Post;
         user: User;
         isFollowClicked: boolean;
     }>();
     isFollowClicked: boolean = false;
     isComponentInitialized = false;
     loggedInUser!: any;
+    isToggleFollowProcessing = false;
 
     async ngOnInit() {
         const userFromDB$ = this.authService.getUserById(this.user._id);
@@ -38,11 +38,17 @@ export class LikedByUserRowComponent implements OnInit {
     }
 
     toggleFollow() {
+        if (this.isToggleFollowProcessing) return;
+
+        this.isToggleFollowProcessing = true;
+
         this.isFollowClicked = !this.isFollowClicked;
+
         this.onToggleFollow.emit({
-            post: this.post,
             user: this.user,
             isFollowClicked: this.isFollowClicked,
         });
+
+        this.isToggleFollowProcessing = false;
     }
 }

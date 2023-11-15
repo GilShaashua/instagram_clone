@@ -29,6 +29,10 @@
             transition: all 0.2s ease-in-out;
             flex: 2;
 
+            &.disabled {
+                cursor: not-allowed;
+            }
+
             &:hover {
                 background-color: rgb(2, 132, 213);
             }

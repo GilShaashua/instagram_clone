@@ -18,7 +18,9 @@ export class HomePageComponent implements OnInit, OnDestroy {
         private authService: AuthService,
         private userService: UserService,
         private notificationService: NotificationService,
-    ) {}
+    ) {
+        this.userService.setIsSearchModalShown(false);
+    }
 
     posts$!: Observable<Post[]>;
     isComponentInitialized = false;
@@ -47,25 +49,19 @@ export class HomePageComponent implements OnInit, OnDestroy {
         this.isToggleLikeProcessing = false;
     }
 
-    onToggleFollow(payload: {
-        post: Post;
-        user: User;
+    onToggleFollow({
+        isFollowClicked,
+        user,
+    }: {
         isFollowClicked: boolean;
+        user: User;
     }) {
         this.authService
-            .getUserById(payload.user._id)
+            .getUserById(user._id)
             .pipe(take(1))
-            .subscribe(async (user: any) => {
-                payload.user = user;
-                await this.userService.toggleFollow(
-                    payload.isFollowClicked,
-                    payload.user,
-                    payload.post,
-                );
-
-                // const posts$ = this.postService.getPosts().pipe(take(1));
-                // const posts = await lastValueFrom(posts$);
-                // console.log('posts refreshed after toggleFollow', posts);
+            .subscribe(async (_user: any) => {
+                user = _user;
+                await this.userService.toggleFollow(isFollowClicked, user);
             });
     }
 

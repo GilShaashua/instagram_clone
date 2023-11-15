@@ -23,7 +23,6 @@ export class PostCardComponent implements OnInit {
         isLikeClicked: boolean;
     }>();
     @Output() onToggleFollow = new EventEmitter<{
-        post: Post;
         user: User;
         isFollowClicked: boolean;
     }>();

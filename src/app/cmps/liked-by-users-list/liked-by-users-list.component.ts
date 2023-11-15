@@ -22,7 +22,6 @@ export class LikedByUsersListComponent implements OnInit, OnDestroy {
     @Input() isLikedByUsersModalShown!: boolean;
     @Output() onToggleLikedByUsersModal = new EventEmitter<boolean>();
     @Output() onToggleFollow = new EventEmitter<{
-        post: Post;
         user: User;
         isFollowClicked: boolean;
     }>();
