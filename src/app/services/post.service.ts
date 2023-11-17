@@ -12,7 +12,6 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AuthService } from './auth.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { User } from '../models/user.model';
-import cloneDeep from 'lodash-es/cloneDeep';
 import { NgxImageCompressService } from 'ngx-image-compress';
 import { Comment } from '../models/comment.model.';
 
@@ -104,36 +103,39 @@ export class PostService {
     async removeLike(post: Post) {
         return new Promise<string>(async (resolve, reject) => {
             try {
-                const deepCopyOfPost = cloneDeep(post);
                 const loggedInUser = this.authService.getLoggedInUser();
                 const loggedInUserId = loggedInUser!.user!.uid;
-                const likedByUserIdx = deepCopyOfPost.likedByUsers.findIndex(
-                    (likedByUser) => likedByUser._id === loggedInUserId,
+
+                post.likedByUsers = post.likedByUsers.map(
+                    (likedByUser: any) => {
+                        return likedByUser._id;
+                    },
                 );
 
-                deepCopyOfPost.likedByUsers.splice(likedByUserIdx, 1);
-                deepCopyOfPost.likedByUsers = deepCopyOfPost.likedByUsers.map(
-                    (likedByUser) => likedByUser._id,
-                ) as unknown as User[];
-                await this.db
-                    .collection('posts')
-                    .doc(deepCopyOfPost._id)
-                    .update({
-                        likedByUsers: [...deepCopyOfPost.likedByUsers],
-                    });
-                const posts = this._posts$.value;
-                const postToEditIdx = posts.findIndex(
-                    (_post) => _post._id === post._id,
+                const likedByUserIdx = post.likedByUsers.findIndex(
+                    (likedByUser: User | string) =>
+                        likedByUser === loggedInUserId,
                 );
 
                 post.likedByUsers.splice(likedByUserIdx, 1);
 
-                const postToFront = {
-                    ...post,
-                    likedByUsers: [...post.likedByUsers],
-                };
-                posts.splice(postToEditIdx, 1, postToFront as unknown as Post);
+                await this.db
+                    .collection('posts')
+                    .doc(post._id)
+                    .update({
+                        likedByUsers: [...post.likedByUsers],
+                    });
+
+                const posts = this._posts$.value;
+
+                const postToEditIdx = posts.findIndex(
+                    (_post) => _post._id === post._id,
+                );
+
+                posts.splice(postToEditIdx, 1, post);
+
                 this._posts$.next([...posts]);
+
                 resolve('Remove like done');
             } catch (err: any) {
                 resolve('Remove like failed!');
@@ -143,40 +145,6 @@ export class PostService {
     }
 
     async uploadMedia() {
-        // return new Promise<string>(async (resolve, reject) => {
-        //     try {
-        //         const randId = this._makeId();
-        //         const storageRef = ref(
-        //             this.storage,
-        //             `postsMedia/${media.name}${randId}`,
-        //         );
-        //         const uploadMedia = uploadBytesResumable(storageRef, media);
-        //
-        //         uploadMedia.on(
-        //             'state_changed',
-        //             (snapshot) => {
-        //                 const progress =
-        //                     snapshot.bytesTransferred / snapshot.totalBytes;
-        //                 console.log(`Upload media is ${progress * 100}% done`);
-        //             },
-        //             (error) => {
-        //                 console.error(error);
-        //                 reject(error);
-        //             },
-        //             async () => {
-        //                 const mediaUrl = await getDownloadURL(
-        //                     uploadMedia.snapshot.ref,
-        //                 );
-        //
-        //                 resolve(mediaUrl);
-        //             },
-        //         );
-        //     } catch (error) {
-        //         reject(error);
-        //         throw error;
-        //     }
-        // });
-
         try {
             const { image, orientation } =
                 await this.imageCompress.uploadFile();

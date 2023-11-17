@@ -8,6 +8,5 @@ export interface Post {
     imgUrl: string;
     content: string;
     likedByUsers: User[];
-    comments: any;
     filterSelected: string;
 }

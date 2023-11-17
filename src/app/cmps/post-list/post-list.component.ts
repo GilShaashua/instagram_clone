@@ -19,4 +19,8 @@ export class PostListComponent {
     }>();
     @Output() onAddNotification = new EventEmitter<Post>();
     @Output() onAddComment = new EventEmitter();
+
+    trackByPostId(idx: number, post: Post) {
+        return post._id;
+    }
 }

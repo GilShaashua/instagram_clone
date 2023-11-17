@@ -1,6 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import { PostService } from '../services/post.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -12,10 +11,7 @@ export class AppComponent implements OnInit, OnDestroy {
     routerUrl = this.router.url;
     routerUrlSubscription!: Subscription;
 
-    constructor(
-        private router: Router,
-        private postService: PostService,
-    ) {}
+    constructor(private router: Router) {}
 
     async ngOnInit() {
         this.routerUrlSubscription = this.router.events.subscribe((event) => {

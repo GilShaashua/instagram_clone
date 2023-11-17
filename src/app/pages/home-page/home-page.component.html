@@ -1,10 +1,21 @@
 <section *ngIf="posts$ | async as posts" class="home-page">
     <post-list
-        *ngIf="isComponentInitialized"
+        *ngIf="isComponentInitialized && posts.length; else noPostsTemplate"
         (onToggleLike)="onToggleLike($event)"
         (onToggleFollow)="onToggleFollow($event)"
         (onAddNotification)="onAddNotification($event)"
         (onAddComment)="onAddComment($event)"
         [posts]="posts"
     ></post-list>
+
+    <ng-template #noPostsTemplate>
+        <div class="page-cmp-layout">
+            <p>
+                No posts to show! <br />
+                <span (click)="navigateToCreatePost()"
+                    >Let's upload your first post.</span
+                >
+            </p>
+        </div>
+    </ng-template>
 </section>

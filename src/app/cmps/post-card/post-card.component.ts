@@ -1,9 +1,15 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+    Component,
+    EventEmitter,
+    Input,
+    OnDestroy,
+    OnInit,
+    Output,
+} from '@angular/core';
 import { Post } from '../../models/post.model';
 import { AuthService } from '../../services/auth.service';
-import { firstValueFrom, take } from 'rxjs';
+import { firstValueFrom, Subscription, take } from 'rxjs';
 import { User } from '../../models/user.model';
-import cloneDeep from 'lodash-es/cloneDeep';
 import { PostService } from '../../services/post.service';
 
 @Component({
@@ -11,7 +17,7 @@ import { PostService } from '../../services/post.service';
     templateUrl: './post-card.component.html',
     styleUrls: ['./post-card.component.scss'],
 })
-export class PostCardComponent implements OnInit {
+export class PostCardComponent implements OnInit, OnDestroy {
     constructor(
         private authService: AuthService,
         private postService: PostService,
@@ -37,21 +43,24 @@ export class PostCardComponent implements OnInit {
     isComponentInitialized = false;
     isCommentModalShown = false;
     commentsLength = 0;
+    postsSubscription!: Subscription;
 
     async ngOnInit() {
-        if (this.post.likedByUsers.length) {
-            const usersPrms = this.post.likedByUsers.map(
-                async (likedByUser) => {
-                    const user$ = this.authService
-                        .getUserById(likedByUser as unknown as string)
-                        .pipe(take(1));
+        this.postsSubscription = this.postService.posts$.subscribe({
+            next: async (posts) => {
+                const usersPrms = this.post.likedByUsers.map(
+                    async (likedByUser) => {
+                        const user$ = this.authService
+                            .getUserById(likedByUser as unknown as string)
+                            .pipe(take(1));
 
-                    return await firstValueFrom(user$);
-                },
-            );
+                        return await firstValueFrom(user$);
+                    },
+                );
 
-            this.post.likedByUsers = await Promise.all(usersPrms);
-        }
+                this.post.likedByUsers = await Promise.all(usersPrms);
+            },
+        });
 
         this.postService
             .getCommentsByPostId(this.post._id)
@@ -70,7 +79,9 @@ export class PostCardComponent implements OnInit {
                     this.creator = creator;
                     const isLikeClicked = this.post.likedByUsers.find(
                         (likedByUser: User) =>
-                            likedByUser._id === this.loggedInUser?.user?.uid,
+                            likedByUser._id === this.loggedInUser?.user?.uid ||
+                            likedByUser ===
+                                (this.loggedInUser?.user?.uid as User | string),
                     );
                     if (isLikeClicked) this.isLikeClicked = true;
                     this.isComponentInitialized = true;
@@ -82,7 +93,7 @@ export class PostCardComponent implements OnInit {
         this.isLikeClicked = !this.isLikeClicked;
 
         this.onToggleLike.emit({
-            post: cloneDeep(this.post),
+            post: this.post,
             isLikeClicked: this.isLikeClicked,
         });
 
@@ -95,5 +106,9 @@ export class PostCardComponent implements OnInit {
 
     onToggleCommentModal() {
         this.isCommentModalShown = !this.isCommentModalShown;
+    }
+
+    ngOnDestroy() {
+        this.postsSubscription.unsubscribe();
     }
 }

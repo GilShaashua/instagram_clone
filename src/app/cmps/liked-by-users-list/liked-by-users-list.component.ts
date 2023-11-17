@@ -34,6 +34,10 @@ export class LikedByUsersListComponent implements OnInit, OnDestroy {
         this.onToggleLikedByUsersModal.emit(!this.isLikedByUsersModalShown);
     }
 
+    trackByUserId(idx: number, user: User) {
+        return user._id;
+    }
+
     ngOnDestroy() {
         this.renderer.removeClass(document.body, 'body-unscrollable');
     }

@@ -42,7 +42,6 @@ export class CreatePostPageComponent {
         imgUrl: '',
         content: '',
         likedByUsers: [],
-        comments: [],
         filterSelected: 'normal',
     };
 

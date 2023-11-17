@@ -6,6 +6,7 @@ import { User } from '../../models/user.model';
 import { AuthService } from '../../services/auth.service';
 import { UserService } from '../../services/user.service';
 import { NotificationService } from '../../services/notification.service';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'home-page',
@@ -18,6 +19,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
         private authService: AuthService,
         private userService: UserService,
         private notificationService: NotificationService,
+        private router: Router,
     ) {
         this.userService.setIsSearchModalShown(false);
     }
@@ -82,6 +84,10 @@ export class HomePageComponent implements OnInit, OnDestroy {
 
     onAddComment({ comment, post }: any) {
         this.postService.addComment(comment, post);
+    }
+
+    navigateToCreatePost() {
+        this.router.navigateByUrl('/create-post');
     }
 
     ngOnDestroy() {}
