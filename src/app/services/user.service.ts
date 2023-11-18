@@ -12,7 +12,6 @@ import cloneDeep from 'lodash-es/cloneDeep';
 import { AuthService } from './auth.service';
 import firebase from 'firebase/compat';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import UserCredential = firebase.auth.UserCredential;
 
 @Injectable({
     providedIn: 'root',
@@ -42,14 +41,14 @@ export class UserService {
 
     async addFollow(user: User) {
         this.authService.loggedInUser$.pipe(take(1)).subscribe({
-            next: async (loggedInUser: UserCredential | null) => {
+            next: async (loggedInUser: firebase.User | null) => {
                 await this.db
                     .collection('users')
                     .doc(user._id)
                     .update({
                         followedByUsers: [
                             ...user.followedByUsers,
-                            loggedInUser?.user?.uid,
+                            loggedInUser?.uid,
                         ],
                     });
             },
@@ -59,7 +58,7 @@ export class UserService {
         const loggedInUser = await lastValueFrom(loggedInUser$);
         const loggedInUserFromDB$ = this.db
             .collection('users')
-            .doc(loggedInUser?.user?.uid)
+            .doc(loggedInUser.uid)
             .valueChanges()
             .pipe(take(1));
         const loggedInUserFromDB = await lastValueFrom(loggedInUserFromDB$);
@@ -80,14 +79,14 @@ export class UserService {
         const loggedInUser = await lastValueFrom(loggedInUser$);
         const loggedInUserFromDB$ = this.db
             .collection('users')
-            .doc(loggedInUser?.user?.uid)
+            .doc(loggedInUser.uid)
             .valueChanges()
             .pipe(take(1));
         const loggedInUserFromDB = await lastValueFrom(loggedInUserFromDB$);
         const followedByUsersDeepCopy = cloneDeep(user.followedByUsers);
         const followedByUserIdx = followedByUsersDeepCopy.findIndex(
             (followedByUser: User | string) =>
-                followedByUser === loggedInUser?.user?.uid,
+                followedByUser === loggedInUser.uid,
         );
 
         if (followedByUserIdx !== -1)

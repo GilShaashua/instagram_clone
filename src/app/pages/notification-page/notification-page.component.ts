@@ -25,15 +25,17 @@ export class NotificationPageComponent implements OnInit {
     notifications!: Notification[];
 
     async ngOnInit() {
-        this.notificationService
-            .getNotificationsForUser(
-                this.authService.getLoggedInUser()!.user!.uid,
-            )
-            .pipe(take(1))
-            .subscribe({
-                next: (notifications) => {
-                    this.notifications = notifications;
-                },
-            });
+        const loggedInUser = this.authService.getLoggedInUser().uid;
+
+        if (loggedInUser) {
+            this.notificationService
+                .getNotificationsForUser(loggedInUser)
+                .pipe(take(1))
+                .subscribe({
+                    next: (notifications) => {
+                        this.notifications = notifications;
+                    },
+                });
+        }
     }
 }

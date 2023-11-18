@@ -26,7 +26,7 @@ export class UserRowSearchModalComponent implements OnInit {
         const loggedInUser = this.authService.getLoggedInUser();
 
         const user$ = this.authService
-            .getUserById(loggedInUser!.user!.uid)
+            .getUserById(loggedInUser.uid)
             .pipe(take(1));
 
         this.loggedInUser = await firstValueFrom(user$);

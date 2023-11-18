@@ -10,32 +10,37 @@ import { ProfileComponent } from './pages/profile/profile.component';
 import { loginAuthGuard } from './guards/login-auth.guard';
 
 const routes: Routes = [
-    { path: '', component: HomePageComponent, canActivate: [authGuard] },
-    {
-        path: 'login',
-        component: LoginPageComponent,
-        canActivate: [loginAuthGuard],
-    },
     {
         path: 'message',
         component: MessagePageComponent,
         canActivate: [authGuard],
     },
+
     {
         path: 'notification',
         component: NotificationPageComponent,
         canActivate: [authGuard],
     },
+
     {
         path: 'create-post',
         component: CreatePostPageComponent,
         canActivate: [authGuard],
     },
+
     {
         path: 'profile',
         component: ProfileComponent,
         canActivate: [authGuard],
     },
+
+    {
+        path: 'login',
+        component: LoginPageComponent,
+        canActivate: [loginAuthGuard],
+    },
+
+    { path: '', component: HomePageComponent, canActivate: [authGuard] },
 ];
 
 @NgModule({

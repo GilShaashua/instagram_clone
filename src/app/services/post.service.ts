@@ -34,7 +34,7 @@ export class PostService {
 
         const loggedInUserFromDB$ = this.db
             .collection('users')
-            .doc(loggedInUser?.user?.uid)
+            .doc(loggedInUser.uid)
             .valueChanges()
             .pipe(take(1));
 
@@ -44,7 +44,7 @@ export class PostService {
         const postsRef = this.db.collection<Post>('posts', (ref) =>
             ref
                 .where('creatorId', 'in', [
-                    loggedInUser!.user!.uid,
+                    loggedInUser.uid,
                     ...(loggedInUserFromDB as User).followingUsers,
                 ])
                 .orderBy('createdAt', 'desc'),
@@ -73,9 +73,7 @@ export class PostService {
                         return likedByUser._id;
                     },
                 );
-                post.likedByUsers.push(
-                    loggedInUser!.user!.uid as unknown as User,
-                );
+                post.likedByUsers.push(loggedInUser.uid as unknown as User);
 
                 await this.db
                     .collection('posts')
@@ -104,7 +102,7 @@ export class PostService {
         return new Promise<string>(async (resolve, reject) => {
             try {
                 const loggedInUser = this.authService.getLoggedInUser();
-                const loggedInUserId = loggedInUser!.user!.uid;
+                const loggedInUserId = loggedInUser.uid;
 
                 post.likedByUsers = post.likedByUsers.map(
                     (likedByUser: any) => {
@@ -148,11 +146,11 @@ export class PostService {
         try {
             const { image, orientation } =
                 await this.imageCompress.uploadFile();
-            console.log('orientation', orientation);
-            console.log(
-                'Size in bytes of the uploaded image was:',
-                this.imageCompress.byteCount(image),
-            );
+            // console.log('orientation', orientation);
+            // console.log(
+            //     'Size in bytes of the uploaded image was:',
+            //     this.imageCompress.byteCount(image),
+            // );
 
             const compressedImage = await this.imageCompress.compressFile(
                 image,
@@ -161,10 +159,10 @@ export class PostService {
                 50,
             );
 
-            console.log(
-                'Size in bytes after compression is now:',
-                this.imageCompress.byteCount(compressedImage),
-            );
+            // console.log(
+            //     'Size in bytes after compression is now:',
+            //     this.imageCompress.byteCount(compressedImage),
+            // );
 
             return compressedImage;
         } catch (err: any) {
@@ -175,10 +173,10 @@ export class PostService {
 
     async createPost(post: Post) {
         const loggedInUser = this.authService.getLoggedInUser();
-        post.creatorId = loggedInUser!.user!.uid;
+        post.creatorId = loggedInUser.uid;
         const loggedInUserFromDB$ = this.db
             .collection('users')
-            .doc(loggedInUser!.user!.uid)
+            .doc(loggedInUser.uid)
             .valueChanges()
             .pipe(take(1));
         const loggedInUserFromDB = (await firstValueFrom(
@@ -186,8 +184,7 @@ export class PostService {
         )) as User;
 
         post.creatorFullName =
-            (loggedInUser!.user!.displayName as string) ||
-            loggedInUserFromDB.fullName;
+            (loggedInUser.displayName as string) || loggedInUserFromDB.fullName;
         post.createdAt = Date.now();
 
         const docData = await this.db.collection('posts').add(post);

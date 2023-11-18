@@ -25,7 +25,7 @@ export class LoginPageComponent {
 
     async onLogInWithGoogle() {
         try {
-            const user = await this.authService.logInWithGoogle();
+            await this.authService.logInWithGoogle();
             this.authService.loggedInUser$.pipe(take(1)).subscribe({
                 next: (loggedInUser) => {
                     if (loggedInUser) {

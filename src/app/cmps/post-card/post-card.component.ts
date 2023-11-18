@@ -79,9 +79,9 @@ export class PostCardComponent implements OnInit, OnDestroy {
                     this.creator = creator;
                     const isLikeClicked = this.post.likedByUsers.find(
                         (likedByUser: User) =>
-                            likedByUser._id === this.loggedInUser?.user?.uid ||
+                            likedByUser._id === this.loggedInUser.uid ||
                             likedByUser ===
-                                (this.loggedInUser?.user?.uid as User | string),
+                                (this.loggedInUser.uid as User | string),
                     );
                     if (isLikeClicked) this.isLikeClicked = true;
                     this.isComponentInitialized = true;

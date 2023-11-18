@@ -69,7 +69,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
 
     async onAddNotification(post: Post) {
         const notification = {
-            sender: this.authService.getLoggedInUser()!.user!.uid,
+            sender: this.authService.getLoggedInUser().uid,
             recipient: post.creatorId,
             message: '',
             createdAt: 0,

@@ -13,7 +13,6 @@ import { Post } from '../../models/post.model';
 import firebase from 'firebase/compat';
 import { PostService } from '../../services/post.service';
 import { AuthService } from '../../services/auth.service';
-import UserCredential = firebase.auth.UserCredential;
 
 @Component({
     selector: 'comments-modal',
@@ -28,7 +27,7 @@ export class CommentsModalComponent implements OnInit, OnDestroy {
     ) {}
 
     @Input() post!: Post;
-    @Input() loggedInUser!: UserCredential | null;
+    @Input() loggedInUser!: firebase.User;
     @Output() onAddComment = new EventEmitter();
     @Output() onToggleCommentsModal = new EventEmitter();
     @Output() onGetCommentsLength = new EventEmitter();
@@ -47,7 +46,7 @@ export class CommentsModalComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.renderer.addClass(document.body, 'body-unscrollable');
         this.comment.postId = this.post._id;
-        this.comment.createdByUserId = this.loggedInUser!.user!.uid;
+        this.comment.createdByUserId = this.loggedInUser.uid;
         this.commentsSubscription = this.postService
             .getCommentsByPostId(this.post._id)
             .pipe(

@@ -31,7 +31,7 @@ export class LikedByUserRowComponent implements OnInit {
 
         this.isFollowClicked = !!(userFromDB as User).followedByUsers.find(
             (followedByUser: User | string) =>
-                followedByUser === loggedInUser?.user?.uid,
+                followedByUser === loggedInUser.uid,
         );
 
         this.isComponentInitialized = true;

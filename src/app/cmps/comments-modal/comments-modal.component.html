@@ -17,7 +17,10 @@
         <div class="comment-list">
             <ul>
                 <li class="comment" *ngFor="let comment of comments">
-                    <img [src]="comment.createdByUserId.imgUrl" alt="user" />
+                    <img
+                        [src]="comment.createdByUserId.imgUrl"
+                        alt="loggedInUser"
+                    />
 
                     <div class="content">
                         <div class="inner-container">
@@ -38,7 +41,7 @@
         </div>
     </div>
     <form>
-        <img [src]="loggedInUser!.user!.photoURL" alt="" />
+        <img [src]="loggedInUser.photoURL" alt="" />
         <input
             [(ngModel)]="comment.message"
             type="text"

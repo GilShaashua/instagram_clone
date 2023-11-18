@@ -42,8 +42,11 @@
     <ul>
         <liked-by-user-row
             [post]="post"
-            *ngFor="let user of post.likedByUsers; trackBy: trackByUserId"
-            [user]="user"
+            *ngFor="
+                let likedByUser of post.likedByUsers;
+                trackBy: trackByUserId
+            "
+            [user]="likedByUser"
             (onToggleFollow)="onToggleFollow.emit($event)"
         ></liked-by-user-row>
     </ul>

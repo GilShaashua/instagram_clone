@@ -1,8 +1,8 @@
 <li *ngIf="isComponentInitialized">
-    <img [src]="user.imgUrl" alt="user" />
+    <img [src]="user.imgUrl" alt="loggedInUser" />
     <h4>{{ user.fullName }}</h4>
     <button
-        *ngIf="user._id !== loggedInUser.user.uid"
+        *ngIf="user._id !== loggedInUser.uid"
         [ngClass]="{
             'btn-toggle-follow': true,
             following: isFollowClicked,

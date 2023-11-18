@@ -29,7 +29,7 @@ export class MoreOptionsModalComponent implements OnInit {
 
         this.isFollowClicked = !!(userFromDB as User).followedByUsers.find(
             (followedByUser: User | string) =>
-                followedByUser === loggedInUser!.user!.uid,
+                followedByUser === loggedInUser.uid,
         );
 
         this.isMoreOptionsModalInited = true;

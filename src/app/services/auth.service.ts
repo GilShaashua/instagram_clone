@@ -11,15 +11,17 @@ import UserCredential = firebase.auth.UserCredential;
     providedIn: 'root',
 })
 export class AuthService {
-    private _loggedInUser$ = new BehaviorSubject<UserCredential | null>(
-        JSON.parse(sessionStorage.getItem('loggedInUser')!) || null,
-    );
-    public loggedInUser$ = this._loggedInUser$.asObservable();
-
     constructor(
         private afAuth: AngularFireAuth,
         private db: AngularFirestore,
     ) {}
+
+    private _loggedInUser$ = new BehaviorSubject(
+        document.cookie.match(/loggedInUser=(.*)/)
+            ? JSON.parse(document.cookie.match(/loggedInUser=(.*)/)![1])
+            : null,
+    );
+    public loggedInUser$ = this._loggedInUser$.asObservable();
 
     async logInWithGoogle() {
         try {
@@ -27,9 +29,16 @@ export class AuthService {
                 new GoogleAuthProvider(),
             );
             await this.createOrUpdateUserOnDB(auth);
-            sessionStorage.setItem('loggedInUser', JSON.stringify(auth));
-            this._loggedInUser$.next(auth);
-            return auth;
+
+            const loggedInUser = await this.afAuth.currentUser;
+
+            if (loggedInUser) {
+                document.cookie = `loggedInUser=${JSON.stringify(
+                    loggedInUser,
+                )}; max-age=999999999999; path=/`;
+
+                this._loggedInUser$.next(loggedInUser);
+            }
         } catch (err: any) {
             console.error(err.message);
             throw err.message;
@@ -79,7 +88,9 @@ export class AuthService {
     async logOut() {
         try {
             await this.afAuth.signOut();
-            sessionStorage.removeItem('loggedInUser');
+            document.cookie = `loggedInUser=${JSON.stringify(
+                null,
+            )}; max-age=0; path=/`;
             this._loggedInUser$.next(null);
         } catch (err: any) {
             console.error(err.message);
