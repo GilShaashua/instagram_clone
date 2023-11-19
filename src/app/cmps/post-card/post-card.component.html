@@ -131,8 +131,13 @@
             </button>
         </div>
 
-        <div *ngIf="post.likedByUsers.length" class="liked-by-users">
-            <img [src]="post.likedByUsers[0].imgUrl" alt="loggedInUser" />
+        <div
+            *ngIf="
+                post.likedByUsers.length && getTypeOfLikedByUsers() === 'object'
+            "
+            class="liked-by-users"
+        >
+            <img [src]="post.likedByUsers[0].imgUrl" alt="user" />
 
             <p>
                 Liked by
@@ -150,6 +155,46 @@
                         >{{ post.likedByUsers.length - 1 | number }}
                         {{
                             post.likedByUsers.length > 2 ? "others" : "other"
+                        }}</span
+                    ></span
+                >
+            </p>
+
+            <liked-by-users-list
+                *ngIf="isLikedByUsersModalShown"
+                [post]="post"
+                [isLikedByUsersModalShown]="isLikedByUsersModalShown"
+                (onToggleLikedByUsersModal)="toggleLikedByUsersModal($event)"
+                (onToggleFollow)="onToggleFollow.emit($event)"
+            ></liked-by-users-list>
+        </div>
+
+        <div
+            class="likedByUsersCloneDeep"
+            *ngIf="
+                likedByUsersCloneDeep[0] && getTypeOfLikedByUsers() === 'string'
+            "
+        >
+            <img [src]="likedByUsersCloneDeep[0].imgUrl" alt="user" />
+
+            <p>
+                Liked by
+                <span class="username">{{
+                    likedByUsersCloneDeep[0].fullName
+                }}</span>
+
+                <span *ngIf="likedByUsersCloneDeep.length > 1">
+                    and
+                    <span
+                        (click)="
+                            isLikedByUsersModalShown = !isLikedByUsersModalShown
+                        "
+                        class="other-users"
+                        >{{ likedByUsersCloneDeep.length - 1 | number }}
+                        {{
+                            likedByUsersCloneDeep.length > 2
+                                ? "others"
+                                : "other"
                         }}</span
                     ></span
                 >

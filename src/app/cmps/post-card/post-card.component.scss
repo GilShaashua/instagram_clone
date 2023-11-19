@@ -117,6 +117,31 @@
                     }
                 }
             }
+
+            .likedByUsersCloneDeep {
+                display: flex;
+                align-items: center;
+                gap: 0.5em;
+                font-size: 14px;
+
+                img {
+                    width: 20px;
+                    border-radius: 50%;
+                    border: none;
+                }
+
+                p {
+                    .username {
+                        cursor: pointer;
+                        font-weight: bolder;
+                    }
+
+                    .other-users {
+                        cursor: pointer;
+                        font-weight: bolder;
+                    }
+                }
+            }
         }
 
         .content {

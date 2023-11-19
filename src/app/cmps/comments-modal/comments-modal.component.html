@@ -40,8 +40,8 @@
             </ul>
         </div>
     </div>
-    <form>
-        <img [src]="loggedInUser.photoURL" alt="" />
+    <form *ngIf="loggedInUserFromDB">
+        <img [src]="loggedInUserFromDB.imgUrl" alt="" />
         <input
             [(ngModel)]="comment.message"
             type="text"

@@ -13,6 +13,7 @@ import { Post } from '../../models/post.model';
 import firebase from 'firebase/compat';
 import { PostService } from '../../services/post.service';
 import { AuthService } from '../../services/auth.service';
+import { User } from '../../models/user.model';
 
 @Component({
     selector: 'comments-modal',
@@ -42,11 +43,20 @@ export class CommentsModalComponent implements OnInit, OnDestroy {
     };
     comments!: Comment[];
     commentsSubscription!: Subscription;
+    loggedInUserFromDB!: User;
 
-    ngOnInit() {
+    async ngOnInit() {
+        const loggedInUserFromDB$ = this.authService.getUserById(
+            this.loggedInUser.uid,
+        );
+        const loggedInUserFromDB = await firstValueFrom(loggedInUserFromDB$);
+        this.loggedInUserFromDB = loggedInUserFromDB;
+
         this.renderer.addClass(document.body, 'body-unscrollable');
+
         this.comment.postId = this.post._id;
-        this.comment.createdByUserId = this.loggedInUser.uid;
+        this.comment.createdByUserId = loggedInUserFromDB._id;
+
         this.commentsSubscription = this.postService
             .getCommentsByPostId(this.post._id)
             .pipe(

@@ -2,22 +2,24 @@ import {
     Component,
     EventEmitter,
     Input,
-    OnDestroy,
+    OnChanges,
     OnInit,
     Output,
+    SimpleChanges,
 } from '@angular/core';
 import { Post } from '../../models/post.model';
 import { AuthService } from '../../services/auth.service';
-import { firstValueFrom, Subscription, take } from 'rxjs';
+import { firstValueFrom, take } from 'rxjs';
 import { User } from '../../models/user.model';
 import { PostService } from '../../services/post.service';
+import cloneDeep from 'lodash-es/cloneDeep';
 
 @Component({
     selector: 'post-card',
     templateUrl: './post-card.component.html',
     styleUrls: ['./post-card.component.scss'],
 })
-export class PostCardComponent implements OnInit, OnDestroy {
+export class PostCardComponent implements OnInit, OnChanges {
     constructor(
         private authService: AuthService,
         private postService: PostService,
@@ -43,24 +45,19 @@ export class PostCardComponent implements OnInit, OnDestroy {
     isComponentInitialized = false;
     isCommentModalShown = false;
     commentsLength = 0;
-    postsSubscription!: Subscription;
+    likedByUsersCloneDeep!: User[];
 
     async ngOnInit() {
-        this.postsSubscription = this.postService.posts$.subscribe({
-            next: async (posts) => {
-                const usersPrms = this.post.likedByUsers.map(
-                    async (likedByUser) => {
-                        const user$ = this.authService
-                            .getUserById(likedByUser as unknown as string)
-                            .pipe(take(1));
+        const usersPrms = this.post.likedByUsers.map(async (likedByUser) => {
+            const user$ = this.authService
+                .getUserById(likedByUser as unknown as string)
+                .pipe(take(1));
 
-                        return await firstValueFrom(user$);
-                    },
-                );
-
-                this.post.likedByUsers = await Promise.all(usersPrms);
-            },
+            return await firstValueFrom(user$);
         });
+
+        this.post.likedByUsers = await Promise.all(usersPrms);
+        this.likedByUsersCloneDeep = cloneDeep(this.post.likedByUsers);
 
         this.postService
             .getCommentsByPostId(this.post._id)
@@ -89,6 +86,39 @@ export class PostCardComponent implements OnInit, OnDestroy {
             });
     }
 
+    async ngOnChanges(changes: SimpleChanges) {
+        if (!this.isComponentInitialized) return;
+
+        if (changes['post']) {
+            try {
+                const usersPrms = this.post.likedByUsers.map(
+                    async (likedByUser) => {
+                        const user$ = this.authService
+                            .getUserById(likedByUser as unknown as string)
+                            .pipe(take(1));
+
+                        return await firstValueFrom(user$);
+                    },
+                );
+
+                this.post.likedByUsers = await Promise.all(usersPrms);
+
+                let count = 0;
+                this.post.likedByUsers.forEach((likedByUser) => {
+                    if (typeof likedByUser === 'object') count++;
+                });
+
+                if (count === this.post.likedByUsers.length) {
+                    this.likedByUsersCloneDeep = cloneDeep(
+                        this.post.likedByUsers,
+                    );
+                }
+            } catch (err) {
+                console.error(err);
+            }
+        }
+    }
+
     toggleLike() {
         this.isLikeClicked = !this.isLikeClicked;
 
@@ -97,7 +127,9 @@ export class PostCardComponent implements OnInit, OnDestroy {
             isLikeClicked: this.isLikeClicked,
         });
 
-        this.isLikeClicked && this.onAddNotification.emit(this.post);
+        this.loggedInUser.uid !== this.creator._id &&
+            this.isLikeClicked &&
+            this.onAddNotification.emit(this.post);
     }
 
     toggleLikedByUsersModal(isLikedByUsersModalShown: boolean) {
@@ -108,7 +140,7 @@ export class PostCardComponent implements OnInit, OnDestroy {
         this.isCommentModalShown = !this.isCommentModalShown;
     }
 
-    ngOnDestroy() {
-        this.postsSubscription.unsubscribe();
+    getTypeOfLikedByUsers() {
+        return typeof this.post.likedByUsers[0];
     }
 }

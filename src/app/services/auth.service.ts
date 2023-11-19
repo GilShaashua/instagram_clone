@@ -56,9 +56,16 @@ export class AuthService {
                 userCred.password,
             );
             await this.createOrUpdateUserOnDB(auth, userCred);
-            sessionStorage.setItem('loggedInUser', JSON.stringify(auth));
-            this._loggedInUser$.next(auth);
-            return auth;
+
+            const loggedInUser = await this.afAuth.currentUser;
+
+            if (loggedInUser) {
+                document.cookie = `loggedInUser=${JSON.stringify(
+                    loggedInUser,
+                )}; max-age=999999999999; path=/`;
+
+                this._loggedInUser$.next(loggedInUser);
+            }
         } catch (err: any) {
             console.error(err.message);
             throw err.message;
@@ -76,9 +83,16 @@ export class AuthService {
                 userCred.password,
             );
             await this.createOrUpdateUserOnDB(auth, userCred);
-            sessionStorage.setItem('loggedInUser', JSON.stringify(auth));
-            this._loggedInUser$.next(auth);
-            return auth;
+
+            const loggedInUser = await this.afAuth.currentUser;
+
+            if (loggedInUser) {
+                document.cookie = `loggedInUser=${JSON.stringify(
+                    loggedInUser,
+                )}; max-age=999999999999; path=/`;
+
+                this._loggedInUser$.next(loggedInUser);
+            }
         } catch (err: any) {
             console.error(err.message);
             throw err.message;
@@ -88,6 +102,7 @@ export class AuthService {
     async logOut() {
         try {
             await this.afAuth.signOut();
+
             document.cookie = `loggedInUser=${JSON.stringify(
                 null,
             )}; max-age=0; path=/`;
@@ -186,6 +201,6 @@ export class AuthService {
     }
 
     getLoggedInUser() {
-        return this._loggedInUser$.value;
+        return this._loggedInUser$.value as firebase.User;
     }
 }

@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { PostService } from '../../services/post.service';
-import { Observable, take } from 'rxjs';
+import { Subscription, take } from 'rxjs';
 import { Post } from '../../models/post.model';
 import { User } from '../../models/user.model';
 import { AuthService } from '../../services/auth.service';
@@ -24,21 +24,22 @@ export class HomePageComponent implements OnInit, OnDestroy {
         this.userService.setIsSearchModalShown(false);
     }
 
-    posts$!: Observable<Post[]>;
-    isComponentInitialized = false;
+    posts!: Post[];
+    postsSubscription!: Subscription;
     isToggleLikeProcessing = false;
 
     async ngOnInit() {
         const posts = await this.postService.getPosts();
-        posts!.pipe(take(1)).subscribe({
-            error: (err: any) => {
-                console.error(err);
-            },
-            complete: () => {
-                this.posts$ = this.postService.posts$;
-                this.isComponentInitialized = true;
-            },
-        });
+        if (posts) {
+            this.postsSubscription = posts.subscribe({
+                next: (posts) => {
+                    this.posts = posts;
+                },
+                error: (err: any) => {
+                    console.error(err);
+                },
+            });
+        }
     }
 
     async onToggleLike(payload: { post: Post; isLikeClicked: boolean }) {
@@ -90,5 +91,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
         this.router.navigateByUrl('/create-post');
     }
 
-    ngOnDestroy() {}
+    ngOnDestroy() {
+        this.postsSubscription?.unsubscribe();
+    }
 }

@@ -51,7 +51,6 @@ export class PostService {
         );
 
         return postsRef.valueChanges().pipe(
-            take(1),
             tap(async (posts: Post[]) => {
                 this._posts$.next([...posts]);
             }),
@@ -82,13 +81,13 @@ export class PostService {
                         likedByUsers: [...post.likedByUsers],
                     });
 
-                const posts = this._posts$.value;
-                const postToEditIdx = posts.findIndex(
-                    (_post) => _post._id === post._id,
-                );
-
-                posts.splice(postToEditIdx, 1, post);
-                this._posts$.next([...posts]);
+                // const posts = this._posts$.value;
+                // const postToEditIdx = posts.findIndex(
+                //     (_post) => _post._id === post._id,
+                // );
+                //
+                // posts.splice(postToEditIdx, 1, post);
+                // this._posts$.next([...posts]);
 
                 resolve('Add like done');
             } catch (err: any) {
@@ -124,15 +123,15 @@ export class PostService {
                         likedByUsers: [...post.likedByUsers],
                     });
 
-                const posts = this._posts$.value;
-
-                const postToEditIdx = posts.findIndex(
-                    (_post) => _post._id === post._id,
-                );
-
-                posts.splice(postToEditIdx, 1, post);
-
-                this._posts$.next([...posts]);
+                // const posts = this._posts$.value;
+                //
+                // const postToEditIdx = posts.findIndex(
+                //     (_post) => _post._id === post._id,
+                // );
+                //
+                // posts.splice(postToEditIdx, 1, post);
+                //
+                // this._posts$.next([...posts]);
 
                 resolve('Remove like done');
             } catch (err: any) {
@@ -146,11 +145,6 @@ export class PostService {
         try {
             const { image, orientation } =
                 await this.imageCompress.uploadFile();
-            // console.log('orientation', orientation);
-            // console.log(
-            //     'Size in bytes of the uploaded image was:',
-            //     this.imageCompress.byteCount(image),
-            // );
 
             const compressedImage = await this.imageCompress.compressFile(
                 image,
@@ -158,11 +152,6 @@ export class PostService {
                 50,
                 50,
             );
-
-            // console.log(
-            //     'Size in bytes after compression is now:',
-            //     this.imageCompress.byteCount(compressedImage),
-            // );
 
             return compressedImage;
         } catch (err: any) {
