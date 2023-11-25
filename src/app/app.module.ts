@@ -36,6 +36,10 @@ import { CommentsModalComponent } from './cmps/comments-modal/comments-modal.com
 import { MoreOptionsModalComponent } from './cmps/more-options-modal/more-options-modal.component';
 import { SearchModalComponent } from './cmps/search-modal/search-modal.component';
 import { UserRowSearchModalComponent } from './cmps/user-row-search-modal/user-row-search-modal.component';
+import { CommentComponent } from './cmps/comment/comment.component';
+import { ReplyFormComponent } from './cmps/reply-form/reply-form.component';
+import { ReplyListComponent } from './cmps/reply-list/reply-list.component';
+import { ReplyPreviewComponent } from './cmps/reply-preview/reply-preview.component';
 
 firebase.initializeApp(environment.firebase);
 
@@ -65,6 +69,10 @@ firebase.initializeApp(environment.firebase);
         MoreOptionsModalComponent,
         SearchModalComponent,
         UserRowSearchModalComponent,
+        CommentComponent,
+        ReplyFormComponent,
+        ReplyListComponent,
+        ReplyPreviewComponent,
     ],
     imports: [
         BrowserModule,

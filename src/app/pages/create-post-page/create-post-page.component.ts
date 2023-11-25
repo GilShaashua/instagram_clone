@@ -70,4 +70,8 @@ export class CreatePostPageComponent {
 
         await this.router.navigateByUrl('/');
     }
+
+    trackByFilterName(index: number, filter: any) {
+        return filter.name;
+    }
 }

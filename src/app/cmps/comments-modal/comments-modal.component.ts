@@ -30,29 +30,32 @@ export class CommentsModalComponent implements OnInit, OnDestroy {
     @Input() post!: Post;
     @Input() loggedInUser!: firebase.User;
     @Output() onAddComment = new EventEmitter();
+    @Output() onAddReply = new EventEmitter();
     @Output() onToggleCommentsModal = new EventEmitter();
     @Output() onGetCommentsLength = new EventEmitter();
 
     comment: Comment = {
         _id: '',
         parentId: '',
+        isTopLevel: true,
         postId: '',
         createdByUserId: '',
         message: '',
         createdAt: 0,
+        replies: [],
     };
     comments!: Comment[];
     commentsSubscription!: Subscription;
     loggedInUserFromDB!: User;
 
     async ngOnInit() {
+        this.renderer.addClass(document.body, 'body-unscrollable');
+
         const loggedInUserFromDB$ = this.authService.getUserById(
             this.loggedInUser.uid,
         );
         const loggedInUserFromDB = await firstValueFrom(loggedInUserFromDB$);
         this.loggedInUserFromDB = loggedInUserFromDB;
-
-        this.renderer.addClass(document.body, 'body-unscrollable');
 
         this.comment.postId = this.post._id;
         this.comment.createdByUserId = loggedInUserFromDB._id;
@@ -68,9 +71,7 @@ export class CommentsModalComponent implements OnInit, OnDestroy {
                         const createdByUser =
                             await firstValueFrom(createdByUser$);
 
-                        comment.createdByUserId = createdByUser;
-
-                        return comment;
+                        return { ...comment, createdByUserId: createdByUser };
                     });
 
                     return await Promise.all(getUserPromises);
@@ -87,6 +88,10 @@ export class CommentsModalComponent implements OnInit, OnDestroy {
     addComment() {
         this.onAddComment.emit({ comment: this.comment, post: this.post });
         this.comment.message = '';
+    }
+
+    trackByCommentId(index: number, comment: Comment) {
+        return comment._id;
     }
 
     ngOnDestroy() {

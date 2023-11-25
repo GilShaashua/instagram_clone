@@ -1,0 +1,47 @@
+:host {
+    position: fixed;
+    bottom: 59px;
+    left: 0;
+    z-index: 99;
+    background-color: #000000;
+    height: 3.5em;
+    width: 100%;
+    padding-inline: 1.5em;
+
+    form {
+        display: flex;
+        align-items: center;
+        gap: 1em;
+        height: 100%;
+
+        img {
+            width: 2em;
+            border-radius: 50%;
+        }
+
+        input {
+            font-size: 16px;
+            color: whitesmoke;
+            height: 100%;
+            background-color: #000000;
+            border: none;
+            flex: 3;
+
+            &::placeholder {
+                color: whitesmoke;
+            }
+        }
+
+        button {
+            height: 100%;
+            border: none;
+            cursor: pointer;
+            background-color: transparent;
+            color: rgb(0, 149, 246);
+            font-size: 17px;
+            font-weight: bolder;
+            text-align: right;
+            flex: 1;
+        }
+    }
+}

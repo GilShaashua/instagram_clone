@@ -7,6 +7,7 @@ import { AuthService } from '../../services/auth.service';
 import { UserService } from '../../services/user.service';
 import { NotificationService } from '../../services/notification.service';
 import { Router } from '@angular/router';
+import { Comment } from '../../models/comment.model.';
 
 @Component({
     selector: 'home-page',
@@ -83,8 +84,12 @@ export class HomePageComponent implements OnInit, OnDestroy {
         );
     }
 
-    onAddComment({ comment, post }: any) {
-        this.postService.addComment(comment, post);
+    async onAddComment({ comment, post }: any) {
+        await this.postService.addComment(comment, post);
+    }
+
+    async onAddReply(reply: Comment) {
+        await this.postService.addReply(reply);
     }
 
     navigateToCreatePost() {

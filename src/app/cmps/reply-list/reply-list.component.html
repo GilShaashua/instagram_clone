@@ -1,0 +1,6 @@
+<ul class="replies" *ngIf="replies?.length">
+    <reply-preview
+        *ngFor="let reply of replies; trackBy: trackByReplyId"
+        [reply]="reply"
+    ></reply-preview>
+</ul>

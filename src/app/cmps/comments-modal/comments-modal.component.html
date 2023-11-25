@@ -16,31 +16,15 @@
     <div class="comments">
         <div class="comment-list">
             <ul>
-                <li class="comment" *ngFor="let comment of comments">
-                    <img
-                        [src]="comment.createdByUserId.imgUrl"
-                        alt="loggedInUser"
-                    />
-
-                    <div class="content">
-                        <div class="inner-container">
-                            <span class="fullname">{{
-                                comment.createdByUserId.fullName
-                            }}</span>
-                            <span class="created-at">{{
-                                comment.createdAt | timeAgo
-                            }}</span>
-                        </div>
-                        <p>
-                            {{ comment.message }}
-                        </p>
-                        <button class="btn-reply">Reply</button>
-                    </div>
-                </li>
+                <comment-cmp
+                    *ngFor="let comment of comments; trackBy: trackByCommentId"
+                    [comment]="comment"
+                    (onAddReply)="onAddReply.emit($event)"
+                ></comment-cmp>
             </ul>
         </div>
     </div>
-    <form *ngIf="loggedInUserFromDB">
+    <form *ngIf="loggedInUserFromDB" (ngSubmit)="addComment()">
         <img [src]="loggedInUserFromDB.imgUrl" alt="" />
         <input
             [(ngModel)]="comment.message"
@@ -49,6 +33,6 @@
             id="comment"
             placeholder="Add a comment..."
         />
-        <button class="btn-add-comment" (click)="addComment()">Post</button>
+        <button class="btn-add-comment">Post</button>
     </form>
 </div>

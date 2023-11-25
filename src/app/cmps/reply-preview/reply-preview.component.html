@@ -1,0 +1,13 @@
+<li>
+    <img [src]="reply.createdByUserId.imgUrl" alt="user" />
+
+    <div class="content">
+        <div class="inner-container">
+            <span class="fullname">{{ reply.createdByUserId.fullName }}</span>
+            <span class="created-at">{{ reply.createdAt | timeAgo }}</span>
+        </div>
+        <p>
+            {{ reply.message }}
+        </p>
+    </div>
+</li>

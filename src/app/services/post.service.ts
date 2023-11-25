@@ -81,14 +81,6 @@ export class PostService {
                         likedByUsers: [...post.likedByUsers],
                     });
 
-                // const posts = this._posts$.value;
-                // const postToEditIdx = posts.findIndex(
-                //     (_post) => _post._id === post._id,
-                // );
-                //
-                // posts.splice(postToEditIdx, 1, post);
-                // this._posts$.next([...posts]);
-
                 resolve('Add like done');
             } catch (err: any) {
                 reject('Add like failed:');
@@ -122,16 +114,6 @@ export class PostService {
                     .update({
                         likedByUsers: [...post.likedByUsers],
                     });
-
-                // const posts = this._posts$.value;
-                //
-                // const postToEditIdx = posts.findIndex(
-                //     (_post) => _post._id === post._id,
-                // );
-                //
-                // posts.splice(postToEditIdx, 1, post);
-                //
-                // this._posts$.next([...posts]);
 
                 resolve('Remove like done');
             } catch (err: any) {
@@ -184,20 +166,76 @@ export class PostService {
     }
 
     getCommentsByPostId(postId: string) {
-        const postsRef = this.db.collection('comments', (ref) =>
-            ref.where('postId', '==', postId).orderBy('createdAt', 'desc'),
+        const commentsRef = this.db.collection('comments', (ref) =>
+            ref
+                .where('postId', '==', postId)
+                .where('isTopLevel', '==', true)
+                .orderBy('createdAt', 'desc'),
         );
-        return postsRef.valueChanges() as Observable<Comment[]>;
+
+        return commentsRef.valueChanges() as Observable<Comment[]>;
+    }
+
+    getRepliesForComment(comment: Comment) {
+        if (!comment.replies?.length) comment.replies = [''];
+
+        const repliesRef = this.db.collection('comments', (ref) =>
+            ref
+                .where('isTopLevel', '==', false)
+                .where('_id', 'in', comment.replies)
+                .orderBy('createdAt', 'desc'),
+        );
+
+        return repliesRef.valueChanges() as Observable<Comment[]>;
     }
 
     async addComment(comment: Comment, post: Post) {
         comment.createdAt = Date.now();
+        comment.isTopLevel = true;
 
         const commentRef = await this.db.collection('comments').add(comment);
         await this.db
             .collection('comments')
             .doc(commentRef.id)
             .update({ _id: commentRef.id, parentId: commentRef.id });
+    }
+
+    async addReply(reply: Comment) {
+        reply.createdAt = Date.now();
+        reply.createdByUserId = reply.createdByUserId._id;
+        reply.isTopLevel = false;
+
+        // Update the parent comment with a new reply
+        const parentComment$ = this.db
+            .collection('comments')
+            .doc(reply.parentId)
+            .valueChanges()
+            .pipe(take(1));
+        const parentComment = (await firstValueFrom(parentComment$)) as Comment;
+
+        if (!parentComment.replies) {
+            parentComment.replies = [];
+        }
+
+        const replyRef = await this.db.collection('comments').add(reply);
+        await this.db
+            .collection('comments')
+            .doc(replyRef.id)
+            .update({ _id: replyRef.id });
+
+        await this.db
+            .collection('comments')
+            .doc(reply.parentId)
+            .update({
+                replies: [...(parentComment.replies as string[]), replyRef.id],
+            });
+    }
+
+    getCommentById(commentId: string) {
+        return this.db
+            .collection('comments')
+            .doc(commentId)
+            .valueChanges() as Observable<Comment>;
     }
 
     private _makeId(length = 5) {

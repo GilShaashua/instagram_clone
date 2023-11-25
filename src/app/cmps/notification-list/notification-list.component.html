@@ -1,7 +1,10 @@
 <section class="notification-list">
     <ul>
         <notification-preview
-            *ngFor="let notification of notifications"
+            *ngFor="
+                let notification of notifications;
+                trackBy: trackByNotificationId
+            "
             [notification]="notification"
         ></notification-preview>
     </ul>

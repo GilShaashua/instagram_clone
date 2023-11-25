@@ -1,0 +1,47 @@
+<li class="comment">
+    <div class="meter"></div>
+    <div class="comment-top-level">
+        <img [src]="comment.createdByUserId.imgUrl" alt="user" />
+
+        <div class="content">
+            <div class="inner-container">
+                <span class="fullname">{{
+                    comment.createdByUserId.fullName
+                }}</span>
+                <span class="created-at">{{
+                    comment.createdAt | timeAgo
+                }}</span>
+            </div>
+            <p>
+                {{ comment.message }}
+            </p>
+            <button
+                *ngIf="comment.isTopLevel"
+                class="btn-reply"
+                (click)="onClickReply()"
+            >
+                Reply
+            </button>
+        </div>
+    </div>
+
+    <p
+        class="btn-toggle-replies"
+        *ngIf="replies.length"
+        (click)="isReplyListShown = !isReplyListShown"
+    >
+        {{ isReplyListShown ? "Hide" : "Show" }} {{ replies.length }}
+        {{ replies.length === 1 ? "reply" : "replies" }}
+    </p>
+    <reply-list
+        *ngIf="isReplyListShown && replies.length"
+        [replies]="replies"
+    ></reply-list>
+
+    <reply-form
+        class="reply-form"
+        *ngIf="isReplyFormShown"
+        [comment]="comment"
+        (onAddReply)="addReply($event)"
+    ></reply-form>
+</li>

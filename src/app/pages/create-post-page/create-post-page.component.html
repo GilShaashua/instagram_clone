@@ -86,7 +86,10 @@
         <div class="filter-list">
             <article
                 class="filter-preview"
-                *ngFor="let filter of filterPreviews; index as idx"
+                *ngFor="
+                    let filter of filterPreviews;
+                    trackBy: trackByFilterName
+                "
                 [ngClass]="{ active: filter.value === post.filterSelected }"
                 (click)="onSelectFilterPreview(filter.value)"
             >

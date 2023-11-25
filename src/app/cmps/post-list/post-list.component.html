@@ -5,6 +5,7 @@
             (onToggleFollow)="onToggleFollow.emit($event)"
             (onAddNotification)="onAddNotification.emit($event)"
             (onAddComment)="onAddComment.emit($event)"
+            (onAddReply)="onAddReply.emit($event)"
             *ngFor="let post of posts; trackBy: trackByPostId"
             [post]="post"
         ></post-card>

@@ -42,51 +42,9 @@
             ul {
                 display: flex;
                 flex-direction: column;
-                gap: 2em;
+                gap: 2.5em;
                 padding-block-end: 5.5em;
                 height: 100%;
-
-                .comment {
-                    display: flex;
-                    align-items: flex-start;
-                    gap: 0.6em;
-
-                    img {
-                        width: 30px;
-                        border-radius: 50%;
-                    }
-
-                    .content {
-                        display: flex;
-                        flex-direction: column;
-                        gap: 0.5em;
-
-                        .inner-container {
-                            display: flex;
-                            align-items: center;
-                            gap: 0.4em;
-
-                            .fullname {
-                                font-size: 12px;
-                                font-weight: bolder;
-                            }
-
-                            .created-at {
-                                color: #919191;
-                                font-size: 13px;
-                            }
-                        }
-
-                        button {
-                            background-color: #000000;
-                            border: none;
-                            color: whitesmoke;
-                            width: fit-content;
-                            padding-inline-end: 0.8em;
-                            font-size: 12px;
-                        }
-                    }
-                }
             }
         }
 

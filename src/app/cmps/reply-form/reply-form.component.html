@@ -1,0 +1,10 @@
+<form *ngIf="isComponentInitialized" (ngSubmit)="addReply()">
+    <img [src]="reply.createdByUserId.imgUrl" alt="" />
+    <input
+        type="text"
+        name="reply-message"
+        [(ngModel)]="reply.message"
+        placeholder="Add a reply to {{ comment.createdByUserId.fullName }}..."
+    />
+    <button type="submit">Post</button>
+</form>

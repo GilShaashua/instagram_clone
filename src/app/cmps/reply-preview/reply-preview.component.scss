@@ -1,0 +1,34 @@
+:host {
+    li {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.6em;
+
+        img {
+            width: 30px;
+            border-radius: 50%;
+        }
+
+        .content {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5em;
+
+            .inner-container {
+                display: flex;
+                align-items: center;
+                gap: 0.4em;
+
+                .fullname {
+                    font-size: 12px;
+                    font-weight: bolder;
+                }
+
+                .created-at {
+                    color: #919191;
+                    font-size: 13px;
+                }
+            }
+        }
+    }
+}
