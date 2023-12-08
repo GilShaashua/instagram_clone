@@ -11,7 +11,7 @@ import UserCredential = firebase.auth.UserCredential;
     styleUrls: ['./aside-menu.component.scss'],
 })
 export class AsideMenuComponent implements OnInit, OnDestroy {
-    user!: UserCredential | null;
+    user!: any | null;
     userSubscription!: Subscription;
     isExtraMenuOpen = false;
 

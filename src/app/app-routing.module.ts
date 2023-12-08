@@ -8,6 +8,7 @@ import { CreatePostPageComponent } from './pages/create-post-page/create-post-pa
 import { authGuard } from './guards/auth.guard';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { loginAuthGuard } from './guards/login-auth.guard';
+import { userResolver } from './resolvers/user.resolver';
 
 const routes: Routes = [
     {
@@ -29,9 +30,10 @@ const routes: Routes = [
     },
 
     {
-        path: 'profile',
+        path: 'profile/:userId',
         component: ProfileComponent,
         canActivate: [authGuard],
+        resolve: { user: userResolver },
     },
 
     {

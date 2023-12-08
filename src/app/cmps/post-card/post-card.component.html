@@ -4,6 +4,7 @@
         [creator]="creator"
         [isComponentInitialized]="isComponentInitialized"
         (onToggleFollow)="onToggleFollow.emit($event)"
+        (onClickUserImg)="onClickUserImg.emit($event)"
     ></post-header>
 
     <img [src]="post.imgUrl" [class]="post.filterSelected" alt="post" />

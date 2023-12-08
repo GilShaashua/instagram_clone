@@ -37,6 +37,7 @@ export class PostCardComponent implements OnInit, OnChanges {
     @Output() onAddNotification = new EventEmitter<Post>();
     @Output() onAddComment = new EventEmitter();
     @Output() onAddReply = new EventEmitter();
+    @Output() onClickUserImg = new EventEmitter();
 
     creator!: User;
     isMoreClicked = false;

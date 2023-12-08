@@ -1,0 +1,120 @@
+:host {
+    .user-profile {
+        padding-block: 2em;
+        display: flex;
+        flex-direction: column;
+        gap: 2em;
+
+        .user-info {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            padding-inline: 25px;
+
+            .user-image-profile {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 0.5em;
+
+                img {
+                    width: 5em;
+                    border-radius: 50%;
+                }
+
+                span {
+                    font-size: 14px;
+                    font-weight: bolder;
+                }
+            }
+
+            .user-data {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 1.5em;
+
+                .user-data-inner-container {
+                    display: flex;
+                    gap: 1.5em;
+
+                    .posts-count {
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+
+                        span {
+                            &:first-child {
+                                font-weight: bolder;
+                            }
+
+                            &:nth-child(2) {
+                                font-size: 14px;
+                            }
+                        }
+                    }
+
+                    .followers-count {
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+
+                        span {
+                            &:first-child {
+                                font-weight: bolder;
+                            }
+
+                            &:nth-child(2) {
+                                font-size: 14px;
+                            }
+                        }
+                    }
+
+                    .following-count {
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+
+                        span {
+                            &:first-child {
+                                font-weight: bolder;
+                            }
+
+                            &:nth-child(2) {
+                                font-size: 14px;
+                            }
+                        }
+                    }
+                }
+            }
+
+            .actions-profile {
+                .btn-edit-profile {
+                    border: none;
+                    height: 2.1em;
+                    padding-inline: 2em;
+                    border-radius: 0.4em;
+                    color: whitesmoke;
+                    background-color: rgb(54, 54, 54);
+                    font-size: 15px;
+                    font-weight: bolder;
+                }
+            }
+        }
+
+        .user-posts {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 1px;
+
+            .post-preview {
+                display: flex;
+
+                img {
+                    aspect-ratio: 1/1;
+                    object-fit: cover;
+                }
+            }
+        }
+    }
+}

@@ -92,6 +92,10 @@ export class HomePageComponent implements OnInit, OnDestroy {
         await this.postService.addReply(reply);
     }
 
+    navigateToUserProfile(creatorId: string) {
+        this.router.navigateByUrl(`profile/${creatorId}`);
+    }
+
     navigateToCreatePost() {
         this.router.navigateByUrl('/create-post');
     }

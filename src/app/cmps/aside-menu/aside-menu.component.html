@@ -1,4 +1,4 @@
-<section *ngIf="user && user.user" class="aside-menu">
+<section *ngIf="user" class="aside-menu">
     <div class="aside-menu-inner-container">
         <div class="logo" routerLink="/" title="instagram">
             <svg
@@ -164,13 +164,13 @@
 
                 <li
                     class="profile"
-                    routerLink="/profile"
+                    routerLink="/profile/{{ user.uid }}"
                     routerLinkActive="active"
                     title="Profile"
                 >
                     <img
-                        *ngIf="user.user.photoURL; else profile"
-                        [src]="user.user.photoURL"
+                        *ngIf="user.providerData[0].photoURL; else profile"
+                        [src]="user.providerData[0].photoURL"
                         alt="loggedInUser"
                     />
                     <ng-template #profile>

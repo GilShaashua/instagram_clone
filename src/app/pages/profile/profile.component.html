@@ -1,1 +1,40 @@
-<p>profile works!</p>
+<section class="user-profile" *ngIf="userFromDB && userPosts">
+    <div class="user-info">
+        <div class="user-image-profile">
+            <img [src]="userFromDB.imgUrl" alt="loggedin user" />
+            <span>{{ userFromDB.fullName }}</span>
+        </div>
+
+        <div class="user-data">
+            <div class="user-data-inner-container">
+                <div class="posts-count">
+                    <span>{{ userPosts.length }}</span>
+                    <span>Posts</span>
+                </div>
+
+                <div class="followers-count">
+                    <span>{{ userFromDB.followedByUsers.length }}</span>
+                    <span>Followers</span>
+                </div>
+
+                <div class="following-count">
+                    <span>{{ userFromDB.followingUsers.length }}</span>
+                    <span>Following</span>
+                </div>
+            </div>
+            <div class="actions-profile">
+                <button class="btn-edit-profile">Edit profile</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="user-posts">
+        <article class="post-preview" *ngFor="let post of userPosts">
+            <img
+                [class]="post.filterSelected"
+                [src]="post.imgUrl"
+                alt="post-preview"
+            />
+        </article>
+    </div>
+</section>

@@ -14,6 +14,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { User } from '../models/user.model';
 import { NgxImageCompressService } from 'ngx-image-compress';
 import { Comment } from '../models/comment.model.';
+import { ref } from 'firebase/database';
 
 @Injectable({
     providedIn: 'root',
@@ -87,6 +88,14 @@ export class PostService {
                 throw err;
             }
         });
+    }
+
+    getPostsForUser(userId: string) {
+        const postsRef = this.db.collection('posts', (ref) =>
+            ref.where('creatorId', '==', userId).orderBy('createdAt', 'desc'),
+        );
+
+        return postsRef.valueChanges() as Observable<Post[]>;
     }
 
     async removeLike(post: Post) {

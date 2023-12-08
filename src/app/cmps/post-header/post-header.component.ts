@@ -14,6 +14,7 @@ export class PostHeaderComponent {
     @Input() post!: Post;
     @Input() isComponentInitialized!: boolean;
     @Output() onToggleFollow = new EventEmitter();
+    @Output() onClickUserImg = new EventEmitter();
 
     isMoreOptionsModalShown = false;
 }

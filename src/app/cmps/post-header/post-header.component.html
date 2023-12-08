@@ -1,6 +1,10 @@
 <div *ngIf="creator && isComponentInitialized" class="post-header">
     <div class="creator">
-        <img [src]="creator.imgUrl" alt="creator" />
+        <img
+            (click)="onClickUserImg.emit(creator._id)"
+            [src]="creator.imgUrl"
+            alt="creator"
+        />
         <h5>
             {{ creator.fullName }}
             <span>• {{ post.createdAt | timeAgo }}</span>
