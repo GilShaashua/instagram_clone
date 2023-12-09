@@ -150,7 +150,8 @@
                     and
                     <span
                         (click)="
-                            isLikedByUsersModalShown = !isLikedByUsersModalShown
+                            isLikedByUsersModalShown = true;
+                            onClickLikedByUsers.emit(true)
                         "
                         class="other-users"
                         >{{ post.likedByUsers.length - 1 | number }}
@@ -167,6 +168,7 @@
                 [isLikedByUsersModalShown]="isLikedByUsersModalShown"
                 (onToggleLikedByUsersModal)="toggleLikedByUsersModal($event)"
                 (onToggleFollow)="onToggleFollow.emit($event)"
+                (onCloseLikedByUsers)="onCloseLikedByUsers.emit($event)"
             ></liked-by-users-list>
         </div>
 

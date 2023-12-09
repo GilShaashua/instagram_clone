@@ -32,10 +32,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
     userPosts!: Post[];
     userPostsSubscription!: Subscription;
     dataSubscription!: Subscription;
+    isPostsModalShown = false;
 
     ngOnInit(): void {
-        console.log('mounted');
-
         this.dataSubscription = this.route.data
             .pipe(map((data) => data['user']))
             .subscribe({
@@ -61,6 +60,10 @@ export class ProfileComponent implements OnInit, OnDestroy {
                 console.error(err);
             },
         });
+    }
+
+    trackByPostId(index: number, post: Post) {
+        return post._id;
     }
 
     ngOnDestroy(): void {

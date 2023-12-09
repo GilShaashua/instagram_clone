@@ -1,0 +1,35 @@
+:host {
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #000;
+    height: 100%;
+
+    .posts-modal {
+        overflow: auto;
+        height: 100%;
+
+        &.unscrollable {
+            overflow: hidden;
+        }
+
+        ul {
+            display: flex;
+            flex-direction: column;
+            gap: 2em;
+            position: relative;
+            padding-block: 4.7em;
+
+            .btn-close {
+                border: none;
+                width: fit-content;
+                background-color: transparent;
+                position: fixed;
+                z-index: 99;
+                top: 85px;
+                right: 27px;
+                cursor: pointer;
+            }
+        }
+    }
+}

@@ -38,6 +38,8 @@ export class PostCardComponent implements OnInit, OnChanges {
     @Output() onAddComment = new EventEmitter();
     @Output() onAddReply = new EventEmitter();
     @Output() onClickUserImg = new EventEmitter();
+    @Output() onClickLikedByUsers = new EventEmitter();
+    @Output() onCloseLikedByUsers = new EventEmitter();
 
     creator!: User;
     isMoreClicked = false;
@@ -50,15 +52,21 @@ export class PostCardComponent implements OnInit, OnChanges {
     likedByUsersCloneDeep!: User[];
 
     async ngOnInit() {
-        const usersPrms = this.post.likedByUsers.map(async (likedByUser) => {
-            const user$ = this.authService
-                .getUserById(likedByUser as unknown as string)
-                .pipe(take(1));
+        const usersPrms = this.post.likedByUsers.map(
+            async (likedByUser: string | User) => {
+                if (typeof likedByUser !== 'string')
+                    likedByUser = likedByUser._id as string;
 
-            return await firstValueFrom(user$);
-        });
+                const user$ = this.authService
+                    .getUserById(likedByUser as unknown as string)
+                    .pipe(take(1));
+
+                return await firstValueFrom(user$);
+            },
+        );
 
         this.post.likedByUsers = await Promise.all(usersPrms);
+
         this.likedByUsersCloneDeep = cloneDeep(this.post.likedByUsers);
 
         this.postService

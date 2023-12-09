@@ -40,6 +40,7 @@ import { CommentComponent } from './cmps/comment/comment.component';
 import { ReplyFormComponent } from './cmps/reply-form/reply-form.component';
 import { ReplyListComponent } from './cmps/reply-list/reply-list.component';
 import { ReplyPreviewComponent } from './cmps/reply-preview/reply-preview.component';
+import { PostsModalComponent } from './cmps/posts-modal/posts-modal.component';
 
 firebase.initializeApp(environment.firebase);
 
@@ -73,6 +74,7 @@ firebase.initializeApp(environment.firebase);
         ReplyFormComponent,
         ReplyListComponent,
         ReplyPreviewComponent,
+        PostsModalComponent,
     ],
     imports: [
         BrowserModule,

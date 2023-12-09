@@ -2,7 +2,7 @@
     <div class="header">
         <h3>Likes</h3>
         <button
-            (click)="toggleLikedByUsersModal()"
+            (click)="toggleLikedByUsersModal(); onCloseLikedByUsers.emit(false)"
             class="btn-close-liked-by-users-list"
         >
             <svg

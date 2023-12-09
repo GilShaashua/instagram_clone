@@ -29,7 +29,11 @@
     </div>
 
     <div class="user-posts">
-        <article class="post-preview" *ngFor="let post of userPosts">
+        <article
+            class="post-preview"
+            *ngFor="let post of userPosts; trackBy: trackByPostId"
+            (click)="isPostsModalShown = true"
+        >
             <img
                 [class]="post.filterSelected"
                 [src]="post.imgUrl"
@@ -37,4 +41,10 @@
             />
         </article>
     </div>
+
+    <posts-modal
+        *ngIf="isPostsModalShown"
+        [userPosts]="userPosts"
+        (onClosePostsModal)="isPostsModalShown = false"
+    ></posts-modal>
 </section>
