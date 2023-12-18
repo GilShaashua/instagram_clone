@@ -17,12 +17,16 @@ export class LikedByUserRowComponent implements OnInit {
         user: User;
         isFollowClicked: boolean;
     }>();
+    @Output() onClickUserImg = new EventEmitter();
+
     isFollowClicked: boolean = false;
     isComponentInitialized = false;
     loggedInUser!: any;
     isToggleFollowProcessing = false;
 
     async ngOnInit() {
+        console.log('user', this.user);
+
         const userFromDB$ = this.authService.getUserById(this.user._id);
         const userFromDB = await firstValueFrom(userFromDB$);
 

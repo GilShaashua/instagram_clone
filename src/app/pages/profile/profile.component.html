@@ -1,4 +1,7 @@
-<section class="user-profile" *ngIf="userFromDB && userPosts">
+<section
+    class="user-profile"
+    *ngIf="isProfilePageInitialized && userFromDB && userPosts"
+>
     <div class="user-info">
         <div class="user-image-profile">
             <img [src]="userFromDB.imgUrl" alt="loggedin user" />

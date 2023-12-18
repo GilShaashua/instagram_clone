@@ -52,7 +52,7 @@ export class PostCardComponent implements OnInit, OnChanges {
     likedByUsersCloneDeep!: User[];
 
     async ngOnInit() {
-        const usersPrms = this.post.likedByUsers.map(
+        const usersPrms = this.post.likedByUsers?.map(
             async (likedByUser: string | User) => {
                 if (typeof likedByUser !== 'string')
                     likedByUser = likedByUser._id as string;
@@ -66,6 +66,23 @@ export class PostCardComponent implements OnInit, OnChanges {
         );
 
         this.post.likedByUsers = await Promise.all(usersPrms);
+
+        if (typeof this.post.likedByUsers?.[0] !== 'object') {
+            const usersPrms = this.post.likedByUsers?.map(
+                async (likedByUser: string | User) => {
+                    if (typeof likedByUser !== 'string')
+                        likedByUser = likedByUser._id as string;
+
+                    const user$ = this.authService
+                        .getUserById(likedByUser as unknown as string)
+                        .pipe(take(1));
+
+                    return await firstValueFrom(user$);
+                },
+            );
+
+            this.post.likedByUsers = await Promise.all(usersPrms);
+        }
 
         this.likedByUsersCloneDeep = cloneDeep(this.post.likedByUsers);
 

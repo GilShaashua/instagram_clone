@@ -28,7 +28,7 @@ export class AuthService {
             const auth = await this.afAuth.signInWithPopup(
                 new GoogleAuthProvider(),
             );
-            await this.createOrUpdateUserOnDB(auth);
+            await this._createOrUpdateUserOnDB(auth);
 
             const loggedInUser = await this.afAuth.currentUser;
 
@@ -55,7 +55,7 @@ export class AuthService {
                 userCred.email,
                 userCred.password,
             );
-            await this.createOrUpdateUserOnDB(auth, userCred);
+            await this._createOrUpdateUserOnDB(auth, userCred);
 
             const loggedInUser = await this.afAuth.currentUser;
 
@@ -82,7 +82,7 @@ export class AuthService {
                 userCred.email,
                 userCred.password,
             );
-            await this.createOrUpdateUserOnDB(auth, userCred);
+            await this._createOrUpdateUserOnDB(auth, userCred);
 
             const loggedInUser = await this.afAuth.currentUser;
 
@@ -113,7 +113,18 @@ export class AuthService {
         }
     }
 
-    async createOrUpdateUserOnDB(
+    getUserById(userId: string) {
+        return this.db
+            .collection('users')
+            .doc(userId)
+            .valueChanges() as Observable<User>;
+    }
+
+    getLoggedInUser() {
+        return this._loggedInUser$.value as firebase.User;
+    }
+
+    private async _createOrUpdateUserOnDB(
         auth: UserCredential,
         userCred: {
             fullName: string;
@@ -191,16 +202,5 @@ export class AuthService {
                     console.error(err);
                 },
             });
-    }
-
-    getUserById(userId: string) {
-        return this.db
-            .collection('users')
-            .doc(userId)
-            .valueChanges() as Observable<User>;
-    }
-
-    getLoggedInUser() {
-        return this._loggedInUser$.value as firebase.User;
     }
 }

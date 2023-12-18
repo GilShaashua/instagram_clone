@@ -12,6 +12,7 @@ import { Comment } from '../../models/comment.model.';
 import { PostService } from '../../services/post.service';
 import { AuthService } from '../../services/auth.service';
 import { firstValueFrom, switchMap, take } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'comment-cmp',
@@ -22,6 +23,7 @@ export class CommentComponent implements OnInit, OnDestroy, OnChanges {
     constructor(
         private postService: PostService,
         private authService: AuthService,
+        private router: Router,
     ) {}
 
     @Input() comment!: Comment;
@@ -112,6 +114,12 @@ export class CommentComponent implements OnInit, OnDestroy, OnChanges {
         ) {
             this.isReplyFormShown = false;
         }
+    }
+
+    navigateToUserProfile() {
+        this.router.navigateByUrl(
+            `/profile/${this.comment.createdByUserId._id}`,
+        );
     }
 
     ngOnDestroy() {

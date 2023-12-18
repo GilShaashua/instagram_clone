@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Comment } from '../../models/comment.model.';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'reply-preview',
@@ -7,5 +8,11 @@ import { Comment } from '../../models/comment.model.';
     styleUrls: ['./reply-preview.component.scss'],
 })
 export class ReplyPreviewComponent {
+    constructor(private router: Router) {}
+
     @Input() reply!: Comment;
+
+    navigateToUserProfile() {
+        this.router.navigateByUrl(`profile/${this.reply.createdByUserId._id}`);
+    }
 }

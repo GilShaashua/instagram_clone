@@ -1,11 +1,15 @@
 <li class="comment">
     <div class="meter"></div>
     <div class="comment-top-level">
-        <img [src]="comment.createdByUserId.imgUrl" alt="user" />
+        <img
+            [src]="comment.createdByUserId.imgUrl"
+            alt="user"
+            (click)="navigateToUserProfile()"
+        />
 
         <div class="content">
             <div class="inner-container">
-                <span class="fullname">{{
+                <span class="fullname" (click)="navigateToUserProfile()">{{
                     comment.createdByUserId.fullName
                 }}</span>
                 <span class="created-at">{{

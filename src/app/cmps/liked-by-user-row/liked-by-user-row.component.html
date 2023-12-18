@@ -1,6 +1,10 @@
 <li *ngIf="isComponentInitialized">
-    <img [src]="user.imgUrl" alt="loggedInUser" />
-    <h4>{{ user.fullName }}</h4>
+    <img
+        [src]="user.imgUrl"
+        alt="loggedInUser"
+        (click)="onClickUserImg.emit(user._id)"
+    />
+    <h4 (click)="onClickUserImg.emit(user._id)">{{ user.fullName }}</h4>
     <button
         *ngIf="user._id !== loggedInUser.uid"
         [ngClass]="{

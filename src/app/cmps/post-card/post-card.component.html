@@ -138,13 +138,19 @@
             "
             class="liked-by-users"
         >
-            <img [src]="post.likedByUsers[0].imgUrl" alt="user" />
+            <img
+                [src]="post.likedByUsers[0].imgUrl"
+                alt="user"
+                (click)="onClickUserImg.emit(post.likedByUsers[0]._id)"
+            />
 
             <p>
                 Liked by
-                <span class="username">{{
-                    post.likedByUsers[0].fullName
-                }}</span>
+                <span
+                    class="username"
+                    (click)="onClickUserImg.emit(post.likedByUsers[0]._id)"
+                    >{{ post.likedByUsers[0].fullName }}</span
+                >
 
                 <span *ngIf="post.likedByUsers.length > 1">
                     and
@@ -169,6 +175,7 @@
                 (onToggleLikedByUsersModal)="toggleLikedByUsersModal($event)"
                 (onToggleFollow)="onToggleFollow.emit($event)"
                 (onCloseLikedByUsers)="onCloseLikedByUsers.emit($event)"
+                (onClickUserImg)="onClickUserImg.emit($event)"
             ></liked-by-users-list>
         </div>
 
@@ -214,7 +221,11 @@
 
         <div class="content" *ngIf="creator">
             <p *ngIf="!isMoreClicked">
-                <span class="creatorFullName">{{ creator.fullName }}</span>
+                <span
+                    class="creatorFullName"
+                    (click)="onClickUserImg.emit(creator._id)"
+                    >{{ creator.fullName }}</span
+                >
                 {{ post.content | slice: 0 : 120 }}
                 {{ post.content.length >= 120 ? "..." : "" }}
 

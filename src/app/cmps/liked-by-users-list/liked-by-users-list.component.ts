@@ -26,6 +26,7 @@ export class LikedByUsersListComponent implements OnInit, OnDestroy {
         isFollowClicked: boolean;
     }>();
     @Output() onCloseLikedByUsers = new EventEmitter();
+    @Output() onClickUserImg = new EventEmitter();
 
     ngOnInit() {
         this.renderer.addClass(document.body, 'body-unscrollable');

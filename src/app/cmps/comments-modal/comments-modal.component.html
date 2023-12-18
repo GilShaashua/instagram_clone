@@ -13,6 +13,7 @@
             />
         </svg>
     </button>
+
     <div class="comments">
         <div class="comment-list">
             <ul>
@@ -24,6 +25,7 @@
             </ul>
         </div>
     </div>
+
     <form *ngIf="loggedInUserFromDB" (ngSubmit)="addComment()">
         <img [src]="loggedInUserFromDB.imgUrl" alt="" />
         <input

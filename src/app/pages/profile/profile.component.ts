@@ -33,18 +33,18 @@ export class ProfileComponent implements OnInit, OnDestroy {
     userPostsSubscription!: Subscription;
     dataSubscription!: Subscription;
     isPostsModalShown = false;
+    isProfilePageInitialized = false;
 
     ngOnInit(): void {
         this.dataSubscription = this.route.data
             .pipe(map((data) => data['user']))
             .subscribe({
                 next: (user) => {
-                    // console.log('user', user);
-
+                    this.isProfilePageInitialized = false;
                     !user ? this.location.back() : (this.userFromDB = user);
+                    this.getPostsForUser();
                 },
             });
-        this.getPostsForUser();
     }
 
     getPostsForUser() {
@@ -55,6 +55,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
         this.userPostsSubscription = userPosts$.subscribe({
             next: (posts) => {
                 this.userPosts = posts;
+                this.isProfilePageInitialized = true;
             },
             error: (err: any) => {
                 console.error(err);
@@ -67,6 +68,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
+        console.log('unmounted');
+
         this.userPostsSubscription?.unsubscribe();
         this.dataSubscription?.unsubscribe();
     }
