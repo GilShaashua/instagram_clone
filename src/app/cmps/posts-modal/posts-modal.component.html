@@ -25,6 +25,18 @@
             [post]="post"
             (onClickLikedByUsers)="isLikedByUsersClicked = $event"
             (onCloseLikedByUsers)="isLikedByUsersClicked = $event"
+            (onToggleLike)="onToggleLike.emit($event)"
+            (onToggleFollow)="onToggleFollow.emit($event)"
+            (onAddNotification)="onAddNotification.emit($event)"
+            (onAddComment)="onAddComment.emit($event)"
+            (onAddReply)="onAddReply.emit($event)"
+            (onClickUserImg)="onClickUserImg.emit($event)"
+            (onNavigateUserProfileFromComment)="
+                onNavigateUserProfileFromComment.emit()
+            "
+            (onNavigateUserProfileFromLikedByUsers)="
+                onNavigateUserProfileFromLikedByUsers.emit()
+            "
         ></post-card>
     </ul>
 </section>

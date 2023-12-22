@@ -49,5 +49,15 @@
         *ngIf="isPostsModalShown"
         [userPosts]="userPosts"
         (onClosePostsModal)="isPostsModalShown = false"
+        (onToggleLike)="onToggleLike($event)"
+        (onToggleFollow)="onToggleFollow($event)"
+        (onAddNotification)="onAddNotification($event)"
+        (onAddComment)="onAddComment($event)"
+        (onAddReply)="onAddReply($event)"
+        (onClickUserImg)="navigateToUserProfile($event)"
+        (onNavigateUserProfileFromComment)="navigateUserProfileFromComment()"
+        (onNavigateUserProfileFromLikedByUsers)="
+            navigateUserProfileFromLikedByUsers()
+        "
     ></posts-modal>
 </section>

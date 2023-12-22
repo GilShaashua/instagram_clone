@@ -162,7 +162,7 @@
                         class="other-users"
                         >{{ post.likedByUsers.length - 1 | number }}
                         {{
-                            post.likedByUsers.length > 2 ? "others" : "other"
+                            post.likedByUsers.length > 2 ? 'others' : 'other'
                         }}</span
                     ></span
                 >
@@ -203,8 +203,8 @@
                         >{{ likedByUsersCloneDeep.length - 1 | number }}
                         {{
                             likedByUsersCloneDeep.length > 2
-                                ? "others"
-                                : "other"
+                                ? 'others'
+                                : 'other'
                         }}</span
                     ></span
                 >
@@ -227,7 +227,7 @@
                     >{{ creator.fullName }}</span
                 >
                 {{ post.content | slice: 0 : 120 }}
-                {{ post.content.length >= 120 ? "..." : "" }}
+                {{ post.content.length >= 120 ? '...' : '' }}
 
                 <button
                     (click)="isMoreClicked = !isMoreClicked"

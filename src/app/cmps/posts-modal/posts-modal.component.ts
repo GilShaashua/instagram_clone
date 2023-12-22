@@ -1,5 +1,5 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Post } from 'src/app/models/post.model';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core'
+import { Post } from 'src/app/models/post.model'
 
 @Component({
     selector: 'posts-modal',
@@ -7,16 +7,24 @@ import { Post } from 'src/app/models/post.model';
     styleUrls: ['./posts-modal.component.scss'],
 })
 export class PostsModalComponent implements OnInit {
-    @Input() userPosts!: Post[];
-    @Output() onClosePostsModal = new EventEmitter();
+    @Input() userPosts!: Post[]
+    @Output() onClosePostsModal = new EventEmitter()
+    @Output() onToggleLike = new EventEmitter()
+    @Output() onToggleFollow = new EventEmitter()
+    @Output() onAddNotification = new EventEmitter()
+    @Output() onAddComment = new EventEmitter()
+    @Output() onAddReply = new EventEmitter()
+    @Output() onClickUserImg = new EventEmitter()
+    @Output() onNavigateUserProfileFromComment = new EventEmitter()
+    @Output() onNavigateUserProfileFromLikedByUsers = new EventEmitter()
 
-    isLikedByUsersClicked = false;
+    isLikedByUsersClicked = false
 
     ngOnInit(): void {
         // console.log('userPosts', this.userPosts);
     }
 
     trackByPostId(index: number, post: Post) {
-        return post._id;
+        return post._id
     }
 }

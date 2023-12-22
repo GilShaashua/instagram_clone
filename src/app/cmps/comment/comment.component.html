@@ -34,8 +34,8 @@
         *ngIf="replies.length"
         (click)="isReplyListShown = !isReplyListShown"
     >
-        {{ isReplyListShown ? "Hide" : "Show" }} {{ replies.length }}
-        {{ replies.length === 1 ? "reply" : "replies" }}
+        {{ isReplyListShown ? 'Hide' : 'Show' }} {{ replies.length }}
+        {{ replies.length === 1 ? 'reply' : 'replies' }}
     </p>
 
     <reply-list
