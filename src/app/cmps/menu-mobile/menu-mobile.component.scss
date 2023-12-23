@@ -1,9 +1,10 @@
-@import "src/assets/setup/variables";
-@import "src/assets/setup/mixins";
+@import 'src/assets/setup/variables';
+@import 'src/assets/setup/mixins';
 
 :host {
     position: sticky;
     bottom: 0;
+    left: 0;
     z-index: 199;
     grid-column: 1/-1;
     height: 60px;
