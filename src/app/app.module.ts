@@ -41,6 +41,7 @@ import { ReplyFormComponent } from './cmps/reply-form/reply-form.component';
 import { ReplyListComponent } from './cmps/reply-list/reply-list.component';
 import { ReplyPreviewComponent } from './cmps/reply-preview/reply-preview.component';
 import { PostsModalComponent } from './cmps/posts-modal/posts-modal.component';
+import { EditProfileModalComponent } from './cmps/edit-profile-modal/edit-profile-modal.component';
 
 firebase.initializeApp(environment.firebase);
 
@@ -75,6 +76,7 @@ firebase.initializeApp(environment.firebase);
         ReplyListComponent,
         ReplyPreviewComponent,
         PostsModalComponent,
+        EditProfileModalComponent,
     ],
     imports: [
         BrowserModule,

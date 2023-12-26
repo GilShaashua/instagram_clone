@@ -1,0 +1,113 @@
+:host {
+    height: calc(100vh - 121px);
+    width: 100%;
+    background-color: black;
+    position: fixed;
+    left: 0;
+    top: 61px;
+
+    .edit-profile-modal {
+        padding-block: 1em;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5em;
+
+        .btn-back {
+            background-color: unset;
+            border: none;
+            cursor: pointer;
+            width: fit-content;
+
+            svg {
+                line {
+                    stroke: white;
+                }
+                polyline {
+                    stroke: white;
+                }
+            }
+        }
+
+        .user-image {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            .content {
+                display: flex;
+                align-items: center;
+                flex-direction: column;
+                justify-content: center;
+                gap: 0.5em;
+
+                img {
+                    border-radius: 50%;
+                    width: 80px;
+                    cursor: pointer;
+                    object-fit: cover;
+                    aspect-ratio: 1/1;
+                }
+
+                span {
+                    color: rgb(0, 149, 246);
+                    font-size: 14px;
+                    font-weight: bolder;
+                    cursor: pointer;
+                }
+            }
+        }
+
+        .edit-user-form {
+            form {
+                display: flex;
+                flex-direction: column;
+
+                .user-full-name {
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5em;
+                    justify-content: space-between;
+                    height: 45px;
+                    border-block: 1px solid rgba(245, 245, 245, 0.151);
+
+                    label {
+                        cursor: pointer;
+                        font-size: 16px;
+                        flex: 1;
+                        height: 100%;
+                        display: flex;
+                        align-items: center;
+                    }
+
+                    input {
+                        border: none;
+                        background-color: transparent;
+                        flex: 3;
+                        height: 100%;
+                        font-size: 16px;
+                        border-radius: unset;
+                        color: whitesmoke;
+                        font-style: italic;
+                    }
+                }
+
+                .btn-submit {
+                    cursor: pointer;
+                    border: none;
+                    color: whitesmoke;
+                    background-color: rgb(0, 149, 246);
+                    font-size: 18px;
+                    margin-block-start: 2em;
+                    height: 40px;
+                    width: fit-content;
+                    padding-inline: 1.5em;
+                    border-radius: 0.5em;
+
+                    &.disabled {
+                        background-color: rgb(143, 143, 143);
+                    }
+                }
+            }
+        }
+    }
+}

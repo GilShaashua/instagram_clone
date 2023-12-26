@@ -14,9 +14,6 @@ import { Comment } from 'src/app/models/comment.model.'
     selector: 'profile',
     templateUrl: './profile.component.html',
     styleUrls: ['./profile.component.scss'],
-    // host: {
-    //     class: 'page-cmp-layout',
-    // },
 })
 export class ProfileComponent implements OnInit, OnDestroy {
     constructor(
@@ -39,6 +36,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
     isProfilePageInitialized = false
     isToggleLikeProcessing = false
     routerChangesSubscription!: Subscription
+    isEditProfileModalShown = false
+    loggedInUser = this.authService.getLoggedInUser()
 
     ngOnInit(): void {
         this.dataSubscription = this.route.data
@@ -124,6 +123,13 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
     async onAddReply(reply: Comment) {
         await this.postService.addReply(reply)
+    }
+
+    onUpdateUserProfile(updatedUser: User) {
+        // console.log('updatedUser', updatedUser)
+        this.userService.updateUserProfile(updatedUser)
+        this.userFromDB = updatedUser
+        this.isEditProfileModalShown = false
     }
 
     navigateToUserProfile(creatorId: string) {

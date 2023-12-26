@@ -9,7 +9,12 @@
         </div>
 
         <div class="user-data">
-            <div class="user-data-inner-container">
+            <div
+                class="user-data-inner-container"
+                [ngClass]="{
+                    'no-edit-profile': userFromDB._id !== loggedInUser.uid
+                }"
+            >
                 <div class="posts-count">
                     <span>{{ userPosts.length }}</span>
                     <span>Posts</span>
@@ -25,8 +30,16 @@
                     <span>Following</span>
                 </div>
             </div>
-            <div class="actions-profile">
-                <button class="btn-edit-profile">Edit profile</button>
+            <div
+                class="actions-profile"
+                *ngIf="userFromDB._id === loggedInUser.uid"
+            >
+                <button
+                    class="btn-edit-profile"
+                    (click)="isEditProfileModalShown = true"
+                >
+                    Edit profile
+                </button>
             </div>
         </div>
     </div>
@@ -60,4 +73,11 @@
             navigateUserProfileFromLikedByUsers()
         "
     ></posts-modal>
+
+    <edit-profile-modal
+        *ngIf="isEditProfileModalShown"
+        [userFromDB]="userFromDB"
+        (onBack)="isEditProfileModalShown = false"
+        (onSubmitUserEdit)="onUpdateUserProfile($event)"
+    ></edit-profile-modal>
 </section>
