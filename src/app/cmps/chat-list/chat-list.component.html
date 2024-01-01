@@ -1,0 +1,6 @@
+<ul>
+    <chat-preview
+        *ngFor="let chat of chats; trackBy: trackByChatId"
+        [chat]="chat"
+    ></chat-preview>
+</ul>
