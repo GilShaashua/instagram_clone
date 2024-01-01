@@ -1,0 +1,19 @@
+:host {
+    .chat-details {
+        padding-block: 1em;
+
+        .btn-back {
+            background-color: unset;
+            border: none;
+
+            svg {
+                line {
+                    stroke: #fff;
+                }
+                polyline {
+                    stroke: #fff;
+                }
+            }
+        }
+    }
+}

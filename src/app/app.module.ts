@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app-root/app.component';
 import { HomePageComponent } from './pages/home-page/home-page.component';
-import { MessagePageComponent } from './pages/message-page/message-page.component';
+import { ChatPageComponent } from './pages/chat-page/chat-page.component';
 import { NotificationPageComponent } from './pages/notification-page/notification-page.component';
 import { CreatePostPageComponent } from './pages/create-post-page/create-post-page.component';
 import { LoginPageComponent } from './pages/login-page/login-page.component';
@@ -42,6 +42,9 @@ import { ReplyListComponent } from './cmps/reply-list/reply-list.component';
 import { ReplyPreviewComponent } from './cmps/reply-preview/reply-preview.component';
 import { PostsModalComponent } from './cmps/posts-modal/posts-modal.component';
 import { EditProfileModalComponent } from './cmps/edit-profile-modal/edit-profile-modal.component';
+import { ChatListComponent } from './cmps/chat-list/chat-list.component';
+import { ChatPreviewComponent } from './cmps/chat-preview/chat-preview.component';
+import { ChatDetailsComponent } from './pages/chat-details/chat-details.component';
 
 firebase.initializeApp(environment.firebase);
 
@@ -49,7 +52,7 @@ firebase.initializeApp(environment.firebase);
     declarations: [
         AppComponent,
         HomePageComponent,
-        MessagePageComponent,
+        ChatPageComponent,
         NotificationPageComponent,
         CreatePostPageComponent,
         LoginPageComponent,
@@ -77,6 +80,9 @@ firebase.initializeApp(environment.firebase);
         ReplyPreviewComponent,
         PostsModalComponent,
         EditProfileModalComponent,
+        ChatListComponent,
+        ChatPreviewComponent,
+        ChatDetailsComponent,
     ],
     imports: [
         BrowserModule,
