@@ -1,6 +1,6 @@
 export interface Message {
     _id: string;
-    createdAt: number;
-    senderId: string;
+    sentAt: number;
+    sentBy: string;
     txt: string;
 }

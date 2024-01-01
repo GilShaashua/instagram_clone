@@ -31,7 +31,6 @@ export class ChatPageComponent implements OnInit, OnDestroy {
             .subscribe({
                 next: (chats) => {
                     this.chats = chats;
-                    console.log(this.chats);
                 },
                 error: (err: any) => {
                     console.error(err);

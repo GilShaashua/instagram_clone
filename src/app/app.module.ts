@@ -45,6 +45,7 @@ import { EditProfileModalComponent } from './cmps/edit-profile-modal/edit-profil
 import { ChatListComponent } from './cmps/chat-list/chat-list.component';
 import { ChatPreviewComponent } from './cmps/chat-preview/chat-preview.component';
 import { ChatDetailsComponent } from './pages/chat-details/chat-details.component';
+import { MessageListComponent } from './cmps/message-list/message-list.component';
 
 firebase.initializeApp(environment.firebase);
 
@@ -83,6 +84,7 @@ firebase.initializeApp(environment.firebase);
         ChatListComponent,
         ChatPreviewComponent,
         ChatDetailsComponent,
+        MessageListComponent,
     ],
     imports: [
         BrowserModule,

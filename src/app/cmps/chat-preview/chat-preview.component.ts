@@ -19,7 +19,6 @@ export class ChatPreviewComponent implements OnInit, OnDestroy {
     isComponentInitialized = false;
 
     async ngOnInit() {
-        console.log(this.chat);
         await this.getLoggedInUserFromDB();
         await this.getParticipantUser();
         this.isComponentInitialized = true;

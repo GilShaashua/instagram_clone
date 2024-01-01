@@ -1,17 +1,53 @@
 :host {
     .chat-details {
         padding-block: 1em;
+        padding-block-start: 4em;
 
-        .btn-back {
-            background-color: unset;
-            border: none;
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 1em;
+            border-block-end: 1px solid rgba(245, 245, 245, 0.29);
+            width: 100%;
+            position: fixed;
+            left: 0;
+            top: 58px;
+            z-index: 20;
+            background-color: black;
+            height: 3.5em;
+            padding-inline: 25px;
 
-            svg {
-                line {
-                    stroke: #fff;
+            .btn-back {
+                background-color: unset;
+                border: none;
+                display: flex;
+                align-items: center;
+
+                svg {
+                    line {
+                        stroke: #fff;
+                    }
+                    polyline {
+                        stroke: #fff;
+                    }
                 }
-                polyline {
-                    stroke: #fff;
+            }
+
+            .participant-user {
+                display: flex;
+                align-items: center;
+                gap: 0.4em;
+
+                img {
+                    width: 2em;
+                    aspect-ratio: 1/1;
+                    object-fit: cover;
+                    border-radius: 50%;
+                }
+
+                span {
+                    font-size: 16px;
+                    font-weight: bolder;
                 }
             }
         }
