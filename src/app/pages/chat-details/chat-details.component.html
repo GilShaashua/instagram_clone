@@ -50,4 +50,16 @@
     </div>
 
     <message-list [chat]="chat"></message-list>
+
+    <form class="add-message" (ngSubmit)="onAddMessage()">
+        <img [src]="loggedInUserFromDB.imgUrl" alt="loggedInUser" />
+        <input
+            [(ngModel)]="message.txt"
+            type="text"
+            name="message"
+            id="message"
+            placeholder="Message..."
+        />
+        <button class="btn-send">Send</button>
+    </form>
 </section>

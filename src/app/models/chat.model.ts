@@ -5,5 +5,5 @@ export interface Chat {
     lastModified: number;
     isRead: boolean;
     users: string[];
-    messages: Message[];
+    messages: string[];
 }

@@ -1,10 +1,10 @@
 <li
     class="chat-preview"
-    *ngIf="isComponentInitialized"
+    *ngIf="isComponentInitialized && lastMessage"
     routerLink="/chat/{{ chat._id }}"
 >
     <img [src]="participantUser.imgUrl" alt="Participant" />
     <div class="chat-content">
-        <span>{{ chat.messages[chat.messages.length - 1].txt }}</span>
+        <span>{{ lastMessage.txt }}</span>
     </div>
 </li>
