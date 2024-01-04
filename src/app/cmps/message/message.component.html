@@ -1,5 +1,20 @@
-<li class="message">
-    <span>
-        {{ message.txt }}
-    </span>
+<li
+    class="message"
+    [ngClass]="
+        message.sentBy === loggedInUserFromDB._id
+            ? 'loggedInUser'
+            : 'participant'
+    "
+>
+    <img
+        [src]="
+            message.sentBy === loggedInUserFromDB._id
+                ? loggedInUserFromDB.imgUrl
+                : participantUser.imgUrl
+        "
+        alt="user"
+        *ngIf="message.sentBy !== loggedInUserFromDB._id"
+    />
+    <span class="txt">{{ message.txt }}</span>
+    <span class="time">{{ message.sentAt | formatTime }} </span>
 </li>

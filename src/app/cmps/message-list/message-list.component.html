@@ -1,6 +1,8 @@
-<ul class="message-list">
+<ul class="message-list" #test>
     <message
         *ngFor="let message of messages; trackBy: trackByMessageId"
         [message]="message"
+        [loggedInUserFromDB]="loggedInUserFromDB"
+        [participantUser]="participantUser"
     ></message>
 </ul>

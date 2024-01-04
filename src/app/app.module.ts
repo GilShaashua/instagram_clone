@@ -47,6 +47,7 @@ import { ChatPreviewComponent } from './cmps/chat-preview/chat-preview.component
 import { ChatDetailsComponent } from './pages/chat-details/chat-details.component';
 import { MessageListComponent } from './cmps/message-list/message-list.component';
 import { MessageComponent } from './cmps/message/message.component';
+import { FormatTimePipe } from './pipes/format-time.pipe';
 
 firebase.initializeApp(environment.firebase);
 
@@ -87,6 +88,7 @@ firebase.initializeApp(environment.firebase);
         ChatDetailsComponent,
         MessageListComponent,
         MessageComponent,
+        FormatTimePipe,
     ],
     imports: [
         BrowserModule,

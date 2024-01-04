@@ -63,7 +63,6 @@ export class ChatDetailsComponent implements OnInit, OnDestroy {
     async onAddMessage() {
         const messageClone = cloneDeep(this.message);
         await this.chatService.addMessageToChat(this.chat._id, messageClone);
-        console.log(messageClone);
         this.message.txt = '';
     }
 

@@ -1,7 +1,9 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { Chat } from '../../models/chat.model';
 import { Message } from '../../models/message.model';
 import { ChatService } from '../../services/chat.service';
+import { User } from '../../models/user.model';
+import { doc } from '@angular/fire/firestore';
 
 @Component({
     selector: 'message-list',
@@ -12,6 +14,9 @@ export class MessageListComponent implements OnInit {
     constructor(private chatService: ChatService) {}
 
     @Input() chat!: Chat;
+    @Input() participantUser!: User;
+    @Input() loggedInUserFromDB!: User;
+    @ViewChild('test') elMessageList!: ElementRef<HTMLUListElement>;
 
     messages!: Message[];
 
@@ -22,11 +27,22 @@ export class MessageListComponent implements OnInit {
     getChatMessages() {
         this.chatService.getMessagesByChatId(this.chat._id).subscribe({
             next: (messages) => {
-                console.log('messages', messages);
                 this.messages = messages;
+                this.scrollToBottom();
             },
         });
     }
 
-    trackByMessageId(index: number, message: any) {}
+    scrollToBottom() {
+        console.log(this.elMessageList);
+
+        if (this.elMessageList) {
+            this.elMessageList.nativeElement.scrollTop =
+                this.elMessageList.nativeElement.scrollHeight;
+        }
+    }
+
+    trackByMessageId(index: number, message: Message) {
+        return message._id;
+    }
 }

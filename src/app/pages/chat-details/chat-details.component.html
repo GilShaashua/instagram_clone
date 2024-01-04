@@ -49,7 +49,11 @@
         </div>
     </div>
 
-    <message-list [chat]="chat"></message-list>
+    <message-list
+        [chat]="chat"
+        [loggedInUserFromDB]="loggedInUserFromDB"
+        [participantUser]="participantUser"
+    ></message-list>
 
     <form class="add-message" (ngSubmit)="onAddMessage()">
         <img [src]="loggedInUserFromDB.imgUrl" alt="loggedInUser" />

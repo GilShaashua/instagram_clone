@@ -1,0 +1,49 @@
+:host {
+    .message {
+        display: flex;
+        align-items: flex-end;
+        gap: 0.6em;
+
+        img {
+            width: 1.5em;
+            border-radius: 50%;
+            margin-block-end: 0.2em;
+        }
+
+        .txt {
+            border-radius: 1.4em;
+            padding-inline: 0.8em;
+            padding-block: 0.4em;
+            font-size: 17px;
+            overflow-wrap: break-word;
+            max-width: calc(100vw - 200px);
+        }
+
+        .time {
+            font-size: 11px;
+            margin-block-end: 0.2em;
+        }
+
+        &.loggedInUser {
+            flex-direction: row-reverse;
+
+            .txt {
+                background: linear-gradient(
+                    to left,
+                    rgb(38, 38, 38),
+                    rgb(49, 49, 49)
+                );
+            }
+        }
+
+        &.participant {
+            .txt {
+                background: linear-gradient(
+                    to right,
+                    rgb(55, 151, 240),
+                    rgb(100, 180, 255)
+                );
+            }
+        }
+    }
+}

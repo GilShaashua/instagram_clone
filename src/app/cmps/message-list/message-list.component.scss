@@ -1,0 +1,10 @@
+:host {
+    .message-list {
+        display: flex;
+        flex-direction: column;
+        gap: 1.4em;
+        padding-block-end: 4em;
+        padding-block-start: 1em;
+        width: 100%;
+    }
+}
