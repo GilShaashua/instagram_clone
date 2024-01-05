@@ -11,11 +11,12 @@
     overflow: auto;
 
     @include for-narrow-layout {
-        //display: grid;
-        //grid-template-columns: minmax(auto, 500px);
         padding-block-start: unset;
         min-width: auto;
         max-width: 500px;
+        overflow: unset;
+        display: grid;
+        align-content: center;
     }
 
     .comment-modal {
@@ -29,7 +30,10 @@
         @include for-narrow-layout {
             min-width: auto;
             max-width: 500px;
-            grid-template-rows: auto 1fr auto auto;
+            grid-template-rows: 1fr auto;
+            height: calc(100vh - 50px);
+            overflow: auto;
+            padding-block-start: unset;
         }
 
         & > * {
@@ -50,7 +54,7 @@
             @include for-narrow-layout {
                 position: sticky;
                 right: 0;
-                top: 25px;
+                top: 0;
                 grid-column: 3;
                 padding-inline: unset;
                 padding-block-end: unset;
@@ -98,7 +102,7 @@
             z-index: 120;
 
             @include for-narrow-layout {
-                bottom: 1.5em;
+                bottom: 0;
                 border-block-end: 1px solid rgba(255, 255, 255, 0.24);
                 grid-row: 3;
             }
