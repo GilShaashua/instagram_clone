@@ -1,3 +1,5 @@
+@import "../../../assets/setup/mixins";
+
 :host {
     position: fixed;
     top: 0;
@@ -8,6 +10,14 @@
     padding-block-start: 3.8em;
     overflow: auto;
 
+    @include for-narrow-layout {
+        //display: grid;
+        //grid-template-columns: minmax(auto, 500px);
+        padding-block-start: unset;
+        min-width: auto;
+        max-width: 500px;
+    }
+
     .comment-modal {
         position: relative;
         padding-block-start: 1.5em;
@@ -15,6 +25,12 @@
         display: grid;
         grid-template-columns: 25px 1fr 25px;
         grid-template-rows: 1fr auto;
+
+        @include for-narrow-layout {
+            min-width: auto;
+            max-width: 500px;
+            grid-template-rows: auto 1fr auto auto;
+        }
 
         & > * {
             grid-column: 2;
@@ -30,10 +46,26 @@
             right: 20px;
             top: 85px;
             z-index: 40;
+
+            @include for-narrow-layout {
+                position: sticky;
+                right: 0;
+                top: 25px;
+                grid-column: 3;
+                padding-inline: unset;
+                padding-block-end: unset;
+                grid-row: 1;
+                align-self: start;
+            }
         }
 
         .comments {
             height: 100%;
+
+            @include for-narrow-layout {
+                grid-column: 1/-1;
+                grid-row: 1/2;
+            }
         }
 
         .comment-list {
@@ -45,6 +77,10 @@
                 gap: 2.5em;
                 padding-block-end: 5.5em;
                 height: 100%;
+
+                @include for-narrow-layout {
+                    padding-block-end: 2em;
+                }
             }
         }
 
@@ -52,13 +88,20 @@
             display: flex;
             align-items: center;
             gap: 1em;
-            height: 3.5em;
+            height: 60px;
             position: sticky;
             bottom: 60px;
             background-color: #000;
             border-block-start: 1px solid rgba(255, 255, 255, 0.24);
             grid-column: 1/-1;
             padding-inline: 25px;
+            z-index: 120;
+
+            @include for-narrow-layout {
+                bottom: 1.5em;
+                border-block-end: 1px solid rgba(255, 255, 255, 0.24);
+                grid-row: 3;
+            }
 
             img {
                 width: 2em;
@@ -90,6 +133,22 @@
                 font-size: 17px;
                 font-weight: bolder;
                 text-align: right;
+            }
+        }
+
+        .hiding-flach {
+            display: none;
+            background-color: black;
+            grid-column: 1/-1;
+            position: sticky;
+            bottom: 0;
+            left: 0;
+            height: 24px;
+            grid-row: 4;
+            z-index: 120;
+
+            @include for-narrow-layout {
+                display: block;
             }
         }
     }

@@ -16,7 +16,7 @@ export class MessageListComponent implements OnInit {
     @Input() chat!: Chat;
     @Input() participantUser!: User;
     @Input() loggedInUserFromDB!: User;
-    @ViewChild('test') elMessageList!: ElementRef<HTMLUListElement>;
+    @ViewChild('messageList') elMessageList!: ElementRef<HTMLUListElement>;
 
     messages!: Message[];
 

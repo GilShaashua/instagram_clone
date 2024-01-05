@@ -1,8 +1,13 @@
+@import "../../../assets/setup/mixins";
+
 :host {
+    width: 100%;
+
     .message {
         display: flex;
         align-items: flex-end;
         gap: 0.6em;
+        width: 100%;
 
         img {
             width: 1.5em;
@@ -12,11 +17,15 @@
 
         .txt {
             border-radius: 1.4em;
-            padding-inline: 0.8em;
-            padding-block: 0.4em;
+            padding-inline: 1em;
+            padding-block: 0.5em;
             font-size: 17px;
             overflow-wrap: break-word;
-            max-width: calc(100vw - 200px);
+            max-width: 200px;
+
+            @include for-narrow-layout {
+                max-width: 300px;
+            }
         }
 
         .time {

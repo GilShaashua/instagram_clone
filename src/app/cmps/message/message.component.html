@@ -15,6 +15,10 @@
         alt="user"
         *ngIf="message.sentBy !== loggedInUserFromDB._id"
     />
-    <span class="txt">{{ message.txt }}</span>
-    <span class="time">{{ message.sentAt | formatTime }} </span>
+    <div class="txt">
+        <p>{{ message.txt }}</p>
+    </div>
+    <div class="time">
+        <p>{{ message.sentAt | formatTime }}</p>
+    </div>
 </li>

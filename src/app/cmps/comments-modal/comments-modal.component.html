@@ -21,9 +21,6 @@
                     *ngFor="let comment of comments; trackBy: trackByCommentId"
                     [comment]="comment"
                     (onAddReply)="onAddReply.emit($event)"
-                    (onNavigateUserProfileFromComment)="
-                        onNavigateUserProfileFromComment.emit()
-                    "
                 ></comment-cmp>
             </ul>
         </div>
@@ -40,4 +37,6 @@
         />
         <button class="btn-add-comment">Post</button>
     </form>
+
+    <div class="hiding-flach"></div>
 </div>

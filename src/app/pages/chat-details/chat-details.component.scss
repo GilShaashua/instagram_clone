@@ -1,7 +1,9 @@
 :host {
+    width: 100%;
+
     .chat-details {
-        padding-block: 1em;
-        padding-block-start: 4em;
+        padding-block: 1.4em;
+        width: 100%;
 
         .header {
             display: flex;
@@ -11,10 +13,10 @@
             width: 100%;
             position: fixed;
             left: 0;
-            top: 61px;
+            top: 0;
             z-index: 999;
             background-color: black;
-            height: 3.5em;
+            height: 61px;
             padding-inline: 25px;
 
             .btn-back {
@@ -59,9 +61,9 @@
             gap: 0.5em;
             position: fixed;
             left: 0;
-            bottom: 60px;
+            bottom: 0;
             background-color: black;
-            height: 3.5em;
+            height: 61px;
             width: 100%;
             padding-inline: 25px;
             border-block-start: 1px solid rgba(245, 245, 245, 0.24);
