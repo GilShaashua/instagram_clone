@@ -5,6 +5,10 @@
 >
     <img [src]="participantUser.imgUrl" alt="Participant" />
     <div class="chat-content">
-        <span>{{ lastMessage.txt }}</span>
+        <span>{{
+            lastMessage.txt.length > 20
+                ? lastMessage.txt.substring(0, 20) + " ..."
+                : lastMessage.txt
+        }}</span>
     </div>
 </li>
