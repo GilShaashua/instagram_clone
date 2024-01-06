@@ -16,7 +16,7 @@
 
     @include for-narrow-layout {
         grid-template-columns: auto 1fr;
-        grid-template-rows: unset;
+        //grid-template-rows: unset;
     }
 
     // @include for-normal-layout {

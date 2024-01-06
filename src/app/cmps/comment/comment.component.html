@@ -34,8 +34,8 @@
         *ngIf="replies.length"
         (click)="isReplyListShown = !isReplyListShown"
     >
-        {{ isReplyListShown ? 'Hide' : 'Show' }} {{ replies.length }}
-        {{ replies.length === 1 ? 'reply' : 'replies' }}
+        {{ isReplyListShown ? "Hide" : "Show" }} {{ replies.length }}
+        {{ replies.length === 1 ? "reply" : "replies" }}
     </p>
 
     <reply-list
@@ -45,8 +45,10 @@
 
     <reply-form
         class="reply-form"
+        [ngClass]="{ 'reply-form-initialized': isReplyFormInitialized }"
         *ngIf="isReplyFormShown"
         [comment]="comment"
         (onAddReply)="addReply($event)"
+        (onReplyFormInitialized)="isReplyFormInitialized = $event"
     ></reply-form>
 </li>

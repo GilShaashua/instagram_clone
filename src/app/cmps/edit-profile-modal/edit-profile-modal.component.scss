@@ -1,3 +1,5 @@
+@import "../../../assets/setup/mixins";
+
 :host {
     height: calc(100vh - 121px);
     width: 100%;
@@ -6,11 +8,28 @@
     left: 0;
     top: 61px;
 
+    @include for-narrow-layout() {
+        height: 100%;
+        top: 0;
+        left: 75px;
+        width: calc(100% - 75px);
+        display: grid;
+        grid-template-columns: minmax(25px, 1fr) minmax(auto, 500px) minmax(
+                25px,
+                1fr
+            );
+    }
+
     .edit-profile-modal {
         padding-block: 1em;
         display: flex;
         flex-direction: column;
         gap: 1.5em;
+
+        @include for-narrow-layout() {
+            height: 100%;
+            padding-block: 2.3em;
+        }
 
         .btn-back {
             background-color: unset;
@@ -105,6 +124,7 @@
 
                     &.disabled {
                         background-color: rgb(143, 143, 143);
+                        cursor: not-allowed;
                     }
                 }
             }
