@@ -1,12 +1,24 @@
+@import "../../../assets/setup/_mixins.scss";
+
 :host {
     position: fixed;
-    bottom: 59px;
+    bottom: 61.5px;
     left: 0;
-    z-index: 99;
+    z-index: 100;
     background-color: #000000;
     height: 3.5em;
     width: 100%;
-    padding-inline: 1.5em;
+    padding-inline: 25px;
+
+    &.reply-form-initialized {
+        z-index: 130;
+    }
+
+    @include for-narrow-layout() {
+        width: 500px;
+        left: unset;
+        bottom: 27px;
+    }
 
     form {
         display: flex;

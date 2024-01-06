@@ -1,5 +1,5 @@
-<form *ngIf="isComponentInitialized" (ngSubmit)="addReply()">
-    <img [src]="reply.createdByUserId.imgUrl" alt="" />
+<form *ngIf="isReplyFormInitialized" (ngSubmit)="addReply()">
+    <img [src]="reply.createdByUserId.imgUrl" alt="user" />
     <input
         type="text"
         name="reply-message"

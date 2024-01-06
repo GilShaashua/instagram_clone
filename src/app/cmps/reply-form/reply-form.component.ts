@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+    Component,
+    EventEmitter,
+    Input,
+    OnDestroy,
+    OnInit,
+    Output,
+} from '@angular/core';
 import { Comment } from '../../models/comment.model.';
 import { PostService } from '../../services/post.service';
 import { firstValueFrom, take } from 'rxjs';
@@ -9,7 +16,7 @@ import { AuthService } from '../../services/auth.service';
     templateUrl: './reply-form.component.html',
     styleUrls: ['./reply-form.component.scss'],
 })
-export class ReplyFormComponent implements OnInit {
+export class ReplyFormComponent implements OnInit, OnDestroy {
     constructor(
         private postService: PostService,
         private authService: AuthService,
@@ -17,6 +24,7 @@ export class ReplyFormComponent implements OnInit {
 
     @Input() comment!: Comment;
     @Output() onAddReply = new EventEmitter();
+    @Output() onReplyFormInitialized = new EventEmitter();
 
     reply: Comment = {
         _id: '',
@@ -27,7 +35,7 @@ export class ReplyFormComponent implements OnInit {
         message: '',
         createdAt: 0,
     };
-    isComponentInitialized = false;
+    isReplyFormInitialized = false;
 
     async ngOnInit() {
         // To get updated comment from DB
@@ -49,7 +57,8 @@ export class ReplyFormComponent implements OnInit {
         const user$ = this.authService.getUserById(this.reply.createdByUserId);
         this.reply.createdByUserId = await firstValueFrom(user$);
 
-        this.isComponentInitialized = true;
+        this.isReplyFormInitialized = true;
+        this.onReplyFormInitialized.emit(true);
     }
 
     addReply(): void {
@@ -57,5 +66,9 @@ export class ReplyFormComponent implements OnInit {
 
         this.onAddReply.emit({ ...this.reply });
         this.reply.message = '';
+    }
+
+    ngOnDestroy() {
+        this.onReplyFormInitialized.emit(false);
     }
 }
