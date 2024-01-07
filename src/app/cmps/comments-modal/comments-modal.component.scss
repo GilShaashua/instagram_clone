@@ -12,11 +12,15 @@
 
     @include for-narrow-layout {
         padding-block-start: unset;
-        min-width: auto;
-        max-width: 500px;
-        overflow: unset;
+        //overflow: unset;
         display: grid;
-        align-content: center;
+        left: 75px;
+        width: calc(100% - 75px);
+        grid-template-columns: minmax(25px, 1fr) minmax(auto, 500px) minmax(
+                25px,
+                1fr
+            );
+        grid-template-rows: 30px 1fr 30px;
     }
 
     .comment-modal {
@@ -28,12 +32,14 @@
         grid-template-rows: 1fr auto;
 
         @include for-narrow-layout {
-            min-width: auto;
-            max-width: 500px;
-            grid-template-rows: 1fr auto;
-            height: calc(100vh - 50px);
-            overflow: auto;
+            width: 100%;
+
+            grid-template-rows: auto 1fr auto;
+            grid-template-columns: auto;
             padding-block-start: unset;
+            display: grid;
+            grid-row: 2;
+            grid-column: 2;
         }
 
         & > * {
@@ -50,16 +56,17 @@
             right: 20px;
             top: 85px;
             z-index: 40;
+            width: fit-content;
 
             @include for-narrow-layout {
                 position: sticky;
                 right: 0;
-                top: 0;
-                grid-column: 3;
+                top: 32px;
+                grid-column: unset;
                 padding-inline: unset;
                 padding-block-end: unset;
-                grid-row: 1;
-                align-self: start;
+                grid-row: unset;
+                justify-self: end;
             }
         }
 
@@ -67,8 +74,10 @@
             height: 100%;
 
             @include for-narrow-layout {
-                grid-column: 1/-1;
-                grid-row: 1/2;
+                //grid-column: 1/-1;
+                //grid-row: 1/2;
+                grid-column: unset;
+                margin-block-start: -17px;
             }
         }
 
@@ -102,9 +111,10 @@
             z-index: 120;
 
             @include for-narrow-layout {
-                bottom: 0;
+                bottom: 30px;
                 border-block-end: 1px solid rgba(255, 255, 255, 0.24);
-                grid-row: 3;
+                //grid-row: 3;
+                grid-column: unset;
             }
 
             img {
@@ -144,10 +154,11 @@
             display: none;
             background-color: black;
             grid-column: 1/-1;
-            position: sticky;
+            position: fixed;
             bottom: 0;
-            left: 0;
-            height: 24px;
+            left: 75px;
+            height: 30px;
+            width: calc(100% - 92px);
             grid-row: 4;
             z-index: 120;
 
