@@ -1,34 +1,66 @@
+@import "../../../assets/setup/mixins";
+
 :host {
     position: fixed;
     top: 0;
     left: 0;
     background-color: #000;
     height: 100%;
+    width: 100%;
+    overflow: auto;
+
+    @include for-narrow-layout() {
+        width: calc(100% - 75px);
+        left: 75px;
+        display: grid;
+        justify-content: center;
+    }
 
     .posts-modal {
-        overflow: auto;
         height: 100%;
+        display: grid;
+        grid-template-rows: auto 1fr;
+        position: relative;
+
+        @include for-narrow-layout() {
+            width: 500px;
+            padding-block-start: 15px;
+            padding-block-end: 25px;
+        }
 
         &.unscrollable {
             overflow: hidden;
         }
 
+        .btn-close {
+            border: none;
+            width: fit-content;
+            background-color: transparent;
+            position: fixed;
+            z-index: 130;
+            top: 85px;
+            right: 27px;
+            cursor: pointer;
+
+            @include for-narrow-layout() {
+                position: sticky;
+                grid-row: 1/1;
+                top: 30px;
+                right: 305px;
+                justify-self: end;
+            }
+        }
+
         ul {
-            display: flex;
-            flex-direction: column;
+            display: grid;
+            grid-template-rows: auto;
             gap: 3em;
             position: relative;
             padding-block: 4.7em;
 
-            .btn-close {
-                border: none;
-                width: fit-content;
-                background-color: transparent;
-                position: fixed;
-                z-index: 99;
-                top: 85px;
-                right: 27px;
-                cursor: pointer;
+            @include for-narrow-layout() {
+                padding-block: unset;
+                //min-height: 100vh;
             }
         }
     }
