@@ -17,7 +17,7 @@
     }
 
     .posts-modal {
-        height: 100%;
+        height: calc(100% + 1px);
         display: grid;
         grid-template-rows: auto 1fr;
         position: relative;
@@ -34,7 +34,6 @@
 
         .btn-close {
             border: none;
-            width: fit-content;
             background-color: transparent;
             position: fixed;
             z-index: 130;
@@ -44,9 +43,9 @@
 
             @include for-narrow-layout() {
                 position: sticky;
-                grid-row: 1/1;
-                top: 30px;
-                right: 305px;
+                grid-row: 1;
+                top: 40px;
+                right: 10px;
                 justify-self: end;
             }
         }
@@ -60,7 +59,7 @@
 
             @include for-narrow-layout() {
                 padding-block: unset;
-                //min-height: 100vh;
+                width: 100%;
             }
         }
     }
