@@ -8,9 +8,9 @@ import { UserService } from '../../services/user.service';
     selector: 'create-post-page',
     templateUrl: './create-post-page.component.html',
     styleUrls: ['./create-post-page.component.scss'],
-    host: {
-        class: 'page-cmp-layout',
-    },
+    // host: {
+    //     class: 'page-cmp-layout',
+    // },
 })
 export class CreatePostPageComponent {
     constructor(
