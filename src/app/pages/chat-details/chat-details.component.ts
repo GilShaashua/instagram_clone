@@ -1,9 +1,15 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { firstValueFrom, map, Subscription, tap } from 'rxjs';
+import { firstValueFrom, map, Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { Chat } from '../../models/chat.model';
 import { Location } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
+import { User } from '../../models/user.model';
+import { Message } from '../../models/message.model';
+import cloneDeep from 'lodash-es/cloneDeep';
+import { ChatService } from '../../services/chat.service';
+import { SharedStateService } from '../../services/shared-state.service';
+
 @Component({
     selector: 'chat-details',
     templateUrl: './chat-details.component.html',
@@ -18,6 +24,7 @@ export class ChatDetailsComponent implements OnInit, OnDestroy {
         private location: Location,
         private authService: AuthService,
         private chatService: ChatService,
+        private sharedState: SharedStateService,
     ) {}
 
     dataSubscription!: Subscription;
@@ -37,6 +44,8 @@ export class ChatDetailsComponent implements OnInit, OnDestroy {
     };
 
     async ngOnInit() {
+        this.sharedState.setChatDetailsShown(true);
+
         this.dataSubscription = this.route.data
             .pipe(map((data) => data['chat']))
             .subscribe({
@@ -90,10 +99,6 @@ export class ChatDetailsComponent implements OnInit, OnDestroy {
     ngOnDestroy() {
         this.paramsSubscription?.unsubscribe();
         this.dataSubscription?.unsubscribe();
+        this.sharedState.setChatDetailsShown(false);
     }
 }
-
-import { User } from '../../models/user.model';
-import { Message } from '../../models/message.model';
-import cloneDeep from 'lodash-es/cloneDeep';
-import { ChatService } from '../../services/chat.service';
