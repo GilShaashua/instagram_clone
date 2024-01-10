@@ -3,29 +3,30 @@
         display: flex;
         flex-direction: column;
         gap: 1.5em;
-        
+
         .logo {
             display: flex;
             align-items: center;
             justify-content: center;
         }
-        
+
         form {
             display: flex;
             flex-direction: column;
             gap: 1em;
-            
+
             input {
                 padding-inline: 0.6em;
                 height: 3em;
                 border: none;
                 border-radius: 0.3em;
-                
+                font-size: 16px;
+
                 &:placeholder-shown {
                     font-style: italic;
                 }
             }
-            
+
             .btn-login-with-email-password {
                 height: 2.5em;
                 cursor: pointer;
@@ -34,12 +35,12 @@
                 font-size: 16px;
                 color: #222222;
                 margin-block-start: 0.5em;
-                
+
                 &:hover {
                     background-color: rgb(224, 224, 224);
                 }
             }
-            
+
             .btn-register-with-email-password {
                 height: 2.5em;
                 cursor: pointer;
@@ -47,22 +48,22 @@
                 border-radius: 0.3em;
                 font-size: 16px;
                 color: #222222;
-                margin-block-start: .8em;
-                
+                margin-block-start: 0.8em;
+
                 &:hover {
                     background-color: rgb(224, 224, 224);
                 }
             }
         }
-        
+
         p {
             cursor: pointer;
-            
+
             &:hover {
                 color: #b2b2b2;
             }
         }
-        
+
         .btn-google-login {
             background-color: whitesmoke;
             display: flex;
@@ -76,11 +77,10 @@
             color: #222222;
             margin-block-start: 1.5em;
             font-size: 16px;
-            
+
             &:hover {
                 background-color: rgb(224, 224, 224);
             }
-            
         }
     }
 }
