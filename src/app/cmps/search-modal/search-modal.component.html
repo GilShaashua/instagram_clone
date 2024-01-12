@@ -1,12 +1,4 @@
 <div class="search-modal">
-    <ul>
-        <user-row-search-modal
-            *ngFor="let user of users; trackBy: trackByUserId"
-            [user]="user"
-            (toggleFollow)="toggleFollow.emit($event)"
-        ></user-row-search-modal>
-    </ul>
-
     <button class="btn-close" (click)="onCloseModal()">
         <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -21,4 +13,12 @@
             ></path>
         </svg>
     </button>
+
+    <ul>
+        <user-row-search-modal
+            *ngFor="let user of users; trackBy: trackByUserId"
+            [user]="user"
+            (toggleFollow)="toggleFollow.emit($event)"
+        ></user-row-search-modal>
+    </ul>
 </div>
