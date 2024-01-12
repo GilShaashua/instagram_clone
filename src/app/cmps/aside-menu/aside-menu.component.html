@@ -20,11 +20,17 @@
         <nav>
             <ul>
                 <li
+                    #elHome
                     [routerLinkActiveOptions]="{ exact: true }"
                     class="home"
                     routerLink="/"
                     routerLinkActive="active"
                     title="Home"
+                    (click)="
+                        isSearchModalShown = false;
+                        !elHome.classList.contains('active') &&
+                            elHome.classList.add('active')
+                    "
                 >
                     <svg
                         aria-label="Home"
@@ -46,9 +52,20 @@
                     </svg>
                 </li>
                 <li
+                    #elSearch
                     class="search"
                     title="Search"
-                    (click)="onToggleSearchModal(true)"
+                    [ngClass]="{ 'search-active': isSearchModalShown }"
+                    (click)="
+                        onToggleSearchModal(true);
+                        onClickSearchModal([
+                            elHome,
+                            elMessages,
+                            elNotifications,
+                            elCreatePost,
+                            elProfile
+                        ])
+                    "
                 >
                     <svg
                         aria-label="חיפוש"
@@ -82,10 +99,16 @@
                     </svg>
                 </li>
                 <li
+                    #elMessages
                     class="messages"
                     routerLink="/chat"
                     routerLinkActive="active"
                     title="Messages"
+                    (click)="
+                        isSearchModalShown = false;
+                        !elMessages.classList.contains('active') &&
+                            elMessages.classList.add('active')
+                    "
                 >
                     <svg
                         aria-label="Messenger"
@@ -111,14 +134,19 @@
                     </svg>
                 </li>
                 <li
-                    #notifications
+                    #elNotifications
                     class="notifications"
                     routerLink="/notification"
                     routerLinkActive="active"
                     title="Notifications"
+                    (click)="
+                        isSearchModalShown = false;
+                        !elNotifications.classList.contains('active') &&
+                            elNotifications.classList.add('active')
+                    "
                 >
                     <svg
-                        *ngIf="!notifications.classList.contains('active')"
+                        *ngIf="!elNotifications.classList.contains('active')"
                         aria-label="Notifications"
                         class="x1lliihq x1n2onr6"
                         color="rgb(245, 245, 245)"
@@ -133,7 +161,7 @@
                         ></path>
                     </svg>
                     <svg
-                        *ngIf="notifications.classList.contains('active')"
+                        *ngIf="elNotifications.classList.contains('active')"
                         aria-label="Notifications"
                         class="x1lliihq x1n2onr6"
                         color="rgb(245, 245, 245)"
@@ -150,10 +178,16 @@
                 </li>
 
                 <li
+                    #elCreatePost
                     class="create-post"
                     routerLink="/create-post"
                     routerLinkActive="active"
                     title="Create"
+                    (click)="
+                        isSearchModalShown = false;
+                        !elCreatePost.classList.contains('active') &&
+                            elCreatePost.classList.add('active')
+                    "
                 >
                     <svg
                         aria-label="New post"
@@ -199,10 +233,16 @@
                 </li>
 
                 <li
+                    #elProfile
                     class="profile"
                     routerLink="/profile/{{ user.uid }}"
                     routerLinkActive="active"
                     title="Profile"
+                    (click)="
+                        isSearchModalShown = false;
+                        !elProfile.classList.contains('active') &&
+                            elProfile.classList.add('active')
+                    "
                 >
                     <img
                         *ngIf="user.providerData[0].photoURL; else profile"

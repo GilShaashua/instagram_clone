@@ -70,6 +70,12 @@ export class AsideMenuComponent implements OnInit, OnDestroy {
         await this.userService.toggleFollow(isFollowClicked, user);
     }
 
+    onClickSearchModal(elLinks: HTMLElement[]) {
+        elLinks.forEach((elLink) => {
+            elLink.classList.remove('active');
+        });
+    }
+
     async onLogOut() {
         try {
             await this.authService.logOut();
