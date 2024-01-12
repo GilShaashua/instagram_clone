@@ -1,3 +1,5 @@
+@import "../../../assets/setup/mixins";
+
 :host {
     position: fixed;
     top: 61px;
@@ -9,17 +11,24 @@
     display: grid;
     grid-template-columns: 25px 1fr 25px;
 
+    @include for-narrow-layout() {
+        grid-template-columns: unset;
+        display: block;
+        position: unset;
+        left: 75px;
+        grid-column: 2;
+        grid-row: 3;
+        overflow: unset;
+    }
+
     .search-modal {
         grid-column: 2;
         padding-block: 1.5em;
 
-        ul {
+        @include for-narrow-layout() {
             display: flex;
             flex-direction: column;
-            gap: 1.3em;
-            position: relative;
-            padding-block-end: 8em;
-            padding-block-start: 2em;
+            padding-block: unset;
         }
 
         .btn-close {
@@ -35,6 +44,26 @@
             padding-block-end: 0.8em;
             align-self: end;
             cursor: pointer;
+            z-index: 200;
+
+            @include for-narrow-layout() {
+                position: sticky;
+                top: 115px;
+            }
+        }
+
+        ul {
+            display: flex;
+            flex-direction: column;
+            gap: 1.3em;
+            position: relative;
+            padding-block-end: 8em;
+            padding-block-start: 2em;
+
+            @include for-narrow-layout() {
+                padding-block-start: unset;
+                padding-block-end: unset;
+            }
         }
     }
 }

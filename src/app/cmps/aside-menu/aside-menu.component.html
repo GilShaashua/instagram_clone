@@ -46,6 +46,42 @@
                     </svg>
                 </li>
                 <li
+                    class="search"
+                    title="Search"
+                    (click)="onToggleSearchModal(true)"
+                >
+                    <svg
+                        aria-label="חיפוש"
+                        class="x1lliihq x1n2onr6 x5n08af"
+                        fill="currentColor"
+                        height="24"
+                        role="img"
+                        viewBox="0 0 24 24"
+                        width="24"
+                    >
+                        <title>חיפוש</title>
+                        <path
+                            d="M19 10.5A8.5 8.5 0 1 1 10.5 2a8.5 8.5 0 0 1 8.5 8.5Z"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                        ></path>
+                        <line
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            x1="16.511"
+                            x2="22"
+                            y1="16.511"
+                            y2="22"
+                        ></line>
+                    </svg>
+                </li>
+                <li
                     class="messages"
                     routerLink="/chat"
                     routerLinkActive="active"
@@ -253,5 +289,56 @@
                 <li (click)="onLogOut()" class="log-out">Log out</li>
             </ul>
         </div>
+    </div>
+
+    <div class="search-container" *ngIf="isSearchModalShown">
+        <div class="header">
+            <svg
+                aria-label="Search"
+                class="x1lliihq x1n2onr6 x1cp0k07"
+                fill="currentColor"
+                height="16"
+                role="img"
+                viewBox="0 0 24 24"
+                width="16"
+            >
+                <title>Search</title>
+                <path
+                    d="M19 10.5A8.5 8.5 0 1 1 10.5 2a8.5 8.5 0 0 1 8.5 8.5Z"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                ></path>
+                <line
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    x1="16.511"
+                    x2="22"
+                    y1="16.511"
+                    y2="22"
+                ></line>
+            </svg>
+            <input
+                [(ngModel)]="filterBy.account"
+                type="search"
+                name="search"
+                id="search"
+                placeholder="Search"
+                (input)="getUsers()"
+                (click)="onToggleSearchModal(true)"
+            />
+        </div>
+
+        <search-modal
+            [users]="users$ | async"
+            (closeModal)="onToggleSearchModal($event)"
+            (getUsers)="getUsers()"
+            (toggleFollow)="onToggleFollow($event)"
+        ></search-modal>
     </div>
 </section>
