@@ -146,6 +146,14 @@
                             border: 1px solid rgba(245, 245, 245, 0.46);
                         }
 
+                        &.search-active {
+                            svg {
+                                path {
+                                    fill: rgb(245, 245, 245);
+                                }
+                            }
+                        }
+
                         &:hover {
                             background-color: rgba(229, 229, 229, 0.11);
                         }
