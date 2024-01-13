@@ -20,7 +20,8 @@ export class AppHeaderMobileComponent implements OnInit, OnDestroy {
     filterBy = { account: '' };
     isSearchModalShown!: boolean;
     searchModalSubscription!: Subscription;
-    users$!: Observable<User[]>;
+    users!: User[];
+    usersSubscription!: Subscription;
 
     ngOnInit() {
         this.searchModalSubscription =
@@ -36,10 +37,15 @@ export class AppHeaderMobileComponent implements OnInit, OnDestroy {
         this.router.navigateByUrl('/');
     }
 
-    async getUsers() {
-        this.users$ = (await this.userService.getUsers(
-            this.filterBy,
-        )) as Observable<User[]>;
+    getUsers() {
+        this.usersSubscription?.unsubscribe();
+        this.usersSubscription = this.userService
+            .getUsers(this.filterBy)
+            .subscribe({
+                next: (users) => {
+                    this.users = users;
+                },
+            });
     }
 
     onToggleSearchModal(value: boolean) {
@@ -63,6 +69,7 @@ export class AppHeaderMobileComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        this.searchModalSubscription.unsubscribe();
+        this.searchModalSubscription?.unsubscribe();
+        this.usersSubscription?.unsubscribe();
     }
 }

@@ -27,7 +27,7 @@
                     routerLinkActive="active"
                     title="Home"
                     (click)="
-                        isSearchModalShown = false;
+                        onToggleSearchModal(false);
                         !elHome.classList.contains('active') &&
                             elHome.classList.add('active')
                     "
@@ -105,7 +105,7 @@
                     routerLinkActive="active"
                     title="Messages"
                     (click)="
-                        isSearchModalShown = false;
+                        onToggleSearchModal(false);
                         !elMessages.classList.contains('active') &&
                             elMessages.classList.add('active')
                     "
@@ -140,7 +140,7 @@
                     routerLinkActive="active"
                     title="Notifications"
                     (click)="
-                        isSearchModalShown = false;
+                        onToggleSearchModal(false);
                         !elNotifications.classList.contains('active') &&
                             elNotifications.classList.add('active')
                     "
@@ -184,7 +184,7 @@
                     routerLinkActive="active"
                     title="Create"
                     (click)="
-                        isSearchModalShown = false;
+                        onToggleSearchModal(false);
                         !elCreatePost.classList.contains('active') &&
                             elCreatePost.classList.add('active')
                     "
@@ -239,7 +239,7 @@
                     routerLinkActive="active"
                     title="Profile"
                     (click)="
-                        isSearchModalShown = false;
+                        onToggleSearchModal(false);
                         !elProfile.classList.contains('active') &&
                             elProfile.classList.add('active')
                     "
@@ -375,7 +375,7 @@
         </div>
 
         <search-modal
-            [users]="users$ | async"
+            [users]="users"
             (closeModal)="onToggleSearchModal($event)"
             (getUsers)="getUsers()"
             (toggleFollow)="onToggleFollow($event)"

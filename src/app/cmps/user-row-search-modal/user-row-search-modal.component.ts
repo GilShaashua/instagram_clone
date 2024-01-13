@@ -1,4 +1,12 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+    Component,
+    EventEmitter,
+    Input,
+    OnChanges,
+    OnInit,
+    Output,
+    SimpleChanges,
+} from '@angular/core';
 import { User } from '../../models/user.model';
 import { AuthService } from '../../services/auth.service';
 import { firstValueFrom, take } from 'rxjs';
@@ -8,7 +16,7 @@ import { firstValueFrom, take } from 'rxjs';
     templateUrl: './user-row-search-modal.component.html',
     styleUrls: ['./user-row-search-modal.component.scss'],
 })
-export class UserRowSearchModalComponent implements OnInit {
+export class UserRowSearchModalComponent implements OnInit, OnChanges {
     constructor(private authService: AuthService) {}
 
     @Input() user!: User;
@@ -38,6 +46,15 @@ export class UserRowSearchModalComponent implements OnInit {
         );
 
         this.isComponentInitialized = true;
+    }
+
+    ngOnChanges(changes: SimpleChanges) {
+        if (changes['user'].firstChange) return;
+        if (changes['user']) {
+            this.isFollowClicked = this.user.followedByUsers.includes(
+                this.loggedInUser._id as unknown as User,
+            );
+        }
     }
 
     onToggleFollow() {

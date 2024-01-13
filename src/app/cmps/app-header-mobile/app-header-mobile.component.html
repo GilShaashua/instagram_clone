@@ -62,7 +62,7 @@
 
         <search-modal
             *ngIf="isSearchModalShown"
-            [users]="users$ | async"
+            [users]="users"
             (closeModal)="onToggleSearchModal($event)"
             (getUsers)="getUsers()"
             (toggleFollow)="onToggleFollow($event)"

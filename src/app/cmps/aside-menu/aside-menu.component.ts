@@ -17,8 +17,9 @@ export class AsideMenuComponent implements OnInit, OnDestroy {
     userSubscription!: Subscription;
     isExtraMenuOpen = false;
     isSearchModalShown = false;
-    users$!: Observable<User[]>;
+    users!: User[];
     filterBy = { account: '' };
+    usersSubscription!: Subscription;
 
     constructor(
         private authService: AuthService,
@@ -44,10 +45,15 @@ export class AsideMenuComponent implements OnInit, OnDestroy {
         });
     }
 
-    async getUsers() {
-        this.users$ = (await this.userService.getUsers(
-            this.filterBy,
-        )) as Observable<User[]>;
+    getUsers() {
+        this.usersSubscription?.unsubscribe();
+        this.usersSubscription = this.userService
+            .getUsers(this.filterBy)
+            .subscribe({
+                next: (users) => {
+                    this.users = users;
+                },
+            });
     }
 
     onToggleSearchModal(value: boolean) {
@@ -86,5 +92,6 @@ export class AsideMenuComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         this.userSubscription?.unsubscribe();
+        this.usersSubscription?.unsubscribe();
     }
 }
