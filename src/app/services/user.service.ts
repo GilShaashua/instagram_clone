@@ -156,4 +156,16 @@ export class UserService {
     setIsSearchModalShown(value: boolean) {
         this._isSearchModalShown$.next(value);
     }
+
+    getLikedByUsers(likedByUsers: (User | string)[]) {
+        likedByUsers = (likedByUsers as User[]).map(
+            (likedByUser) => likedByUser._id,
+        );
+
+        const usersRef = this.db.collection('users', (ref) => {
+            return ref.where('_id', 'in', likedByUsers);
+        });
+
+        return usersRef.valueChanges() as Observable<User[]>;
+    }
 }
