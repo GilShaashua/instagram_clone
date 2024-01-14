@@ -32,6 +32,10 @@
         .time {
             font-size: 11px;
             margin-block-end: 0.2em;
+            display: flex;
+            flex-wrap: wrap;
+            max-width: 40px;
+            text-align: left;
         }
 
         &.loggedInUser {
@@ -43,6 +47,10 @@
                     rgb(38, 38, 38),
                     rgb(49, 49, 49)
                 );
+            }
+
+            .time {
+                text-align: right;
             }
         }
 

@@ -1,4 +1,12 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+    AfterViewInit,
+    Component,
+    ElementRef,
+    HostListener,
+    OnDestroy,
+    OnInit,
+    ViewChild,
+} from '@angular/core';
 import { firstValueFrom, map, Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { Chat } from '../../models/chat.model';
@@ -18,14 +26,18 @@ import { SharedStateService } from '../../services/shared-state.service';
         class: 'page-cmp-layout',
     },
 })
-export class ChatDetailsComponent implements OnInit, OnDestroy {
+export class ChatDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
     constructor(
         private route: ActivatedRoute,
         private location: Location,
         private authService: AuthService,
         private chatService: ChatService,
         private sharedState: SharedStateService,
-    ) {}
+    ) {
+        this.sharedState.setChatDetailsShown(true);
+    }
+
+    @ViewChild('chatDetails') elChatDetails!: ElementRef<HTMLUListElement>;
 
     dataSubscription!: Subscription;
     chat!: Chat;
@@ -44,8 +56,6 @@ export class ChatDetailsComponent implements OnInit, OnDestroy {
     };
 
     async ngOnInit() {
-        this.sharedState.setChatDetailsShown(true);
-
         this.dataSubscription = this.route.data
             .pipe(map((data) => data['chat']))
             .subscribe({
@@ -69,6 +79,10 @@ export class ChatDetailsComponent implements OnInit, OnDestroy {
         this.isComponentInitialized = true;
     }
 
+    ngAfterViewInit() {
+        // this.onScrollToBottom();
+    }
+
     async onAddMessage() {
         const messageClone = cloneDeep(this.message);
         await this.chatService.addMessageToChat(this.chat._id, messageClone);
@@ -90,6 +104,17 @@ export class ChatDetailsComponent implements OnInit, OnDestroy {
         const participantUser$ =
             this.authService.getUserById(participantUserId);
         this.participantUser = await firstValueFrom(participantUser$);
+    }
+
+    onScrollToBottom() {
+        if (this.elChatDetails) {
+            requestAnimationFrame(() => {
+                this.elChatDetails.nativeElement.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'end',
+                });
+            });
+        }
     }
 
     goBack() {

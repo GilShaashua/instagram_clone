@@ -1,4 +1,12 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import {
+    Component,
+    ElementRef,
+    EventEmitter,
+    Input,
+    OnInit,
+    Output,
+    ViewChild,
+} from '@angular/core';
 import { Chat } from '../../models/chat.model';
 import { Message } from '../../models/message.model';
 import { ChatService } from '../../services/chat.service';
@@ -16,7 +24,7 @@ export class MessageListComponent implements OnInit {
     @Input() chat!: Chat;
     @Input() participantUser!: User;
     @Input() loggedInUserFromDB!: User;
-    @ViewChild('messageList') elMessageList!: ElementRef<HTMLUListElement>;
+    @Output() onScrollToBottom = new EventEmitter();
 
     messages!: Message[];
 
@@ -34,12 +42,7 @@ export class MessageListComponent implements OnInit {
     }
 
     scrollToBottom() {
-        console.log(this.elMessageList);
-
-        if (this.elMessageList) {
-            this.elMessageList.nativeElement.scrollTop =
-                this.elMessageList.nativeElement.scrollHeight;
-        }
+        this.onScrollToBottom.emit();
     }
 
     trackByMessageId(index: number, message: Message) {

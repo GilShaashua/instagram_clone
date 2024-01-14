@@ -1,4 +1,4 @@
-<section class="chat-details" *ngIf="isComponentInitialized">
+<section class="chat-details" *ngIf="isComponentInitialized" #chatDetails>
     <div class="header">
         <button title="Back" class="btn-back" (click)="goBack()">
             <svg
@@ -41,6 +41,7 @@
         [chat]="chat"
         [loggedInUserFromDB]="loggedInUserFromDB"
         [participantUser]="participantUser"
+        (onScrollToBottom)="onScrollToBottom()"
     ></message-list>
 
     <form class="add-message" (ngSubmit)="onAddMessage()">
