@@ -4,6 +4,7 @@ import { ChatService } from '../../services/chat.service';
 import { AuthService } from '../../services/auth.service';
 import { Chat } from '../../models/chat.model';
 import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'chat-page',
@@ -18,12 +19,14 @@ export class ChatPageComponent implements OnInit, OnDestroy {
         private userService: UserService,
         private chatService: ChatService,
         private authService: AuthService,
+        private router: Router,
     ) {
         this.userService.setIsSearchModalShown(false);
     }
 
     chats: Chat[] = [];
     chatsSubscription!: Subscription;
+    isChatPageInitialized = false;
 
     async ngOnInit() {
         this.chatService
@@ -31,11 +34,20 @@ export class ChatPageComponent implements OnInit, OnDestroy {
             .subscribe({
                 next: (chats) => {
                     this.chats = chats;
+                    this.isChatPageInitialized = true;
                 },
                 error: (err: any) => {
                     console.error(err);
                 },
             });
+    }
+
+    async onRemoveChat(chatId: string) {
+        await this.chatService.removeChatById(chatId);
+    }
+
+    async navigateToAddChat() {
+        await this.router.navigateByUrl('chat/add');
     }
 
     ngOnDestroy() {

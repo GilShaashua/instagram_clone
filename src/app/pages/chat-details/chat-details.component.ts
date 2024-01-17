@@ -8,7 +8,7 @@ import {
     ViewChild,
 } from '@angular/core';
 import { firstValueFrom, map, Subscription } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Chat } from '../../models/chat.model';
 import { Location } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
@@ -26,15 +26,16 @@ import { SharedStateService } from '../../services/shared-state.service';
         class: 'page-cmp-layout',
     },
 })
-export class ChatDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
+export class ChatDetailsComponent implements OnInit, OnDestroy {
     constructor(
         private route: ActivatedRoute,
         private location: Location,
         private authService: AuthService,
         private chatService: ChatService,
-        private sharedState: SharedStateService,
+        private sharedStateService: SharedStateService,
+        private router: Router,
     ) {
-        this.sharedState.setChatDetailsShown(true);
+        this.sharedStateService.setChatDetailsShown(true);
     }
 
     @ViewChild('chatDetails') elChatDetails!: ElementRef<HTMLUListElement>;
@@ -79,10 +80,6 @@ export class ChatDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
         this.isComponentInitialized = true;
     }
 
-    ngAfterViewInit() {
-        // this.onScrollToBottom();
-    }
-
     async onAddMessage() {
         const messageClone = cloneDeep(this.message);
         await this.chatService.addMessageToChat(this.chat._id, messageClone);
@@ -103,7 +100,8 @@ export class ChatDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
 
         const participantUser$ =
             this.authService.getUserById(participantUserId);
-        this.participantUser = await firstValueFrom(participantUser$);
+        const participantUser = await firstValueFrom(participantUser$);
+        this.participantUser = participantUser;
     }
 
     onScrollToBottom() {
@@ -117,13 +115,13 @@ export class ChatDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
         }
     }
 
-    goBack() {
-        this.location.back();
+    async goBack() {
+        await this.router.navigateByUrl('chat');
     }
 
     ngOnDestroy() {
         this.paramsSubscription?.unsubscribe();
         this.dataSubscription?.unsubscribe();
-        this.sharedState.setChatDetailsShown(false);
+        this.sharedStateService.setChatDetailsShown(false);
     }
 }

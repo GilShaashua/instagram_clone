@@ -1,0 +1,7 @@
+<ul class="user-list">
+    <user-row
+        *ngFor="let user of users; trackBy: trackByUserId"
+        [user]="user"
+        (onAddNewChat)="addNewChat($event)"
+    ></user-row>
+</ul>

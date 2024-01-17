@@ -1,0 +1,27 @@
+<section class="add-chat-page">
+    <div class="header">
+        <button class="btn-cancel" (click)="navigateToChatPage()">
+            Cancel
+        </button>
+        <h4>New message</h4>
+    </div>
+
+    <div class="add-chat-inner-container">
+        <form>
+            <p>To:</p>
+            <input
+                [(ngModel)]="filterBy.account"
+                type="search"
+                name="user"
+                id="user"
+                placeholder="Search"
+                (input)="getUsers()"
+            />
+        </form>
+
+        <user-list
+            [users]="users"
+            (onAddNewChat)="onAddNewChat($event)"
+        ></user-list>
+    </div>
+</section>

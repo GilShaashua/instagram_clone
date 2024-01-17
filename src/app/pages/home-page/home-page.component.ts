@@ -93,13 +93,11 @@ export class HomePageComponent implements OnInit, OnDestroy {
     }
 
     navigateToUserProfile(creatorId: string) {
-        console.log('creatorId', creatorId);
-
         this.router.navigateByUrl(`profile/${creatorId}`);
     }
 
     navigateToCreatePost() {
-        this.router.navigateByUrl('/create-post');
+        this.router.navigateByUrl('create-post');
     }
 
     ngOnDestroy() {

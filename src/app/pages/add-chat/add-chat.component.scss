@@ -1,0 +1,71 @@
+:host {
+    .add-chat-page {
+        padding-block-start: 65px;
+        padding-block-end: 25px;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+
+        .header {
+            display: flex;
+            align-items: center;
+            position: fixed;
+            width: 100%;
+            height: 50px;
+            left: 0;
+            top: 0;
+            padding-inline: 25px;
+            border-block-end: 1px solid rgba(255, 255, 255, 0.24);
+            background-color: black;
+
+            .btn-cancel {
+                background-color: unset;
+                border: none;
+                color: whitesmoke;
+                font-size: 16px;
+                flex: 1;
+                text-align: left;
+                cursor: pointer;
+            }
+            h4 {
+                font-size: 18px;
+                flex: 1.5;
+            }
+        }
+
+        .add-chat-inner-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1em;
+
+            form {
+                display: flex;
+                align-items: center;
+                height: 100%;
+
+                p {
+                    color: #4f4f4f;
+                    height: 100%;
+                    display: flex;
+                    align-items: center;
+                    font-size: 16px;
+                }
+
+                #user {
+                    width: 100%;
+                    color: whitesmoke;
+                    background-color: transparent;
+                    border: none;
+                    font-size: 16px;
+                    height: 100%;
+                    padding-inline: 0.5em;
+
+                    &::placeholder {
+                        color: #4f4f4f;
+                        font-size: 16px;
+                    }
+                }
+            }
+        }
+    }
+}

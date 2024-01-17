@@ -2,5 +2,6 @@
     <chat-preview
         *ngFor="let chat of chats; trackBy: trackByChatId"
         [chat]="chat"
+        (onRemoveChat)="onRemoveChat.emit($event)"
     ></chat-preview>
 </ul>
