@@ -3,6 +3,7 @@
     [class]="
         routerUrl === '/login' ? 'main-app login-layout' : 'main-app app-layout'
     "
+    [ngClass]="{ 'main-app-remove-rows': isChatDetailsShown }"
 >
     <router-outlet *ngIf="routerUrl === '/login'"></router-outlet>
     <app-header-mobile

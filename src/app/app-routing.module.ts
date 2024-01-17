@@ -11,8 +11,15 @@ import { loginAuthGuard } from './guards/login-auth.guard';
 import { userResolver } from './resolvers/user.resolver';
 import { ChatDetailsComponent } from './pages/chat-details/chat-details.component';
 import { chatResolver } from './resolvers/chat.resolver';
+import { AddChatComponent } from './pages/add-chat/add-chat.component';
 
 const routes: Routes = [
+    {
+        path: 'chat/add',
+        component: AddChatComponent,
+        canActivate: [authGuard],
+        // resolve: { chat: chatResolver },
+    },
     {
         path: 'chat/:chatId',
         component: ChatDetailsComponent,

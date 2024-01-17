@@ -3,12 +3,17 @@
     *ngIf="isComponentInitialized && lastMessage"
     routerLink="/chat/{{ chat._id }}"
 >
-    <img [src]="participantUser.imgUrl" alt="Participant" />
-    <div class="chat-content">
-        <span>{{
-            lastMessage.txt.length > 20
-                ? lastMessage.txt.substring(0, 20) + " ..."
-                : lastMessage.txt
-        }}</span>
+    <div class="inner-container">
+        <img [src]="participantUser.imgUrl" alt="Participant" />
+        <div class="chat-content">
+            <p>{{ participantUser.fullName }}</p>
+            <span>{{
+                lastMessage.txt.length > 20
+                    ? lastMessage.txt.substring(0, 20) + " ..."
+                    : lastMessage.txt
+            }}</span>
+        </div>
     </div>
+
+    <button class="btn-remove-chat" (click)="removeChat($event)">Remove</button>
 </li>

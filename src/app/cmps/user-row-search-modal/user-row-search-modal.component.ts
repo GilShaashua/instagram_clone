@@ -3,6 +3,7 @@ import {
     EventEmitter,
     Input,
     OnChanges,
+    OnDestroy,
     OnInit,
     Output,
     SimpleChanges,
@@ -33,9 +34,7 @@ export class UserRowSearchModalComponent implements OnInit, OnChanges {
     async ngOnInit() {
         const loggedInUser = this.authService.getLoggedInUser();
 
-        const user$ = this.authService
-            .getUserById(loggedInUser.uid)
-            .pipe(take(1));
+        const user$ = this.authService.getUserById(loggedInUser.uid);
 
         this.loggedInUser = await firstValueFrom(user$);
 
@@ -49,7 +48,7 @@ export class UserRowSearchModalComponent implements OnInit, OnChanges {
     }
 
     ngOnChanges(changes: SimpleChanges) {
-        if (changes['user'].firstChange) return;
+        if (!this.isComponentInitialized) return;
         if (changes['user']) {
             this.isFollowClicked = this.user.followedByUsers.includes(
                 this.loggedInUser._id as unknown as User,

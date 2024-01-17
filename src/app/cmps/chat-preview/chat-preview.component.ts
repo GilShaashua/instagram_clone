@@ -1,4 +1,11 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import {
+    Component,
+    EventEmitter,
+    Input,
+    OnDestroy,
+    OnInit,
+    Output,
+} from '@angular/core';
 import { Chat } from '../../models/chat.model';
 import { User } from '../../models/user.model';
 import { AuthService } from '../../services/auth.service';
@@ -18,6 +25,7 @@ export class ChatPreviewComponent implements OnInit, OnDestroy {
     ) {}
 
     @Input() chat!: Chat;
+    @Output() onRemoveChat = new EventEmitter();
 
     loggedInUserFromDB!: User;
     participantUser!: User;
@@ -59,9 +67,24 @@ export class ChatPreviewComponent implements OnInit, OnDestroy {
                     const message$ = this.chatService.getMessageById(
                         this.chat.messages[this.chat.messages.length - 1],
                     );
-                    this.lastMessage = await firstValueFrom(message$);
+                    let lastMessage = await firstValueFrom(message$);
+                    if (!lastMessage) {
+                        lastMessage = {
+                            _id: '',
+                            chatId: this.chat._id,
+                            sentAt: 0,
+                            sentBy: this.loggedInUserFromDB._id,
+                            txt: 'No messages yet',
+                        };
+                    }
+                    this.lastMessage = lastMessage;
                 },
             });
+    }
+
+    removeChat(ev: Event) {
+        ev.stopPropagation();
+        this.onRemoveChat.emit(this.chat._id);
     }
 
     ngOnDestroy() {

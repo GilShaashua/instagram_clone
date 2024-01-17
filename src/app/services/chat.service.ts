@@ -66,4 +66,72 @@ export class ChatService {
             )
             .valueChanges() as Observable<Message[]>;
     }
+
+    async addNewChat(newChat: Chat) {
+        console.log('newChat', newChat);
+
+        try {
+            // Check for existing chats using two separate queries
+            const firstCheck$ = this.db
+                .collection('chats', (ref) =>
+                    ref.where('users', 'array-contains', newChat.users[0]),
+                )
+
+                .valueChanges() as Observable<Chat[]>;
+            const secondCheck$ = this.db
+                .collection('chats', (ref) =>
+                    ref.where('users', 'array-contains', newChat.users[1]),
+                )
+
+                .valueChanges() as Observable<Chat[]>;
+
+            const firstResults = await firstValueFrom(firstCheck$);
+            const secondResults = await firstValueFrom(secondCheck$);
+
+            const existingChat = firstResults.find((chat) =>
+                secondResults.some((otherChat) => otherChat._id === chat._id),
+            );
+
+            if (existingChat) {
+                return existingChat._id;
+            }
+        } catch (error) {
+            console.error('Error checking for existing chat:', error);
+        }
+
+        newChat.lastModified = Date.now();
+        const newChatRef = await this.db.collection('chats').add(newChat);
+        console.log('newChatRef', newChatRef);
+        await this.db
+            .collection('chats')
+            .doc(newChatRef.id)
+            .update({ _id: newChatRef.id });
+
+        return newChatRef.id;
+    }
+
+    async removeChatById(chatId: string) {
+        console.log('chatId', chatId);
+        await this._removeMessagesForChatId(chatId);
+        await this.db.collection('chats').doc(chatId).delete();
+    }
+
+    private async _removeMessagesForChatId(chatId: string) {
+        console.log('chatId', chatId);
+        // Get all messages
+        const messages$ = this.db
+            .collection('messages')
+            .valueChanges() as Observable<Message[]>;
+        const messages = await firstValueFrom(messages$);
+
+        // Filter out messages related to the chat
+        const filteredMessages = messages.filter(
+            (message) => message.chatId === chatId,
+        );
+
+        // Delete each message
+        for (const message of filteredMessages) {
+            await this.db.collection('messages').doc(message._id).delete();
+        }
+    }
 }

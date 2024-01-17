@@ -3,18 +3,45 @@
         display: flex;
         align-items: center;
         gap: 0.7em;
+        justify-content: space-between;
+        height: 100%;
 
-        img {
-            width: 3.5em;
-            border-radius: 50%;
-            object-fit: cover;
-            aspect-ratio: 1/1;
-            cursor: pointer;
+        .inner-container {
+            display: flex;
+            align-items: center;
+            gap: 0.7em;
+
+            img {
+                width: 3em;
+                border-radius: 50%;
+                object-fit: cover;
+                aspect-ratio: 1/1;
+                cursor: pointer;
+            }
+
+            .chat-content {
+                font-size: 16px;
+                cursor: pointer;
+
+                p {
+                    font-size: 16px;
+                    font-weight: bolder;
+                }
+
+                span {
+                    font-size: 15px;
+                }
+            }
         }
 
-        .chat-content {
-            font-size: 16px;
+        .btn-remove-chat {
+            background-color: transparent;
+            border: none;
+            color: whitesmoke;
+            height: 40px;
+            padding-inline: 10px;
             cursor: pointer;
+            font-size: 14px;
         }
     }
 }
