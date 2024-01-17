@@ -5,6 +5,10 @@
     min-height: 100vh;
     grid-template-rows: auto 1fr auto;
 
+    &.main-app-remove-rows {
+        grid-template-rows: unset;
+    }
+
     @include for-narrow-layout {
         grid-template-rows: unset;
     }
