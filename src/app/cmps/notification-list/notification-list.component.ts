@@ -10,6 +10,6 @@ export class NotificationListComponent {
     @Input() notifications!: Notification[];
 
     trackByNotificationId(index: number, notification: Notification) {
-        return notification.id;
+        return notification._id;
     }
 }

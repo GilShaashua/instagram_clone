@@ -3,6 +3,7 @@
 :host {
     display: block;
     padding-block: 1em;
+    padding-block-end: 2em;
 
     @include for-narrow-layout() {
         padding-block: 2em;
