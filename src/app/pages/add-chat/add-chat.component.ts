@@ -31,7 +31,8 @@ export class AddChatComponent implements OnInit, OnDestroy {
         _id: '',
         lastModified: 0,
         isRead: false,
-        users: [this.authService.getLoggedInUser().uid, ''],
+        shownByUsers: [this.authService.getLoggedInUser().uid],
+        users: [this.authService.getLoggedInUser().uid],
         messages: [],
     };
     filterBy = { account: '' };
@@ -48,8 +49,12 @@ export class AddChatComponent implements OnInit, OnDestroy {
     }
 
     async onAddNewChat(userId: string) {
-        this.newChat.users[1] = userId;
-        const chatId = await this.chatService.addNewChat(this.newChat);
+        this.newChat.users.push(userId);
+        this.newChat.shownByUsers.push(userId);
+        const chatId = await this.chatService.addNewChat(
+            this.newChat,
+            this.authService.getLoggedInUser().uid,
+        );
         await this.router.navigateByUrl(`chat/${chatId}`);
     }
 

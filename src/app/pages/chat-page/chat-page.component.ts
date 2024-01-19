@@ -43,7 +43,10 @@ export class ChatPageComponent implements OnInit, OnDestroy {
     }
 
     async onRemoveChat(chatId: string) {
-        await this.chatService.removeChatById(chatId);
+        await this.chatService.removeChatById(
+            chatId,
+            this.authService.getLoggedInUser().uid,
+        );
     }
 
     async navigateToAddChat() {
