@@ -1,3 +1,5 @@
+@import "../../../assets/setup/mixins";
+
 :host {
     width: 100%;
 
@@ -19,12 +21,28 @@
             height: 61px;
             padding-inline: 25px;
 
+            @include for-narrow-layout() {
+                display: grid;
+                grid-template-columns: minmax(25px, 1fr) minmax(auto, 500px) minmax(
+                        25px,
+                        1fr
+                    );
+                padding-inline: unset;
+                gap: unset;
+            }
+
             .btn-back {
                 background-color: unset;
                 border: none;
                 display: flex;
                 align-items: center;
                 cursor: pointer;
+
+                @include for-narrow-layout() {
+                    grid-column: 2;
+                    grid-row: 1;
+                    width: fit-content;
+                }
 
                 svg {
                     line {
@@ -40,6 +58,13 @@
                 display: flex;
                 align-items: center;
                 gap: 0.4em;
+
+                @include for-narrow-layout() {
+                    grid-column: 2;
+                    grid-row: 1;
+                    width: fit-content;
+                    margin-inline-start: 3em;
+                }
 
                 img {
                     width: 2em;
@@ -72,12 +97,27 @@
             border-block-start: 1px solid rgba(245, 245, 245, 0.24);
             z-index: 999;
 
+            @include for-narrow-layout() {
+                display: grid;
+                grid-template-columns: minmax(25px, 1fr) minmax(auto, 500px) minmax(
+                        25px,
+                        1fr
+                    );
+                padding-inline: unset;
+                gap: unset;
+            }
+
             img {
                 width: 2em;
                 border-radius: 50%;
                 object-fit: cover;
                 aspect-ratio: 1/1;
                 cursor: pointer;
+
+                @include for-narrow-layout() {
+                    grid-column: 2;
+                    grid-row: 1;
+                }
             }
 
             #message {
@@ -87,6 +127,12 @@
                 border: none;
                 font-size: 16px;
                 color: whitesmoke;
+
+                @include for-narrow-layout() {
+                    grid-column: 2;
+                    grid-row: 1;
+                    margin-inline-start: 2.5em;
+                }
             }
 
             .btn-send {
@@ -97,6 +143,13 @@
                 height: 100%;
                 color: rgb(0, 149, 246);
                 cursor: pointer;
+
+                @include for-narrow-layout() {
+                    grid-column: 2;
+                    grid-row: 1;
+                    width: fit-content;
+                    justify-self: end;
+                }
             }
         }
     }

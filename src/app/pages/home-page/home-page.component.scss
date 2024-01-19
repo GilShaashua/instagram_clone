@@ -1,6 +1,12 @@
+@import "../../../assets/setup/mixins";
+
 :host {
     display: block;
     padding-block: 1em;
+
+    @include for-narrow-layout() {
+        padding-block: 2em;
+    }
 
     .home-page {
     }
