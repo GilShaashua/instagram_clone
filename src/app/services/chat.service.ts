@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Chat } from '../models/chat.model';
-import { firstValueFrom, Observable, take, tap } from 'rxjs';
+import { filter, firstValueFrom, map, Observable, take, tap } from 'rxjs';
 import { Message } from '../models/message.model';
 
 @Injectable({
@@ -17,7 +17,13 @@ export class ChatService {
                 .orderBy('lastModified', 'desc'),
         );
 
-        return chatsRef.valueChanges() as Observable<Chat[]>;
+        return chatsRef.valueChanges().pipe(
+            map((chats) =>
+                chats.filter((chat) => {
+                    return (chat as Chat).shownByUsers.includes(userId);
+                }),
+            ),
+        ) as Observable<Chat[]>;
     }
 
     getChatById(chatId: string) {
@@ -67,9 +73,7 @@ export class ChatService {
             .valueChanges() as Observable<Message[]>;
     }
 
-    async addNewChat(newChat: Chat) {
-        console.log('newChat', newChat);
-
+    async addNewChat(newChat: Chat, loggedInUserId: string) {
         try {
             // Check for existing chats using two separate queries
             const firstCheck$ = this.db
@@ -93,6 +97,17 @@ export class ChatService {
             );
 
             if (existingChat) {
+                if (!existingChat.shownByUsers.includes(loggedInUserId)) {
+                    await this.db
+                        .collection('chats')
+                        .doc(existingChat._id)
+                        .update({
+                            shownByUsers: [
+                                ...existingChat.shownByUsers,
+                                loggedInUserId,
+                            ],
+                        });
+                }
                 return existingChat._id;
             }
         } catch (error) {
@@ -110,28 +125,20 @@ export class ChatService {
         return newChatRef.id;
     }
 
-    async removeChatById(chatId: string) {
-        console.log('chatId', chatId);
-        await this._removeMessagesForChatId(chatId);
-        await this.db.collection('chats').doc(chatId).delete();
-    }
-
-    private async _removeMessagesForChatId(chatId: string) {
-        console.log('chatId', chatId);
-        // Get all messages
-        const messages$ = this.db
-            .collection('messages')
-            .valueChanges() as Observable<Message[]>;
-        const messages = await firstValueFrom(messages$);
-
-        // Filter out messages related to the chat
-        const filteredMessages = messages.filter(
-            (message) => message.chatId === chatId,
+    async removeChatById(chatId: string, loggedInUserId: string) {
+        const chat$ = this.db
+            .collection('chats')
+            .doc(chatId)
+            .valueChanges() as Observable<Chat>;
+        const chat = await firstValueFrom(chat$);
+        const loggedInUserIdx = chat.shownByUsers.findIndex(
+            (userId) => userId === loggedInUserId,
         );
+        chat.shownByUsers.splice(loggedInUserIdx, 1);
 
-        // Delete each message
-        for (const message of filteredMessages) {
-            await this.db.collection('messages').doc(message._id).delete();
-        }
+        await this.db
+            .collection('chats')
+            .doc(chatId)
+            .update({ shownByUsers: chat.shownByUsers });
     }
 }
