@@ -3,6 +3,7 @@ import { firstValueFrom } from 'rxjs';
 import { User } from '../../models/user.model';
 import { AuthService } from '../../services/auth.service';
 import { Post } from '../../models/post.model';
+import { PostService } from '../../services/post.service';
 
 @Component({
     selector: 'more-options-modal',
@@ -10,7 +11,10 @@ import { Post } from '../../models/post.model';
     styleUrls: ['./more-options-modal.component.scss'],
 })
 export class MoreOptionsModalComponent implements OnInit {
-    constructor(private authService: AuthService) {}
+    constructor(
+        private authService: AuthService,
+        private postService: PostService,
+    ) {}
 
     @Input() post!: Post;
     @Input() creator!: User;
@@ -42,5 +46,9 @@ export class MoreOptionsModalComponent implements OnInit {
             user: this.creator,
             isFollowClicked: this.isFollowClicked,
         });
+    }
+
+    async onRemovePost() {
+        await this.postService.removePostById(this.post._id);
     }
 }

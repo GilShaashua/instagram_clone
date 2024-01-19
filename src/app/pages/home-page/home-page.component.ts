@@ -75,7 +75,8 @@ export class HomePageComponent implements OnInit, OnDestroy {
             recipient: post.creatorId,
             message: '',
             createdAt: 0,
-            madeAt: post,
+            postId: post._id,
+            postImgUrl: post.imgUrl,
             read: false,
         };
         await this.notificationService.addNotification(

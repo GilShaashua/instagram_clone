@@ -15,6 +15,7 @@ import { User } from '../models/user.model';
 import { NgxImageCompressService } from 'ngx-image-compress';
 import { Comment } from '../models/comment.model.';
 import { ref } from 'firebase/database';
+import { Notification } from '../models/notification.model';
 
 @Injectable({
     providedIn: 'root',
@@ -174,6 +175,12 @@ export class PostService {
             .update({ _id: docData.id });
     }
 
+    async removePostById(postId: string) {
+        await this._removeCommentsOfPostId(postId);
+        await this._removeNotificationsOfPostId(postId);
+        await this.db.collection('posts').doc(postId).delete();
+    }
+
     getCommentsByPostId(postId: string) {
         const commentsRef = this.db.collection('comments', (ref) =>
             ref
@@ -245,6 +252,35 @@ export class PostService {
             .collection('comments')
             .doc(commentId)
             .valueChanges() as Observable<Comment>;
+    }
+
+    private async _removeCommentsOfPostId(postId: string) {
+        const commentsRef = this.db.collection('comments', (ref) =>
+            ref.where('postId', '==', postId),
+        );
+        const comments$ = commentsRef.valueChanges() as Observable<Comment[]>;
+        const comments = await firstValueFrom(comments$);
+
+        for (const comment of comments) {
+            await this.db.collection('comments').doc(comment._id).delete();
+        }
+    }
+
+    private async _removeNotificationsOfPostId(postId: string) {
+        const notifications$ = this.db
+            .collection('notifications', (ref) =>
+                ref.where('postId', '==', postId),
+            )
+            .valueChanges() as Observable<Notification[]>;
+
+        const notifications = await firstValueFrom(notifications$);
+
+        for (const notification of notifications) {
+            await this.db
+                .collection('notifications')
+                .doc(notification._id)
+                .delete();
+        }
     }
 
     private _makeId(length = 5) {

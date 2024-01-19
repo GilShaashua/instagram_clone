@@ -1,9 +1,10 @@
 export interface Notification {
-    id?: string;
+    _id?: string;
     sender: string;
     recipient: string;
     message: string;
-    madeAt: any;
+    postId: string;
+    postImgUrl: string;
     createdAt: number;
     read: boolean;
 }

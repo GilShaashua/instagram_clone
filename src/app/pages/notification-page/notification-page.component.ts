@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NotificationService } from '../../services/notification.service';
 import { AuthService } from '../../services/auth.service';
-import { take } from 'rxjs';
+import { Subscription, take } from 'rxjs';
 import { Notification } from '../../models/notification.model';
 import { UserService } from '../../services/user.service';
 
@@ -13,7 +13,7 @@ import { UserService } from '../../services/user.service';
         class: 'page-cmp-layout',
     },
 })
-export class NotificationPageComponent implements OnInit {
+export class NotificationPageComponent implements OnInit, OnDestroy {
     constructor(
         private notificationService: NotificationService,
         private authService: AuthService,
@@ -23,19 +23,21 @@ export class NotificationPageComponent implements OnInit {
     }
 
     notifications!: Notification[];
+    notificationsSubscription!: Subscription;
 
     async ngOnInit() {
         const loggedInUser = this.authService.getLoggedInUser();
 
-        if (loggedInUser) {
-            this.notificationService
-                .getNotificationsForUser(loggedInUser.uid)
-                .pipe(take(1))
-                .subscribe({
-                    next: (notifications) => {
-                        this.notifications = notifications;
-                    },
-                });
-        }
+        this.notificationService
+            .getNotificationsForUser(loggedInUser.uid)
+            .subscribe({
+                next: (notifications) => {
+                    this.notifications = notifications;
+                },
+            });
+    }
+
+    ngOnDestroy() {
+        this.notificationsSubscription?.unsubscribe();
     }
 }
