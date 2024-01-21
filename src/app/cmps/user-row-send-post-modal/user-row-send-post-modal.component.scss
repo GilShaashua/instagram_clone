@@ -1,0 +1,36 @@
+:host {
+    .user-row-send-post-modal {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.5em;
+
+        .user {
+            display: flex;
+            align-items: center;
+            gap: 0.5em;
+
+            img {
+                width: 3em;
+                border-radius: 50%;
+                cursor: pointer;
+                aspect-ratio: 1/1;
+                object-fit: cover;
+            }
+
+            p {
+                font-size: 16px;
+                cursor: pointer;
+            }
+        }
+
+        .btn-send {
+            border: none;
+            font-size: 16px;
+            color: rgb(0, 149, 246);
+            font-weight: bolder;
+            background-color: transparent;
+            cursor: pointer;
+        }
+    }
+}

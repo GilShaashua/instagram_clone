@@ -1,0 +1,112 @@
+:host {
+    position: fixed;
+    background-color: black;
+    left: 0;
+    width: 100%;
+    height: calc(100% - 121px);
+    top: 61px;
+    overflow: auto;
+    z-index: 200;
+
+    .send-post-modal {
+        padding-inline: 25px;
+        padding-block: 1em;
+        padding-block-end: 1.5em;
+
+        &.message-form-shown {
+            padding-block-end: 5.5em;
+        }
+
+        .user-to-send-post {
+            display: flex;
+            flex-direction: column;
+            gap: 1em;
+
+            .btn-close {
+                background-color: transparent;
+                border: none;
+                cursor: pointer;
+                width: fit-content;
+                display: flex;
+                align-items: center;
+                position: fixed;
+                right: 25px;
+                top: 93px;
+            }
+
+            form {
+                display: flex;
+                align-items: center;
+                gap: 0.4em;
+                height: 50px;
+
+                p {
+                    height: 100%;
+                    display: flex;
+                    align-items: center;
+                }
+
+                #user {
+                    background-color: transparent;
+                    border: none;
+                    color: whitesmoke;
+                    font-size: 16px;
+                    width: 100%;
+                    height: 100%;
+                }
+            }
+        }
+
+        .message {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 0;
+            background-color: black;
+            display: flex;
+            align-items: center;
+            gap: 0.5em;
+            padding-inline: 25px;
+            border-block: 1px solid rgba(255, 255, 255, 0.19);
+            transition: all 0.3s ease-in-out;
+
+            &.message-form-shown {
+                bottom: 58px;
+                height: 70px;
+            }
+
+            .img-post {
+                width: 40px;
+                aspect-ratio: 1/1;
+                object-fit: cover;
+            }
+
+            #txt {
+                width: 100%;
+                height: 30px;
+                background-color: transparent;
+                border: none;
+                color: whitesmoke;
+                font-size: 16px;
+
+                &::placeholder {
+                    color: whitesmoke;
+                }
+            }
+
+            .btn-send {
+                height: 30px;
+                color: whitesmoke;
+                border: none;
+                background-color: rgb(0, 149, 246);
+                font-size: 16px;
+                font-weight: bolder;
+                padding-inline: 0.7em;
+                border-radius: 0.2em;
+                cursor: pointer;
+                margin-inline-start: 0.5em;
+            }
+        }
+    }
+}

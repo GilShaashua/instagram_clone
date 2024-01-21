@@ -1,0 +1,11 @@
+<li class="user-row-send-post-modal">
+    <div class="user">
+        <img [src]="user.imgUrl" alt="user" />
+        <p>{{ user.fullName }}</p>
+    </div>
+    <div class="send">
+        <button class="btn-send" (click)="onChooseUserToSendPost.emit(user)">
+            Send
+        </button>
+    </div>
+</li>

@@ -1,0 +1,7 @@
+<ul class="user-list-send-post-modal">
+    <user-row-send-post-modal
+        *ngFor="let user of users; trackBy: trackByUserId"
+        [user]="user"
+        (onChooseUserToSendPost)="onChooseUserToSendPost.emit($event)"
+    ></user-row-send-post-modal>
+</ul>
