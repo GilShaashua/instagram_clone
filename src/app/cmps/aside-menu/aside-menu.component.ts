@@ -1,9 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
-import { firstValueFrom, Observable, Subscription, take } from 'rxjs';
-import firebase from 'firebase/compat';
+import { firstValueFrom, Subscription, take } from 'rxjs';
 import { Router } from '@angular/router';
-import UserCredential = firebase.auth.UserCredential;
 import { User } from '../../models/user.model';
 import { UserService } from '../../services/user.service';
 
@@ -13,7 +11,7 @@ import { UserService } from '../../services/user.service';
     styleUrls: ['./aside-menu.component.scss'],
 })
 export class AsideMenuComponent implements OnInit, OnDestroy {
-    user!: any | null;
+    user!: User;
     userSubscription!: Subscription;
     isExtraMenuOpen = false;
     isSearchModalShown = false;
@@ -29,10 +27,15 @@ export class AsideMenuComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.userSubscription = this.authService.loggedInUser$.subscribe({
-            next: (loggedInUser) => {
-                if (loggedInUser) this.user = loggedInUser;
-                else {
-                    this.user = loggedInUser;
+            next: async (_loggedInUser) => {
+                if (_loggedInUser) {
+                    const loggedInUserFromDB$ = this.authService.getUserById(
+                        _loggedInUser.uid,
+                    );
+                    const loggedInUserFromDB =
+                        await firstValueFrom(loggedInUserFromDB$);
+                    this.user = loggedInUserFromDB;
+                } else {
                     this.router.navigateByUrl('login');
                 }
             },

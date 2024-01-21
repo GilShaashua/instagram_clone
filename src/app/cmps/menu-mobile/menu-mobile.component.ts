@@ -1,8 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { firstValueFrom, Subscription } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import firebase from 'firebase/compat';
+import { User } from '../../models/user.model';
 
 @Component({
     selector: 'menu-mobile',
@@ -10,7 +11,7 @@ import firebase from 'firebase/compat';
     styleUrls: ['./menu-mobile.component.scss'],
 })
 export class MenuMobileComponent implements OnInit, OnDestroy {
-    loggedInUser!: firebase.User | null;
+    loggedInUser!: User;
     userSubscription!: Subscription;
     isExtraMenuOpen = false;
 
@@ -21,10 +22,15 @@ export class MenuMobileComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.userSubscription = this.authService.loggedInUser$.subscribe({
-            next: (_loggedInUser) => {
-                if (_loggedInUser) this.loggedInUser = _loggedInUser;
-                else {
-                    this.loggedInUser = _loggedInUser;
+            next: async (_loggedInUser) => {
+                if (_loggedInUser) {
+                    const loggedInUserFromDB$ = this.authService.getUserById(
+                        _loggedInUser.uid,
+                    );
+                    const loggedInUserFromDB =
+                        await firstValueFrom(loggedInUserFromDB$);
+                    this.loggedInUser = loggedInUserFromDB;
+                } else {
                     this.router.navigateByUrl('login');
                 }
             },

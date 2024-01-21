@@ -16,6 +16,9 @@ import { NgxImageCompressService } from 'ngx-image-compress';
 import { Comment } from '../models/comment.model.';
 import { ref } from 'firebase/database';
 import { Notification } from '../models/notification.model';
+import { Message } from '../models/message.model';
+import { Chat } from '../models/chat.model';
+import { ChatService } from './chat.service';
 
 @Injectable({
     providedIn: 'root',
@@ -24,6 +27,7 @@ export class PostService {
     constructor(
         private db: AngularFirestore,
         private authService: AuthService,
+        private chatService: ChatService,
         private imageCompress: NgxImageCompressService,
     ) {}
 
@@ -57,6 +61,16 @@ export class PostService {
                 this._posts$.next([...posts]);
             }),
         );
+    }
+
+    async getPostById(postId: string) {
+        const post$ = this.db
+            .collection('posts')
+            .doc(postId)
+            .valueChanges() as Observable<Post>;
+        const post = await firstValueFrom(post$);
+
+        return post;
     }
 
     async toggleLike(isLikeClicked: boolean, post: Post) {
@@ -252,6 +266,63 @@ export class PostService {
             .collection('comments')
             .doc(commentId)
             .valueChanges() as Observable<Comment>;
+    }
+
+    async sendPost(user: User, post: Post, newMessage: Message) {
+        const chats$ = this.db
+            .collection('chats', (ref) =>
+                ref.where(
+                    'users',
+                    'array-contains',
+                    this.authService.getLoggedInUser().uid && user._id,
+                ),
+            )
+            .valueChanges() as Observable<Chat[]>;
+
+        let chats = await firstValueFrom(chats$);
+
+        // In case length > 1, it means that the loggedInUser wants to send to himself
+        if (chats.length > 1) {
+            // Searching for chat that belongs to loggedInUser vs loggedInUser
+            chats = [
+                chats.find((chat) => {
+                    return chat.users.every(
+                        (user) =>
+                            user === this.authService.getLoggedInUser().uid,
+                    );
+                }) as Chat,
+            ];
+        }
+
+        // In case no length,it means there is no chat exist in db,
+        // we need to create and add to db
+        if (!chats.length) {
+            const chat = await this.chatService.addNewChat(
+                {
+                    _id: '',
+                    lastModified: 0,
+                    isRead: false,
+                    shownByUsers: [
+                        this.authService.getLoggedInUser().uid,
+                        user._id,
+                    ],
+                    users: [this.authService.getLoggedInUser().uid, user._id],
+                    messages: [],
+                },
+                this.authService.getLoggedInUser().uid,
+            );
+
+            chats = [chat];
+        }
+
+        const chat = chats[0];
+
+        newMessage.chatId = chat._id;
+        newMessage.postId = post._id;
+
+        await this.chatService.addMessageToChat(chat._id, newMessage);
+
+        return chat._id;
     }
 
     private async _removeCommentsOfPostId(postId: string) {

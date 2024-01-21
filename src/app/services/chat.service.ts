@@ -108,7 +108,7 @@ export class ChatService {
                             ],
                         });
                 }
-                return existingChat._id;
+                return existingChat;
             }
         } catch (error) {
             console.error('Error checking for existing chat:', error);
@@ -116,13 +116,18 @@ export class ChatService {
 
         newChat.lastModified = Date.now();
         const newChatRef = await this.db.collection('chats').add(newChat);
-        console.log('newChatRef', newChatRef);
         await this.db
             .collection('chats')
             .doc(newChatRef.id)
             .update({ _id: newChatRef.id });
 
-        return newChatRef.id;
+        const chat$ = this.db
+            .collection('chats')
+            .doc(newChatRef.id)
+            .valueChanges() as Observable<Chat>;
+        const chat = await firstValueFrom(chat$);
+
+        return chat;
     }
 
     async removeChatById(chatId: string, loggedInUserId: string) {

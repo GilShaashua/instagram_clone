@@ -1,8 +1,7 @@
 import {
-    AfterViewInit,
+    AfterContentInit,
     Component,
     ElementRef,
-    HostListener,
     OnDestroy,
     OnInit,
     ViewChild,
@@ -26,7 +25,9 @@ import { SharedStateService } from '../../services/shared-state.service';
         class: 'page-cmp-layout',
     },
 })
-export class ChatDetailsComponent implements OnInit, OnDestroy {
+export class ChatDetailsComponent
+    implements OnInit, OnDestroy, AfterContentInit
+{
     constructor(
         private route: ActivatedRoute,
         private location: Location,
@@ -80,6 +81,21 @@ export class ChatDetailsComponent implements OnInit, OnDestroy {
         this.isComponentInitialized = true;
     }
 
+    ngAfterContentInit() {
+        let intervalId = setInterval(() => {
+            if (this.elChatDetails) {
+                setTimeout(() => {
+                    this.elChatDetails.nativeElement.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'end',
+                    });
+                }, 500);
+
+                clearInterval(intervalId);
+            }
+        }, 500);
+    }
+
     async onAddMessage() {
         const messageClone = cloneDeep(this.message);
         await this.chatService.addMessageToChat(this.chat._id, messageClone);
@@ -98,6 +114,8 @@ export class ChatDetailsComponent implements OnInit, OnDestroy {
             (userId) => userId !== this.loggedInUserFromDB._id,
         )[0];
 
+        if (!participantUserId) participantUserId = this.loggedInUserFromDB._id;
+
         const participantUser$ =
             this.authService.getUserById(participantUserId);
         const participantUser = await firstValueFrom(participantUser$);
@@ -105,14 +123,10 @@ export class ChatDetailsComponent implements OnInit, OnDestroy {
     }
 
     onScrollToBottom() {
-        if (this.elChatDetails) {
-            requestAnimationFrame(() => {
-                this.elChatDetails.nativeElement.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'end',
-                });
-            });
-        }
+        this.elChatDetails.nativeElement.scrollIntoView({
+            behavior: 'smooth',
+            block: 'end',
+        });
     }
 
     async goBack() {

@@ -51,6 +51,9 @@ import { FormatTimePipe } from './pipes/format-time.pipe';
 import { AddChatComponent } from './pages/add-chat/add-chat.component';
 import { UserListComponent } from './cmps/user-list/user-list.component';
 import { UserRowComponent } from './cmps/user-row/user-row.component';
+import { SendPostModalComponent } from './cmps/send-post-modal/send-post-modal.component';
+import { UserListSendPostModalComponent } from './cmps/user-list-send-post-modal/user-list-send-post-modal.component';
+import { UserRowSendPostModalComponent } from './cmps/user-row-send-post-modal/user-row-send-post-modal.component';
 
 firebase.initializeApp(environment.firebase);
 
@@ -95,6 +98,9 @@ firebase.initializeApp(environment.firebase);
         AddChatComponent,
         UserListComponent,
         UserRowComponent,
+        SendPostModalComponent,
+        UserListSendPostModalComponent,
+        UserRowSendPostModalComponent,
     ],
     imports: [
         BrowserModule,

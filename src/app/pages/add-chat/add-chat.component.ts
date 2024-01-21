@@ -51,11 +51,11 @@ export class AddChatComponent implements OnInit, OnDestroy {
     async onAddNewChat(userId: string) {
         this.newChat.users.push(userId);
         this.newChat.shownByUsers.push(userId);
-        const chatId = await this.chatService.addNewChat(
+        const chat = await this.chatService.addNewChat(
             this.newChat,
             this.authService.getLoggedInUser().uid,
         );
-        await this.router.navigateByUrl(`chat/${chatId}`);
+        await this.router.navigateByUrl(`chat/${chat._id}`);
     }
 
     navigateToChatPage() {
