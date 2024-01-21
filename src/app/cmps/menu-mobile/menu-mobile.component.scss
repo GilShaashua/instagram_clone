@@ -1,11 +1,11 @@
-@import 'src/assets/setup/variables';
-@import 'src/assets/setup/mixins';
+@import "src/assets/setup/variables";
+@import "src/assets/setup/mixins";
 
 :host {
     position: sticky;
     bottom: 0;
     left: 0;
-    z-index: 199;
+    z-index: 299;
     grid-column: 1/-1;
     height: 60px;
     width: 100%;
@@ -39,6 +39,8 @@
 
                     img {
                         border-radius: 50%;
+                        object-fit: cover;
+                        aspect-ratio: 1/1;
                     }
 
                     &.active {

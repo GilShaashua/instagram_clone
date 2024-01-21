@@ -147,13 +147,13 @@
 
                 <li
                     class="profile"
-                    routerLink="/profile/{{ loggedInUser.uid }}"
+                    routerLink="/profile/{{ loggedInUser._id }}"
                     routerLinkActive="active"
                     title="Profile"
                 >
                     <img
-                        *ngIf="loggedInUser.photoURL; else profile"
-                        [src]="loggedInUser.photoURL"
+                        *ngIf="loggedInUser; else profile"
+                        [src]="loggedInUser.imgUrl"
                         alt="loggedInUser"
                     />
                     <ng-template #profile>

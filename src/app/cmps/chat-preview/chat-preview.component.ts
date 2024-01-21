@@ -9,7 +9,7 @@ import {
 import { Chat } from '../../models/chat.model';
 import { User } from '../../models/user.model';
 import { AuthService } from '../../services/auth.service';
-import { firstValueFrom, Subscription, take } from 'rxjs';
+import { firstValueFrom, Subscription } from 'rxjs';
 import { Message } from '../../models/message.model';
 import { ChatService } from '../../services/chat.service';
 
@@ -51,6 +51,8 @@ export class ChatPreviewComponent implements OnInit, OnDestroy {
         let participantUserId = this.chat.users.filter(
             (userId) => userId !== this.loggedInUserFromDB._id,
         )[0];
+
+        if (!participantUserId) participantUserId = this.loggedInUserFromDB._id;
 
         const participantUser$ =
             this.authService.getUserById(participantUserId);

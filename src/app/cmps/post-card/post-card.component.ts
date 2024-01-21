@@ -50,6 +50,7 @@ export class PostCardComponent implements OnInit, OnChanges {
     isCommentModalShown = false;
     commentsLength = 0;
     likedByUsersCloneDeep!: User[];
+    isSendPostModalShown = false;
 
     async ngOnInit() {
         const usersPrms = this.post.likedByUsers?.map(
@@ -175,4 +176,8 @@ export class PostCardComponent implements OnInit, OnChanges {
     getTypeOfLikedByUsers() {
         return typeof this.post.likedByUsers[0];
     }
+
+    // onClickSendPostModal() {
+    //     this.isSendPostModalShown = !this.isSendPostModalShown;
+    // }
 }

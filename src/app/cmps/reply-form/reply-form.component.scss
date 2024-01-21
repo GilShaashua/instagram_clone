@@ -29,6 +29,8 @@
         img {
             width: 2em;
             border-radius: 50%;
+            aspect-ratio: 1/1;
+            object-fit: cover;
         }
 
         input {

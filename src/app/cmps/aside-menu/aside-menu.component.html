@@ -235,7 +235,7 @@
                 <li
                     #elProfile
                     class="profile"
-                    routerLink="/profile/{{ user.uid }}"
+                    routerLink="/profile/{{ user._id }}"
                     routerLinkActive="active"
                     title="Profile"
                     (click)="
@@ -245,8 +245,8 @@
                     "
                 >
                     <img
-                        *ngIf="user.providerData[0].photoURL; else profile"
-                        [src]="user.providerData[0].photoURL"
+                        *ngIf="user.imgUrl; else profile"
+                        [src]="user.imgUrl"
                         alt="loggedInUser"
                     />
                     <ng-template #profile>
