@@ -82,18 +82,18 @@ export class ChatDetailsComponent
     }
 
     ngAfterContentInit() {
-        let intervalId = setInterval(() => {
-            if (this.elChatDetails) {
-                setTimeout(() => {
-                    this.elChatDetails.nativeElement.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'end',
-                    });
-                }, 500);
-
-                clearInterval(intervalId);
-            }
-        }, 500);
+        // let intervalId = setInterval(() => {
+        //     if (this.elChatDetails) {
+        //         setTimeout(() => {
+        //             this.elChatDetails.nativeElement.scrollIntoView({
+        //                 behavior: 'smooth',
+        //                 block: 'end',
+        //             });
+        //         }, 500);
+        //
+        //         clearInterval(intervalId);
+        //     }
+        // }, 500);
     }
 
     async onAddMessage() {
