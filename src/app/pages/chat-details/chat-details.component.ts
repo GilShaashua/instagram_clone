@@ -98,7 +98,12 @@ export class ChatDetailsComponent
 
     async onAddMessage() {
         const messageClone = cloneDeep(this.message);
-        await this.chatService.addMessageToChat(this.chat._id, messageClone);
+        await this.chatService.addMessageToChat(
+            this.chat._id,
+            messageClone,
+            this.participantUser._id,
+            this.loggedInUserFromDB._id,
+        );
         this.message.txt = '';
     }
 

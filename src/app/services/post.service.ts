@@ -310,6 +310,7 @@ export class PostService {
                     messages: [],
                 },
                 this.authService.getLoggedInUser().uid,
+                user._id,
             );
 
             chats = [chat];
@@ -320,7 +321,12 @@ export class PostService {
         newMessage.chatId = chat._id;
         newMessage.postId = post._id;
 
-        await this.chatService.addMessageToChat(chat._id, newMessage);
+        await this.chatService.addMessageToChat(
+            chat._id,
+            newMessage,
+            user._id,
+            this.authService.getLoggedInUser().uid,
+        );
 
         return chat._id;
     }
