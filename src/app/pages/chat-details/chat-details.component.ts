@@ -13,7 +13,6 @@ import { Location } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
 import { User } from '../../models/user.model';
 import { Message } from '../../models/message.model';
-import cloneDeep from 'lodash-es/cloneDeep';
 import { ChatService } from '../../services/chat.service';
 import { SharedStateService } from '../../services/shared-state.service';
 
@@ -97,9 +96,10 @@ export class ChatDetailsComponent
     }
 
     async onAddMessage() {
-        const messageClone = cloneDeep(this.message);
-        await this.chatService.addMessageToChat(this.chat._id, messageClone);
+        if (!this.message.txt) return;
+        const messageClone = structuredClone(this.message);
         this.message.txt = '';
+        await this.chatService.addMessageToChat(this.chat._id, messageClone);
     }
 
     async getLoggedInUserFromDB() {

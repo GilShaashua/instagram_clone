@@ -129,25 +129,14 @@ export class ProfileComponent implements OnInit, OnDestroy {
         await this.postService.addReply(reply);
     }
 
-    onUpdateUserProfile(updatedUser: User) {
-        // console.log('updatedUser', updatedUser)
-        this.userService.updateUserProfile(updatedUser);
+    async onUpdateUserProfile(updatedUser: User) {
+        await this.userService.updateUserProfile(updatedUser);
         this.userFromDB = updatedUser;
         this.isEditProfileModalShown = false;
     }
 
     navigateToUserProfile(creatorId: string) {
         this.router.navigateByUrl(`profile/${creatorId}`);
-    }
-
-    navigateUserProfileFromComment() {
-        this.isPostsModalShown = false;
-    }
-
-    navigateUserProfileFromLikedByUsers() {
-        console.log('hi');
-
-        this.isPostsModalShown = false;
     }
 
     ngOnDestroy(): void {

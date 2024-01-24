@@ -12,7 +12,6 @@ import { AuthService } from '../../services/auth.service';
 import { firstValueFrom, forkJoin, Observable, of, take } from 'rxjs';
 import { User } from '../../models/user.model';
 import { PostService } from '../../services/post.service';
-import cloneDeep from 'lodash-es/cloneDeep';
 
 @Component({
     selector: 'post-card',
@@ -85,7 +84,7 @@ export class PostCardComponent implements OnInit, OnChanges {
             this.post.likedByUsers = await Promise.all(usersPrms);
         }
 
-        this.likedByUsersCloneDeep = cloneDeep(this.post.likedByUsers);
+        this.likedByUsersCloneDeep = structuredClone(this.post.likedByUsers);
 
         this.postService
             .getCommentsByPostId(this.post._id)
@@ -145,7 +144,9 @@ export class PostCardComponent implements OnInit, OnChanges {
                 const fetchedUsers = (await firstValueFrom(users$)) as User[];
                 this.post.likedByUsers = fetchedUsers;
 
-                this.likedByUsersCloneDeep = cloneDeep(this.post.likedByUsers);
+                this.likedByUsersCloneDeep = structuredClone(
+                    this.post.likedByUsers,
+                );
             } catch (err) {
                 console.error('Error in ngOnChanges:', err);
             }

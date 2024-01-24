@@ -1,15 +1,6 @@
 import { Injectable } from '@angular/core';
 import { User } from '../models/user.model';
-import {
-    BehaviorSubject,
-    firstValueFrom,
-    lastValueFrom,
-    map,
-    Observable,
-    of,
-    take,
-} from 'rxjs';
-import cloneDeep from 'lodash-es/cloneDeep';
+import { BehaviorSubject, lastValueFrom, map, Observable, take } from 'rxjs';
 import { AuthService } from './auth.service';
 import firebase from 'firebase/compat';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
@@ -86,7 +77,7 @@ export class UserService {
             .valueChanges()
             .pipe(take(1));
         const loggedInUserFromDB = await lastValueFrom(loggedInUserFromDB$);
-        const followedByUsersDeepCopy = cloneDeep(user.followedByUsers);
+        const followedByUsersDeepCopy = structuredClone(user.followedByUsers);
         const followedByUserIdx = followedByUsersDeepCopy.findIndex(
             (followedByUser: User | string) =>
                 followedByUser === loggedInUser.uid,
@@ -149,8 +140,8 @@ export class UserService {
         }
     }
 
-    updateUserProfile(updatedUser: User) {
-        this.db.collection('users').doc(updatedUser._id).set(updatedUser);
+    async updateUserProfile(updatedUser: User) {
+        await this.db.collection('users').doc(updatedUser._id).set(updatedUser);
     }
 
     setIsSearchModalShown(value: boolean) {

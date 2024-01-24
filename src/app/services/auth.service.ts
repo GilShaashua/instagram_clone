@@ -166,7 +166,7 @@ export class AuthService {
                                 .update({
                                     imgUrl:
                                         auth.user!.photoURL ||
-                                        'https://res.cloudinary.com/dpbcaizq9/image/upload/v1686066256/user_jsqpzw.png',
+                                        'https://res.cloudinary.com/dpbcaizq9/image/upload/v1706126532/user_hzaeq1.jpg',
                                 });
                         }
                         if (!userData.followedByUsers) {

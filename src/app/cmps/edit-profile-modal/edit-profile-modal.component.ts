@@ -1,7 +1,6 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core'
-import { cloneDeep } from 'lodash-es'
-import { User } from 'src/app/models/user.model'
-import { UserService } from 'src/app/services/user.service'
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { User } from 'src/app/models/user.model';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
     selector: 'edit-profile-modal',
@@ -14,28 +13,28 @@ import { UserService } from 'src/app/services/user.service'
 export class EditProfileModalComponent implements OnInit {
     constructor(private userService: UserService) {}
 
-    @Input() userFromDB!: User
-    @Output() onBack = new EventEmitter()
-    @Output() onSubmitUserEdit = new EventEmitter()
+    @Input() userFromDB!: User;
+    @Output() onBack = new EventEmitter();
+    @Output() onSubmitUserEdit = new EventEmitter();
 
-    userFromDBToEdit!: User
-    isImgUrlChanged = false
+    userFromDBToEdit!: User;
+    isImgUrlChanged = false;
 
     ngOnInit(): void {
-        this.userFromDBToEdit = cloneDeep(this.userFromDB)
+        this.userFromDBToEdit = structuredClone(this.userFromDB);
     }
 
     submitUserEdit() {
-        this.onSubmitUserEdit.emit(this.userFromDBToEdit)
+        this.onSubmitUserEdit.emit(this.userFromDBToEdit);
     }
 
     async onUploadUserPicture() {
         try {
-            const imgUrl = await this.userService.uploadMedia()
-            imgUrl ? (this.userFromDBToEdit.imgUrl = imgUrl) : ''
-            this.isImgUrlChanged = true
+            const imgUrl = await this.userService.uploadMedia();
+            imgUrl ? (this.userFromDBToEdit.imgUrl = imgUrl) : '';
+            this.isImgUrlChanged = true;
         } catch (err: any) {
-            console.error(err)
+            console.error(err);
         }
     }
 }
