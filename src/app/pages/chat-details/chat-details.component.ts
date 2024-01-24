@@ -97,9 +97,16 @@ export class ChatDetailsComponent
 
     async onAddMessage() {
         if (!this.message.txt) return;
+
         const messageClone = structuredClone(this.message);
         this.message.txt = '';
-        await this.chatService.addMessageToChat(this.chat._id, messageClone);
+
+        await this.chatService.addMessageToChat(
+            this.chat._id,
+            messageClone,
+            this.participantUser._id,
+            this.loggedInUserFromDB._id,
+        );
     }
 
     async getLoggedInUserFromDB() {

@@ -33,7 +33,12 @@ export class ChatService {
             .valueChanges() as Observable<Chat>;
     }
 
-    async addMessageToChat(chatId: string, message: Message) {
+    async addMessageToChat(
+        chatId: string,
+        message: Message,
+        participantUserId: string,
+        loggedInUserId: string,
+    ) {
         message.sentAt = Date.now();
 
         const messageRef = await this.db.collection('messages').add(message);
@@ -43,11 +48,7 @@ export class ChatService {
             .doc(messageRef.id)
             .update({ _id: messageRef.id });
 
-        const chat$ = this.db
-            .collection('chats')
-            .doc(chatId)
-            .valueChanges()
-            .pipe(take(1));
+        const chat$ = this.db.collection('chats').doc(chatId).valueChanges();
         const chat = (await firstValueFrom(chat$)) as Chat;
 
         const updatedMessages = [...chat.messages, messageRef.id];
@@ -55,7 +56,27 @@ export class ChatService {
         await this.db
             .collection('chats')
             .doc(chatId)
-            .update({ messages: updatedMessages });
+            .update({ messages: updatedMessages, lastModified: Date.now() });
+
+        if (participantUserId !== loggedInUserId) {
+            if (!chat.shownByUsers.includes(participantUserId)) {
+                await this.db
+                    .collection('chats')
+                    .doc(chat._id)
+                    .update({
+                        shownByUsers: [...chat.shownByUsers, participantUserId],
+                    });
+            }
+        } else {
+            if (!chat.shownByUsers.includes(loggedInUserId)) {
+                await this.db
+                    .collection('chats')
+                    .doc(chat._id)
+                    .update({
+                        shownByUsers: [...chat.shownByUsers, loggedInUserId],
+                    });
+            }
+        }
     }
 
     getMessageById(messageId: string) {
@@ -73,28 +94,39 @@ export class ChatService {
             .valueChanges() as Observable<Message[]>;
     }
 
-    async addNewChat(newChat: Chat, loggedInUserId: string) {
+    async addNewChat(
+        newChat: Chat,
+        loggedInUserId: string,
+        participantUserId: string,
+    ) {
         try {
-            // Check for existing chats using two separate queries
-            const firstCheck$ = this.db
+            // Check for existing chats
+            const loggedInUserChats$ = this.db
                 .collection('chats', (ref) =>
-                    ref.where('users', 'array-contains', newChat.users[0]),
-                )
-
-                .valueChanges() as Observable<Chat[]>;
-            const secondCheck$ = this.db
-                .collection('chats', (ref) =>
-                    ref.where('users', 'array-contains', newChat.users[1]),
+                    ref.where('users', 'array-contains', loggedInUserId),
                 )
 
                 .valueChanges() as Observable<Chat[]>;
 
-            const firstResults = await firstValueFrom(firstCheck$);
-            const secondResults = await firstValueFrom(secondCheck$);
-
-            const existingChat = firstResults.find((chat) =>
-                secondResults.some((otherChat) => otherChat._id === chat._id),
+            const loggedInUserChats = await firstValueFrom(loggedInUserChats$);
+            const existingChats = loggedInUserChats.filter((chat) =>
+                chat.users.includes(participantUserId),
             );
+
+            let existingChat;
+
+            // If existingChats.length > 1, it means that the loggedInUser
+            // wants to send a message to himself
+            if (existingChats.length > 1) {
+                existingChat = existingChats.find((chat) =>
+                    chat.users.every((userId) => userId === loggedInUserId),
+                );
+                // If existingChats.length === 1,
+                // it means that loggedInUser wants to send a message
+                // to other user and not to him self
+            } else {
+                existingChat = existingChats[0];
+            }
 
             if (existingChat) {
                 if (!existingChat.shownByUsers.includes(loggedInUserId)) {
@@ -108,6 +140,7 @@ export class ChatService {
                             ],
                         });
                 }
+
                 return existingChat;
             }
         } catch (error) {
@@ -121,13 +154,13 @@ export class ChatService {
             .doc(newChatRef.id)
             .update({ _id: newChatRef.id });
 
-        const chat$ = this.db
+        const newAddedChat$ = this.db
             .collection('chats')
             .doc(newChatRef.id)
             .valueChanges() as Observable<Chat>;
-        const chat = await firstValueFrom(chat$);
+        const newAddedChat = await firstValueFrom(newAddedChat$);
 
-        return chat;
+        return newAddedChat;
     }
 
     async removeChatById(chatId: string, loggedInUserId: string) {

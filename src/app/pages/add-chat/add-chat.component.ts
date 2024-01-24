@@ -54,6 +54,7 @@ export class AddChatComponent implements OnInit, OnDestroy {
         const chat = await this.chatService.addNewChat(
             this.newChat,
             this.authService.getLoggedInUser().uid,
+            userId,
         );
         await this.router.navigateByUrl(`chat/${chat._id}`);
     }

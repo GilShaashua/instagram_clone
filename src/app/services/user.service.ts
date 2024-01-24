@@ -140,8 +140,8 @@ export class UserService {
         }
     }
 
-    async updateUserProfile(updatedUser: User) {
-        await this.db.collection('users').doc(updatedUser._id).set(updatedUser);
+    updateUserProfile(updatedUser: User) {
+        this.db.collection('users').doc(updatedUser._id).set(updatedUser);
     }
 
     setIsSearchModalShown(value: boolean) {

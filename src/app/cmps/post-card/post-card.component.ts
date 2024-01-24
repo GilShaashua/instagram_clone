@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { Post } from '../../models/post.model';
 import { AuthService } from '../../services/auth.service';
-import { firstValueFrom, forkJoin, Observable, of, take } from 'rxjs';
+import { firstValueFrom, forkJoin, of, take } from 'rxjs';
 import { User } from '../../models/user.model';
 import { PostService } from '../../services/post.service';
 
@@ -177,8 +177,4 @@ export class PostCardComponent implements OnInit, OnChanges {
     getTypeOfLikedByUsers() {
         return typeof this.post.likedByUsers[0];
     }
-
-    // onClickSendPostModal() {
-    //     this.isSendPostModalShown = !this.isSendPostModalShown;
-    // }
 }
