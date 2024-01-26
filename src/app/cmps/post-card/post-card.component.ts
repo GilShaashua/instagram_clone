@@ -3,13 +3,14 @@ import {
     EventEmitter,
     Input,
     OnChanges,
+    OnDestroy,
     OnInit,
     Output,
     SimpleChanges,
 } from '@angular/core';
 import { Post } from '../../models/post.model';
 import { AuthService } from '../../services/auth.service';
-import { firstValueFrom, forkJoin, of, take } from 'rxjs';
+import { firstValueFrom, forkJoin, of, Subscription, take } from 'rxjs';
 import { User } from '../../models/user.model';
 import { PostService } from '../../services/post.service';
 
@@ -18,7 +19,7 @@ import { PostService } from '../../services/post.service';
     templateUrl: './post-card.component.html',
     styleUrls: ['./post-card.component.scss'],
 })
-export class PostCardComponent implements OnInit, OnChanges {
+export class PostCardComponent implements OnInit, OnChanges, OnDestroy {
     constructor(
         private authService: AuthService,
         private postService: PostService,
@@ -48,6 +49,7 @@ export class PostCardComponent implements OnInit, OnChanges {
     isComponentInitialized = false;
     isCommentModalShown = false;
     commentsLength = 0;
+    commentsSubscription!: Subscription;
     likedByUsersCloneDeep!: User[];
     isSendPostModalShown = false;
 
@@ -86,9 +88,8 @@ export class PostCardComponent implements OnInit, OnChanges {
 
         this.likedByUsersCloneDeep = structuredClone(this.post.likedByUsers);
 
-        this.postService
+        this.commentsSubscription = this.postService
             .getCommentsByPostId(this.post._id)
-            .pipe(take(1))
             .subscribe({
                 next: (comments) => {
                     this.commentsLength = comments.length;
@@ -176,5 +177,9 @@ export class PostCardComponent implements OnInit, OnChanges {
 
     getTypeOfLikedByUsers() {
         return typeof this.post.likedByUsers[0];
+    }
+
+    ngOnDestroy() {
+        this.commentsSubscription?.unsubscribe();
     }
 }

@@ -216,7 +216,7 @@
         </div>
 
         <div class="content" *ngIf="creator">
-            <p *ngIf="!isMoreClicked">
+            <p *ngIf="!isMoreClicked && post.content.length">
                 <span
                     class="creatorFullName"
                     (click)="onClickUserImg.emit(creator._id)"
@@ -234,7 +234,7 @@
                 </button>
             </p>
 
-            <p *ngIf="isMoreClicked">
+            <p *ngIf="isMoreClicked && post.content.length">
                 <span class="creatorFullName">{{ creator.fullName }}</span>
                 {{ post.content }}
             </p>
