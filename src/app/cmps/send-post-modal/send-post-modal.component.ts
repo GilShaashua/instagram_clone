@@ -76,7 +76,8 @@ export class SendPostModalComponent implements OnInit, OnDestroy {
 
     async onSendPost() {
         const chatId = await this.postService.sendPost(
-            this.userToSendPost,
+            this.userToSendPost._id,
+            this.authService.getLoggedInUser().uid,
             this.post,
             this.newMessage,
         );

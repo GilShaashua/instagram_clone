@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Chat } from '../models/chat.model';
-import { filter, firstValueFrom, map, Observable, take, tap } from 'rxjs';
+import { firstValueFrom, map, Observable } from 'rxjs';
 import { Message } from '../models/message.model';
 
 @Injectable({
@@ -65,6 +65,15 @@ export class ChatService {
                     .doc(chat._id)
                     .update({
                         shownByUsers: [...chat.shownByUsers, participantUserId],
+                    });
+            }
+
+            if (!chat.shownByUsers.includes(loggedInUserId)) {
+                await this.db
+                    .collection('chats')
+                    .doc(chat._id)
+                    .update({
+                        shownByUsers: [...chat.shownByUsers, loggedInUserId],
                     });
             }
         } else {

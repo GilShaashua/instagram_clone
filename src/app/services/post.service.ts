@@ -268,67 +268,85 @@ export class PostService {
             .valueChanges() as Observable<Comment>;
     }
 
-    async sendPost(user: User, post: Post, newMessage: Message) {
-        const chats$ = this.db
+    async sendPost(
+        participantUserId: string,
+        loggedInUserId: string,
+        post: Post,
+        newMessage: Message,
+    ) {
+        const loggedInUserChats$ = this.db
             .collection('chats', (ref) =>
-                ref.where(
-                    'users',
-                    'array-contains',
-                    this.authService.getLoggedInUser().uid && user._id,
-                ),
+                ref.where('users', 'array-contains', loggedInUserId),
             )
             .valueChanges() as Observable<Chat[]>;
 
-        let chats = await firstValueFrom(chats$);
+        let loggedInUserChats = await firstValueFrom(loggedInUserChats$);
+
+        const existingChats = loggedInUserChats.filter((chat) =>
+            chat.users.includes(participantUserId),
+        );
+
+        let existingChat!: Chat;
 
         // In case length > 1, it means that the loggedInUser wants to send to himself
-        if (chats.length > 1) {
+        if (existingChats.length > 1) {
             // Searching for chat that belongs to loggedInUser vs loggedInUser
-            chats = [
-                chats.find((chat) => {
-                    return chat.users.every(
-                        (user) =>
-                            user === this.authService.getLoggedInUser().uid,
-                    );
-                }) as Chat,
-            ];
+            existingChat = existingChats.find((chat) => {
+                return chat.users.every((user) => user === loggedInUserId);
+            }) as Chat;
+
+            if (!existingChat) {
+                const chat = await this.chatService.addNewChat(
+                    {
+                        _id: '',
+                        lastModified: 0,
+                        isRead: false,
+                        shownByUsers: [loggedInUserId],
+                        users: [loggedInUserId],
+                        messages: [],
+                    },
+                    loggedInUserId,
+                    participantUserId,
+                );
+
+                existingChat = chat;
+            }
         }
 
         // In case no length,it means there is no chat exist in db,
         // we need to create and add to db
-        if (!chats.length) {
+        if (!existingChats.length) {
             const chat = await this.chatService.addNewChat(
                 {
                     _id: '',
                     lastModified: 0,
                     isRead: false,
-                    shownByUsers: [
-                        this.authService.getLoggedInUser().uid,
-                        user._id,
-                    ],
-                    users: [this.authService.getLoggedInUser().uid, user._id],
+                    shownByUsers: [loggedInUserId, participantUserId],
+                    users: [loggedInUserId, participantUserId],
                     messages: [],
                 },
-                this.authService.getLoggedInUser().uid,
-                user._id,
+                loggedInUserId,
+                participantUserId,
             );
 
-            chats = [chat];
+            existingChat = chat;
         }
 
-        const chat = chats[0];
+        if (existingChats.length === 1) {
+            existingChat = existingChats[0];
+        }
 
-        newMessage.chatId = chat._id;
+        newMessage.chatId = existingChat._id;
         newMessage.postId = post._id;
 
         await this.chatService.addMessageToChat(
-            chat._id,
+            existingChat._id,
             newMessage,
-            user._id,
-            this.authService.getLoggedInUser().uid,
+            participantUserId,
+            loggedInUserId,
         );
 
-        return chat._id;
+        return existingChat._id;
     }
 
     private async _removeCommentsOfPostId(postId: string) {
