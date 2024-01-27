@@ -44,7 +44,7 @@
         </div>
     </div>
 
-    <div class="user-posts">
+    <div class="user-posts" *ngIf="userPosts.length; else noPosts">
         <article
             class="post-preview"
             *ngFor="let post of userPosts; trackBy: trackByPostId"
@@ -57,6 +57,12 @@
             />
         </article>
     </div>
+
+    <ng-template #noPosts>
+        <div class="no-posts">
+            <p>No posts yet</p>
+        </div>
+    </ng-template>
 
     <posts-modal
         *ngIf="isPostsModalShown"

@@ -1,7 +1,11 @@
-<ul class="chat-list">
+<ul class="chat-list" *ngIf="chats.length; else noChats">
     <chat-preview
         *ngFor="let chat of chats; trackBy: trackByChatId"
         [chat]="chat"
         (onRemoveChat)="onRemoveChat.emit($event)"
     ></chat-preview>
 </ul>
+
+<ng-template #noChats>
+    <p>No chats</p>
+</ng-template>
