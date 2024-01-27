@@ -17,8 +17,8 @@ export class AuthService {
     ) {}
 
     private _loggedInUser$ = new BehaviorSubject(
-        document.cookie.match(/loggedInUser=(.*)/)
-            ? JSON.parse(document.cookie.match(/loggedInUser=(.*)/)![1])
+        localStorage.getItem('loggedInUser')
+            ? JSON.parse(localStorage.getItem('loggedInUser')!)
             : null,
     );
     public loggedInUser$ = this._loggedInUser$.asObservable();
@@ -28,14 +28,20 @@ export class AuthService {
             const auth = await this.afAuth.signInWithPopup(
                 new GoogleAuthProvider(),
             );
+
             await this._createOrUpdateUserOnDB(auth);
 
             const loggedInUser = await this.afAuth.currentUser;
 
             if (loggedInUser) {
-                document.cookie = `loggedInUser=${JSON.stringify(
-                    loggedInUser,
-                )}; max-age=999999999999; path=/`;
+                // document.cookie = `loggedInUser=${JSON.stringify(
+                //     loggedInUser,
+                // )}; max-age=999999999999; path=/`;
+
+                localStorage.setItem(
+                    'loggedInUser',
+                    JSON.stringify(loggedInUser),
+                );
 
                 this._loggedInUser$.next(loggedInUser);
             }
@@ -55,14 +61,16 @@ export class AuthService {
                 userCred.email,
                 userCred.password,
             );
+
             await this._createOrUpdateUserOnDB(auth, userCred);
 
             const loggedInUser = await this.afAuth.currentUser;
 
             if (loggedInUser) {
-                document.cookie = `loggedInUser=${JSON.stringify(
-                    loggedInUser,
-                )}; max-age=999999999999; path=/`;
+                localStorage.setItem(
+                    'loggedInUser',
+                    JSON.stringify(loggedInUser),
+                );
 
                 this._loggedInUser$.next(loggedInUser);
             }
@@ -87,9 +95,10 @@ export class AuthService {
             const loggedInUser = await this.afAuth.currentUser;
 
             if (loggedInUser) {
-                document.cookie = `loggedInUser=${JSON.stringify(
-                    loggedInUser,
-                )}; max-age=999999999999; path=/`;
+                localStorage.setItem(
+                    'loggedInUser',
+                    JSON.stringify(loggedInUser),
+                );
 
                 this._loggedInUser$.next(loggedInUser);
             }
@@ -103,9 +112,7 @@ export class AuthService {
         try {
             await this.afAuth.signOut();
 
-            document.cookie = `loggedInUser=${JSON.stringify(
-                null,
-            )}; max-age=0; path=/`;
+            localStorage.removeItem('loggedInUser');
             this._loggedInUser$.next(null);
         } catch (err: any) {
             console.error(err.message);
