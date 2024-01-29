@@ -31,6 +31,23 @@
                 span {
                     font-size: 15px;
                 }
+
+                .post-message {
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5em;
+
+                    p {
+                        font-size: 15px;
+                        color: whitesmoke;
+                        font-weight: unset;
+                    }
+
+                    img {
+                        border-radius: unset;
+                        width: 25px;
+                    }
+                }
             }
         }
 

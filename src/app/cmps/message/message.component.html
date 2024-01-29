@@ -28,11 +28,12 @@
     <div
         class="message-with-post"
         *ngIf="post"
-        [ngClass]="
+        [class]="
             message.sentBy === loggedInUserFromDB._id
                 ? 'loggedInUser'
                 : 'participant'
         "
+        [ngClass]="{ 'post-with-no-txt': !message.txt }"
     >
         <div class="post">
             <div class="header">
@@ -66,7 +67,19 @@
                     alt="user"
                 />
                 <p class="creator-full-name">{{ post.creatorFullName }}</p>
-                <p class="post-content">{{ post.content }}</p>
+                <p class="post-content">
+                    {{
+                        post.content.length > 25
+                            ? (post.content | slice: 0 : 25) + " ..."
+                            : post.content
+                    }}
+                </p>
+            </div>
+        </div>
+
+        <div class="time-date-for-post-with-no-txt" *ngIf="!message.txt">
+            <div class="time">
+                <p>{{ message.sentAt | formatTime }}</p>
             </div>
         </div>
 

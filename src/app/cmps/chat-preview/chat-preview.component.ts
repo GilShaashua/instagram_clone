@@ -9,9 +9,11 @@ import {
 import { Chat } from '../../models/chat.model';
 import { User } from '../../models/user.model';
 import { AuthService } from '../../services/auth.service';
-import { firstValueFrom, Subscription } from 'rxjs';
+import { firstValueFrom, last, Subscription } from 'rxjs';
 import { Message } from '../../models/message.model';
 import { ChatService } from '../../services/chat.service';
+import { PostService } from '../../services/post.service';
+import { Post } from '../../models/post.model';
 
 @Component({
     selector: 'chat-preview',
@@ -22,6 +24,7 @@ export class ChatPreviewComponent implements OnInit, OnDestroy {
     constructor(
         private authService: AuthService,
         private chatService: ChatService,
+        private postService: PostService,
     ) {}
 
     @Input() chat!: Chat;
@@ -30,8 +33,9 @@ export class ChatPreviewComponent implements OnInit, OnDestroy {
     loggedInUserFromDB!: User;
     participantUser!: User;
     isComponentInitialized = false;
-    lastMessage!: Message;
+    lastMessage?: Message;
     chatSubscription!: Subscription;
+    post?: Post;
 
     async ngOnInit() {
         await this.getLoggedInUserFromDB();
@@ -65,11 +69,14 @@ export class ChatPreviewComponent implements OnInit, OnDestroy {
             .subscribe({
                 next: async (chat) => {
                     this.chat = chat;
+
                     // Get last message
                     const message$ = this.chatService.getMessageById(
                         this.chat.messages[this.chat.messages.length - 1],
                     );
+
                     let lastMessage = await firstValueFrom(message$);
+
                     if (!lastMessage) {
                         lastMessage = {
                             _id: '',
@@ -79,7 +86,14 @@ export class ChatPreviewComponent implements OnInit, OnDestroy {
                             txt: 'No messages yet',
                         };
                     }
-                    this.lastMessage = lastMessage;
+
+                    if (lastMessage) this.lastMessage = lastMessage;
+
+                    if (lastMessage?.postId) {
+                        this.post = await this.postService.getPostById(
+                            lastMessage.postId,
+                        );
+                    }
                 },
             });
     }
