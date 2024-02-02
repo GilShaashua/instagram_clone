@@ -83,7 +83,7 @@
             }
 
             &.loggedInUser {
-                align-items: end;
+                align-items: flex-end;
 
                 .message-with-post-content {
                     flex-direction: row-reverse;
