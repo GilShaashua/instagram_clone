@@ -27,7 +27,7 @@
 
     <div
         class="message-with-post"
-        *ngIf="post"
+        *ngIf="post && postCreator$"
         [class]="
             message.sentBy === loggedInUserFromDB._id
                 ? 'loggedInUser'
@@ -59,13 +59,11 @@
 
             <div class="footer">
                 <img
-                    [src]="
-                        message.sentBy === loggedInUserFromDB._id
-                            ? loggedInUserFromDB.imgUrl
-                            : participantUser.imgUrl
-                    "
+                    *ngIf="postCreator$ | async as postCreator"
+                    [src]="postCreator.imgUrl"
                     alt="user"
                 />
+
                 <p class="creator-full-name">{{ post.creatorFullName }}</p>
                 <p class="post-content">
                     {{

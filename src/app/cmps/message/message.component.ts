@@ -3,6 +3,8 @@ import { Message } from '../../models/message.model';
 import { User } from '../../models/user.model';
 import { PostService } from '../../services/post.service';
 import { Post } from '../../models/post.model';
+import { AuthService } from '../../services/auth.service';
+import { Observable } from 'rxjs';
 
 @Component({
     selector: 'message',
@@ -10,17 +12,27 @@ import { Post } from '../../models/post.model';
     styleUrls: ['./message.component.scss'],
 })
 export class MessageComponent implements OnInit, OnDestroy {
-    constructor(private postService: PostService) {}
+    constructor(
+        private postService: PostService,
+        private authService: AuthService,
+    ) {}
 
     @Input() message!: Message;
     @Input() participantUser!: User;
     @Input() loggedInUserFromDB!: User;
 
-    post!: Post;
+    post?: Post;
+    postCreator$?: Observable<User>;
 
     async ngOnInit() {
         if (this.message.postId) {
             this.post = await this.postService.getPostById(this.message.postId);
+        }
+
+        if (this.post) {
+            this.postCreator$ = this.authService.getUserById(
+                this.post.creatorId,
+            );
         }
     }
 
